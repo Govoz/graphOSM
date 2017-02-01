@@ -1,6 +1,7 @@
 import lxml
+from Intersection import *
 from bs4 import BeautifulSoup
-
+import math
 global soup
 
 soup = BeautifulSoup(open('map.osm'), 'xml')
@@ -89,3 +90,89 @@ def getCommonWay(x,y):
 
     listcommon =  list(set(listX).intersection(listY))
     return listcommon[0]
+
+def getOrientamentWay(idWay):
+    #ottengo la lista di tutti i nodi, cerco quelli più lontani e calcolo l'angolazione
+    listIntersectionID = getListIntersection(idWay)
+    listIntersection = []
+
+    for i in range(len(listIntersectionID)):
+        obj = Intersection(listIntersectionID[i])
+        print(obj)
+        listIntersection.append(obj)
+
+    nodeNord = getNodeNord(listIntersection)
+    nodeSud = getNodeSud(listIntersection)
+    print('--------')
+    print(nodeNord)
+    print(nodeSud)
+    latNord = math.radians(float(nodeNord.lat))
+    latSud = math.radians(float(nodeSud.lat))
+    lonNord = math.radians(float(nodeNord.lon))
+    lonSud = math.radians(float(nodeSud.lon))
+
+    objA = (latNord, lonNord)
+    objB = (latSud, lonSud)
+
+    x = calculate_initial_compass_bearing(objA, objB)
+    print(x)
+
+def getNodeNord(listIntersection):
+    #get max lat
+    maxLat = 0
+    nodeNord = None
+    for i in range(len(listIntersection)):
+        if float(listIntersection[i].lat) > maxLat:
+            maxLat = float(listIntersection[i].lat)
+            nodeNord = listIntersection[i]
+
+    return nodeNord
+
+def getNodeSud(listIntersection):
+    #get max lat
+    minLat = 100000000
+    nodeSud = None
+    for i in range(len(listIntersection)):
+        if float(listIntersection[i].lat) < minLat:
+            minLat = float(listIntersection[i].lat)
+            nodeSud = listIntersection[i]
+
+    return nodeSud
+
+def calculate_initial_compass_bearing(pointA, pointB):
+    """
+    Calculates the bearing between two points.
+    The formulae used is the following:
+        θ = atan2(sin(Δlong).cos(lat2),
+                  cos(lat1).sin(lat2) − sin(lat1).cos(lat2).cos(Δlong))
+    :Parameters:
+      - `pointA: The tuple representing the latitude/longitude for the
+        first point. Latitude and longitude must be in decimal degrees
+      - `pointB: The tuple representing the latitude/longitude for the
+        second point. Latitude and longitude must be in decimal degrees
+    :Returns:
+      The bearing in degrees
+    :Returns Type:
+      float
+    """
+    if (type(pointA) != tuple) or (type(pointB) != tuple):
+        raise TypeError("Only tuples are supported as arguments")
+
+    lat1 = math.radians(pointA[0])
+    lat2 = math.radians(pointB[0])
+
+    diffLong = math.radians(pointB[1] - pointA[1])
+
+    x = math.sin(diffLong) * math.cos(lat2)
+    y = math.cos(lat1) * math.sin(lat2) - (math.sin(lat1)
+            * math.cos(lat2) * math.cos(diffLong))
+
+    initial_bearing = math.atan2(x, y)
+
+    # Now we have the initial bearing but math.atan2 return values
+    # from -180° to + 180° which is not what we want for a compass bearing
+    # The solution is to normalize the initial bearing as shown below
+    initial_bearing = math.degrees(initial_bearing)
+    compass_bearing = (initial_bearing + 360) % 360
+
+    return compass_bearing

@@ -18,5 +18,6 @@ gpsStart = {'latitude': 44.6597209, 'longitude': 11.1419101}
 rootNode = 531295041
 
 #passo a create graph, il punto gps iniziale, l'ID del nodo da cui partire a creare e la distanza massima tra un qualunque nodo dal nodo root
-createGraph(gpsStart, rootNode, 1000)
+#createGraph(gpsStart, rootNode, 1000)
 
+getOrientamentWay(32336792)

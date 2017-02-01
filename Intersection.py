@@ -19,5 +19,5 @@ class Intersection:
                 self.lat = allNode[i].attrs['lat']
 
     def __str__(self):
-        string = str(self.id) + " - " + str(self.lat) + " - " + str(self.lon)
+        string = str(self.id) + " - " + str(self.lat) + " , " + str(self.lon)
         return string
