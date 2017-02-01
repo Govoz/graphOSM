@@ -1,0 +1,8 @@
+Devo implementare un grafo con NetworkX in cui raffiguro le strade e gli incroci da un raggio di 1km (variabile)
+dal punto gps iniziale.
+
+ogni edge ha lungh, velocità max e orient.
+
+
+1) Import CSV e manipulate DATA
+2) Create Graph
