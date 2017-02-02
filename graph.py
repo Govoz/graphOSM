@@ -12,7 +12,6 @@ G = nx.Graph()
 global listNodeVisited
 listNodeVisited = []
 
-
 def createGraph(gpsPoint, idNode, radius):
     #creiamo il grafo
 
@@ -23,12 +22,25 @@ def createGraph(gpsPoint, idNode, radius):
 
     printGraph(G)
 
-
+#TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
     pos = nx.spring_layout(G)
-    nx.draw(G)
-    nx.draw_networkx_labels(G, pos, font_size=8, font_family='sans-serif')
-    plt.show()
+
+    # nodes
+    nx.draw_networkx_nodes(G, pos,node_size=100, alpha=0.3)
+    nx.draw_networkx_edges(G, pos, scale=3)
+    nx.draw_networkx_labels(G, pos, font_size=6)
+
+    labels = nx.get_edge_attributes(G, 'data')
+
+    for key in labels:
+        name = labels[key].name
+        labels[key] = name
+
+    nx.draw_networkx_edge_labels(G, pos, font_size=6, edge_labels=labels)
+
+    plt.axis('off')
+    plt.show()  # display
 
 
 # Questa è ricorsiva. (G è il grafo in cui opero, nodeFrom è il nodo da cui parte l'edge, nodeCurrent è il nodo che sto analizzando, radius è il raggio
@@ -48,7 +60,7 @@ def makeGraph(nodeFrom, nodeCurrent, gpsPointStart, radius):
     if (distanceOrigin <= radius):
 
         # controllo se i nodi sono diversi, utile nella prima istanza della funzione
-        if nodeNew.id != nodeOld.id:
+        if str(nodeNew.id) != str(nodeOld.id):
 
             # ottengo l'id dell'edge
             idCommonWay = getCommonWay(nodeOld.id, nodeNew.id)
@@ -61,7 +73,7 @@ def makeGraph(nodeFrom, nodeCurrent, gpsPointStart, radius):
             print("CREATO NODO " + str(nodeNew.id))
 
             # collego il nuovo nodo a quello parent (?) dovrei aggiungere anche distanceCurrentFrom
-            G.add_edge(nodeNew.id, nodeOld.id, data = road)
+            G.add_edge(nodeNew.id, nodeOld.id, data = road, weight = round(distanceCurrentFrom,2))
 
             print("CREATO EDGE " + str(nodeNew.id) + " - " + str(nodeOld.id))
 

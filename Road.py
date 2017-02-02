@@ -37,7 +37,7 @@ class Road:
         self.name = nameWay
         self.highway = highway
         self.speedLimit = maxSpeed
-        self.orientation = 0
+        self.orientation = getOrientamentWay(self.id)
 
     def __str__(self):
         string = str(self.id) + " - " + str(self.name) + " - " + str(self.highway) + " - " + str(self.speedLimit) + " - " + str(self.orientation)
@@ -92,7 +92,7 @@ def getCommonWay(x,y):
     return listcommon[0]
 
 def getOrientamentWay(idWay):
-    #ottengo la lista di tutti i nodi, cerco quelli più lontani e calcolo l'angolazione
+    #ottengo la lista di tutti i nodi, cerco quelli più a nord e più a sud e calcolo l'angolazione
     listIntersectionID = getListIntersection(idWay)
     listIntersection = []
 
@@ -115,7 +115,7 @@ def getOrientamentWay(idWay):
     objB = (latSud, lonSud)
 
     x = calculate_initial_compass_bearing(objA, objB)
-    print(x)
+    return x
 
 def getNodeNord(listIntersection):
     #get max lat
@@ -174,5 +174,8 @@ def calculate_initial_compass_bearing(pointA, pointB):
     # The solution is to normalize the initial bearing as shown below
     initial_bearing = math.degrees(initial_bearing)
     compass_bearing = (initial_bearing + 360) % 360
+
+    if compass_bearing >= 180:
+        compass_bearing -= 180
 
     return compass_bearing
