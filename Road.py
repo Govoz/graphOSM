@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import math
 global soup
 
-soup = BeautifulSoup(open('map.osm'), 'xml')
+soup = BeautifulSoup(open('mapCorreggio.osm',encoding="utf8"), 'xml')
 
 
 class Road:
@@ -20,15 +20,14 @@ class Road:
         for i in range(len(allWay)):
             id = allWay[i].attrs['id']
             if id == str(idWay):
-                # per way si possono intendere anche aree, le road hanno il tag highway
+                # per way si possono intendere anche aree, le road hanno il tag highway, controllo anche che abbia il name per evitare le strade di servizio e parcheggi
                 # TODO: controllare
                 highwayDict = allWay[i].find('tag', k='highway')
-                if highwayDict != None:
-                    highway = highwayDict['v']
+                nameWayDict = allWay[i].find('tag', k='name')
 
-                    nameWayDict = allWay[i].find('tag', k='name')
-                    if nameWayDict != None:
-                        nameWay = nameWayDict['v']
+                if highwayDict != None and nameWayDict != None:
+                    highway = highwayDict['v']
+                    nameWay = nameWayDict['v']
 
                     maxSpeedDict = allWay[i].find('tag', k='maxSpeed')
                     if maxSpeedDict != None:
@@ -98,14 +97,12 @@ def getOrientamentWay(idWay):
 
     for i in range(len(listIntersectionID)):
         obj = Intersection(listIntersectionID[i])
-        print(obj)
+
         listIntersection.append(obj)
 
     nodeNord = getNodeNord(listIntersection)
     nodeSud = getNodeSud(listIntersection)
-    print('--------')
-    print(nodeNord)
-    print(nodeSud)
+
     latNord = math.radians(float(nodeNord.lat))
     latSud = math.radians(float(nodeSud.lat))
     lonNord = math.radians(float(nodeNord.lon))

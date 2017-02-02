@@ -20,3 +20,67 @@ def getGpsStart(csv):
     obj = {'latitude': latitude,
            'longitude': longitude}
     return obj
+
+def getAzimuth(csv):
+    windowsTime = 10
+
+    list = []
+    for line in range(1, len(csv)):
+        value = csv[line][1]
+        time = csv[line][0]
+        obj = {'value': value, 'time': time}
+        list.append(obj)
+
+    print(list)
+
+    #filtro per finestra temporale e faccio la media
+    listFiltered = []
+    listCurrent = []
+    limit = int(list[0]['time']) + (windowsTime * 1000)
+
+    for line in range(len(list)):
+        valueTime = int(list[line]['time'])
+
+        if valueTime < limit:
+            listCurrent.append(float(list[line]['value']))
+        else:
+            listFiltered.append(listCurrent[:])
+            del listCurrent[:]
+            limit = valueTime + 10000
+            listCurrent.append(float(list[line]['value']))
+
+
+    listFiltered.append(listCurrent[:])
+
+    for list in range(len(listFiltered)):
+        print(listFiltered[list])
+
+    #listFiltered è una lista di liste, ogni sottolista appartiene ad una finestra temporale
+    listAverageValue = []
+    for list in range(len(listFiltered)):
+        sum = 0
+        for value in listFiltered[list]:
+            sum += float(value)
+        average = sum / len(listFiltered[list])
+
+        print(sum)
+        print(len(listFiltered[list]))
+        listAverageValue.append(average)
+
+    #listAveragueValue contiene le direzioni medie misurate in una finestra temporale
+    listDirection = []
+    print(listAverageValue)
+    for element in range(len(listAverageValue)):
+        value = float(listAverageValue[element])
+        quadrant = ""
+        if value > 315 or value <= 45:
+            quadrant = "N"
+        elif 45 < value <= 135:
+            quadrant = "E"
+        elif 135 < value <= 225:
+            quadrant = "S"
+        elif 225 < value <= 315:
+            quadrant = "W"
+        listDirection.append(quadrant)
+
+    return listDirection

@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 global soup
 
-soup = BeautifulSoup(open('map.osm'), 'xml')
+soup = BeautifulSoup(open('mapCorreggio.osm',encoding="utf8"), 'xml')
 
 class Intersection:
     def __init__(self, id):

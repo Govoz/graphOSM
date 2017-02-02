@@ -1,3 +1,8 @@
+import json
+
+import pickle
+from networkx.readwrite import json_graph
+
 from osmUtils import *
 from Intersection import Intersection
 from Road import *
@@ -7,20 +12,27 @@ import matplotlib.pyplot as plt
 
 api = overpy.Overpass()
 
-global G
-G = nx.Graph()
+# global G
+# G = nx.Graph()
 global listNodeVisited
 listNodeVisited = []
 
-def createGraph(gpsPoint, idNode, radius):
+def manageGraph(gpsPoint, idNode, radius):
     #creiamo il grafo
 
-    nodeRoot = Intersection(idNode)
-    G.add_node(nodeRoot.id, data=nodeRoot)
+    # nodeRoot = Intersection(idNode)
+    # print(nodeRoot)
+    # G.add_node(nodeRoot.id)
+    #
+    # makeGraph(idNode, idNode, gpsPoint, radius)
 
-    makeGraph(idNode, idNode, gpsPoint, radius)
-
+    G = importGraph()
     printGraph(G)
+
+    #visitGraph(idNode)
+
+def visitGraph(idRoot):
+    print(G.neighbors(idRoot))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
@@ -66,32 +78,33 @@ def makeGraph(nodeFrom, nodeCurrent, gpsPointStart, radius):
             idCommonWay = getCommonWay(nodeOld.id, nodeNew.id)
 
             road = Road(idCommonWay)
+            if road.name != "":
 
-            # mi creo il nuovo nodo
-            G.add_node(nodeNew.id, data = nodeNew)
+                # mi creo il nuovo nodo
+                G.add_node(nodeNew.id)
 
-            print("CREATO NODO " + str(nodeNew.id))
+                print("CREATO NODO " + str(nodeNew.id))
 
-            # collego il nuovo nodo a quello parent (?) dovrei aggiungere anche distanceCurrentFrom
-            G.add_edge(nodeNew.id, nodeOld.id, data = road, weight = round(distanceCurrentFrom,2))
+                # collego il nuovo nodo a quello parent (?) dovrei aggiungere anche distanceCurrentFrom
+                G.add_edge(nodeNew.id, nodeOld.id, weight = round(distanceCurrentFrom,2))
 
-            print("CREATO EDGE " + str(nodeNew.id) + " - " + str(nodeOld.id))
+                print("CREATO EDGE " + str(nodeNew.id) + " - " + str(nodeOld.id))
 
-            #printGraph(G)
+                #printGraph(G)
 
-            nodeOld = nodeNew
+                nodeOld = nodeNew
 
-            # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
-            listWay = getListWayReached(nodeOld.id)
+                # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
+                listWay = getListWayReached(nodeOld.id)
 
-            # per ogni strada ottengo la lista dei possibili incroci
-            for way in range(len(listWay)):
-                listIntersection = getListIntersection(listWay[way])
+                # per ogni strada ottengo la lista dei possibili incroci
+                for way in range(len(listWay)):
+                    listIntersection = getListIntersection(listWay[way])
 
-                # per ogni incrocio richiamo la funzione
-                for intersection in range(len(listIntersection)):
-                    if not(listIntersection[intersection] in listNodeVisited):
-                        makeGraph(nodeOld.id, listIntersection[intersection], gpsPointStart, radius)
+                    # per ogni incrocio richiamo la funzione
+                    for intersection in range(len(listIntersection)):
+                        if not(listIntersection[intersection] in listNodeVisited):
+                            makeGraph(nodeOld.id, listIntersection[intersection], gpsPointStart, radius)
 
             return
 
@@ -114,4 +127,10 @@ def makeGraph(nodeFrom, nodeCurrent, gpsPointStart, radius):
     return
 
 
+def exportGraph():
+    pickle.dump(G, open('pippo.graph', 'wb'))
 
+
+def importGraph():
+    G = pickle.load(open('pippo.graph', 'rb'))
+    return G

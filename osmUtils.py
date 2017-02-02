@@ -1,5 +1,6 @@
 import gpxpy.geo
 import overpy
+from Road import *
 
 api = overpy.Overpass()
 
@@ -33,23 +34,11 @@ def getDistance(latStart, lonStart, latX, lonX):
 
 def reverseGeocoding(gpsPoint):
     coordinate = str(gpsPoint['latitude']) + "," + str(gpsPoint['longitude'])
-    precision = 5
-    listWaysFiltered = []
 
-    while (len(listWaysFiltered) == 0):
-        query = "(way(around:" + str(precision) + "," + coordinate + "););out center;"
-        result = api.query(query)
-        listWays = result.ways
-        precision += 5
+    query = "(node(around:50," + coordinate + "););out center;"
+    result = api.query(query)
+    listNode = result.nodes
 
-        if (len(listWays) > 0):
-            # Siccome possono esserci anche aree o quant'altro filtro le highway
-            listWaysFiltered = []
-            for way in range(len(listWays)):
-                typeWay = listWays[way].tags.get("highway")
-                if (typeWay != None):
-                    listWaysFiltered.append(listWays[way])
+    node = getNearestNode(listNode, gpsPoint)
 
-    idWay = listWaysFiltered[0].id
-
-    return idWay
+    return node['id']
