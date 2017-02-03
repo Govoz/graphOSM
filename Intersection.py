@@ -1,4 +1,3 @@
-import lxml
 from bs4 import BeautifulSoup
 
 global soup

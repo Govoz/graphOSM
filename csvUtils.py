@@ -31,7 +31,8 @@ def getAzimuth(csv):
         obj = {'value': value, 'time': time}
         list.append(obj)
 
-    print(list)
+    # in secondi
+    lastWindowsTime = float(list[-1]['time']) % float(windowsTime * 1000) / 1000
 
     #filtro per finestra temporale e faccio la media
     listFiltered = []
@@ -49,11 +50,7 @@ def getAzimuth(csv):
             limit = valueTime + 10000
             listCurrent.append(float(list[line]['value']))
 
-
     listFiltered.append(listCurrent[:])
-
-    for list in range(len(listFiltered)):
-        print(listFiltered[list])
 
     #listFiltered è una lista di liste, ogni sottolista appartiene ad una finestra temporale
     listAverageValue = []
@@ -63,13 +60,11 @@ def getAzimuth(csv):
             sum += float(value)
         average = sum / len(listFiltered[list])
 
-        print(sum)
-        print(len(listFiltered[list]))
         listAverageValue.append(average)
 
     #listAveragueValue contiene le direzioni medie misurate in una finestra temporale
     listDirection = []
-    print(listAverageValue)
+
     for element in range(len(listAverageValue)):
         value = float(listAverageValue[element])
         quadrant = ""
@@ -81,6 +76,12 @@ def getAzimuth(csv):
             quadrant = "S"
         elif 225 < value <= 315:
             quadrant = "W"
-        listDirection.append(quadrant)
+
+        obj = {'value': value, 'direction': quadrant, 'time': windowsTime}
+
+        listDirection.append(obj)
+
+    # l'ultimo elemento avrà una durata inferiore alla windowsTime
+    listDirection[-1]['time'] = lastWindowsTime
 
     return listDirection

@@ -16,23 +16,23 @@ api = overpy.Overpass()
 global listNodeVisited
 listNodeVisited = []
 
-def manageGraph(gpsPoint, idNode, radius, nameGraph):
+def manageGraph(gpsPoint, idNode, radius, listIndication):
     importGraphFile = True
 
     if importGraphFile:
         # importiamo il grafo
-        G = importGraph(nameGraph)
+        G = importGraph(idNode, radius)
     else:
         # Generiamo il grafo
         G = nx.Graph()
         nodeRoot = Intersection(idNode)
         G.add_node(nodeRoot.id)
         makeGraph(G, idNode, idNode, gpsPoint, radius)
-        exportGraph(G, idNode)
+        exportGraph(G, idNode, radius)
 
     printGraph(G)
 
-    #visitGraph(G, idNode)
+    #visitGraph(G, idNode, listIndication)
 
 def visitGraph(G, idRoot):
     print(G.neighbors(idRoot))
@@ -131,10 +131,12 @@ def makeGraph(G, nodeFrom, nodeCurrent, gpsPointStart, radius):
     return
 
 
-def exportGraph(G, idNode):
-    pickle.dump(G, open(str(idNode) + ".graph", 'wb'))
+def exportGraph(G, idRoot, radius):
+    nameFile = str(idRoot) + "_" + str(radius) + ".graph"
+    pickle.dump(G, open('graphExport/' + nameFile, 'wb'))
 
 
-def importGraph(nameGraph):
-    G = pickle.load(open(nameGraph, 'rb'))
+def importGraph(idRoot , radius):
+    nameFile = str(idRoot) + "_" + str(radius) + ".graph"
+    G = pickle.load(open('graphExport/' + nameFile, 'rb'))
     return G

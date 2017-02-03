@@ -1,4 +1,3 @@
-import lxml
 from Intersection import *
 from bs4 import BeautifulSoup
 import math
