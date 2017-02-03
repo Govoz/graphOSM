@@ -1,4 +1,5 @@
 import csv
+from osmUtils import *
 
 includedColumn = [30, 16, 22, 23] #30 is time, 16 is azimuth, 22 is latitude, 23 is longitude
 
@@ -67,15 +68,7 @@ def getAzimuth(csv):
 
     for element in range(len(listAverageValue)):
         value = float(listAverageValue[element])
-        quadrant = ""
-        if value > 315 or value <= 45:
-            quadrant = "N"
-        elif 45 < value <= 135:
-            quadrant = "E"
-        elif 135 < value <= 225:
-            quadrant = "S"
-        elif 225 < value <= 315:
-            quadrant = "W"
+        quadrant = convertDegreeToLabel(value)
 
         obj = {'value': value, 'direction': quadrant, 'time': windowsTime}
 

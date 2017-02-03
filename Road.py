@@ -154,6 +154,7 @@ def calculate_initial_compass_bearing(pointA, pointB):
     if (type(pointA) != tuple) or (type(pointB) != tuple):
         raise TypeError("Only tuples are supported as arguments")
 
+
     lat1 = math.radians(pointA[0])
     lat2 = math.radians(pointB[0])
 
@@ -170,8 +171,5 @@ def calculate_initial_compass_bearing(pointA, pointB):
     # The solution is to normalize the initial bearing as shown below
     initial_bearing = math.degrees(initial_bearing)
     compass_bearing = (initial_bearing + 360) % 360
-
-    if compass_bearing >= 180:
-        compass_bearing -= 180
 
     return compass_bearing

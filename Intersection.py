@@ -20,3 +20,4 @@ class Intersection:
     def __str__(self):
         string = str(self.id) + " - " + str(self.lat) + " , " + str(self.lon)
         return string
+

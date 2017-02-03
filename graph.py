@@ -1,17 +1,12 @@
-import json
-
 import pickle
-from networkx.readwrite import json_graph
-
 from osmUtils import *
-from Intersection import Intersection
 from Road import *
+from visitGraph import *
 import overpy
 import networkx as nx
 import matplotlib.pyplot as plt
 
 api = overpy.Overpass()
-
 
 global listNodeVisited
 listNodeVisited = []
@@ -19,23 +14,27 @@ listNodeVisited = []
 def manageGraph(gpsPoint, idNode, radius, listIndication):
     importGraphFile = True
 
+    #TODO: controllo se è presente il file nella directory, se si importo, altrimenti genero
+
     if importGraphFile:
         # importiamo il grafo
         G = importGraph(idNode, radius)
     else:
         # Generiamo il grafo
         G = nx.Graph()
+
+        # forse posso togliere l'intersection e aggiungere solo l'id
         nodeRoot = Intersection(idNode)
         G.add_node(nodeRoot.id)
         makeGraph(G, idNode, idNode, gpsPoint, radius)
         exportGraph(G, idNode, radius)
 
-    printGraph(G)
+    # printGraph(G)
 
-    #visitGraph(G, idNode, listIndication)
+    #listIndication la uso come stack, quindi inverto l'ordine degli elementi in quanto pop e push dal fondo
+    listIndication.reverse()
+    visitGraph(G, idNode, listIndication)
 
-def visitGraph(G, idRoot):
-    print(G.neighbors(idRoot))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
