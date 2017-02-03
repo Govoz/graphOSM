@@ -44,7 +44,7 @@ def reverseGeocoding(gpsPoint):
     return node['id']
 
 def convertDegreeToLabel(value):
-
+    value = float(value)
     # if value > 315 or value <= 45:
     #     quadrant = "N"
     # elif 45 < value <= 135:
@@ -54,7 +54,7 @@ def convertDegreeToLabel(value):
     # elif 225 < value <= 315:
     #     quadrant = "W"
 
-    if value > 0 or value < 180:
+    if value > 0 and value < 180:
         quadrant = "E"
     else:
         quadrant = "O"

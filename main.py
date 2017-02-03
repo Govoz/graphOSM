@@ -5,11 +5,12 @@ from graph import *
 # per comodità setto già il file
 pathFile = 'example.csv'
 # #pathFile = sys.argv[1]
-#
+
 csv = importCsv(pathFile)
-#
+
 listIndication = getAzimuth(csv)
 gpsStart = getGpsStart(csv)
 rootNode = reverseGeocoding(gpsStart)
+print(rootNode)
+#manageGraph(gpsStart, rootNode, 1000, listIndication)
 
-manageGraph(gpsStart, rootNode, 1000, listIndication)

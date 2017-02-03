@@ -33,6 +33,7 @@ def manageGraph(gpsPoint, idNode, radius, listIndication):
 
     #listIndication la uso come stack, quindi inverto l'ordine degli elementi in quanto pop e push dal fondo
     listIndication.reverse()
+
     visitGraph(G, idNode, listIndication)
 
 
