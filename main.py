@@ -11,10 +11,10 @@ pathFile = 'example.csv'
 csv = importCsv(pathFile)
 #
 # listIndication = getAzimuth(csv)
-
+nameGraph = '945250651.graph'
 
 gpsStart = getGpsStart(csv)
 rootNode = reverseGeocoding(gpsStart)
 
 #passo a create graph, il punto gps iniziale, l'ID del nodo da cui partire a creare e la distanza massima tra un qualunque nodo dal nodo root
-manageGraph(gpsStart, rootNode, 100)
+manageGraph(gpsStart, rootNode, 100, nameGraph)
