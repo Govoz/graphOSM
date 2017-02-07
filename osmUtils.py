@@ -36,10 +36,13 @@ def reverseGeocoding(gpsPoint):
     coordinate = str(gpsPoint['latitude']) + "," + str(gpsPoint['longitude'])
 
     query = "(node(around:50," + coordinate + "););out center;"
+    print(query)
     result = api.query(query)
     listNode = result.nodes
 
     node = getNearestNode(listNode, gpsPoint)
+
+    print("ReverseGeocoding: Node: " + str(node['id']))
 
     return node['id']
 

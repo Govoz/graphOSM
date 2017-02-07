@@ -12,6 +12,7 @@ def importCsv(pathFile):
             content = list(row[i] for i in includedColumn)
             listData.append(content)
 
+    print("CSV importato")
     return listData
 
 
@@ -20,6 +21,17 @@ def getGpsStart(csv):
     longitude = csv[1][3]
     obj = {'latitude': latitude,
            'longitude': longitude}
+
+    print("Il punto iniziale è: " + str(latitude) + "," + str(longitude))
+    return obj
+
+def getGpsStop(csv):
+    latitude = csv[len(csv) - 1][2]
+    longitude = csv[len(csv) - 1][3]
+    obj = {'latitude': latitude,
+           'longitude': longitude}
+
+    print("Il punto finale è: " + str(latitude) + "," + str(longitude))
     return obj
 
 def getAzimuth(csv):
@@ -77,4 +89,5 @@ def getAzimuth(csv):
     # l'ultimo elemento avrà una durata inferiore alla windowsTime
     listDirection[-1]['time'] = lastWindowsTime
 
+    print("ListIndication generate")
     return listDirection

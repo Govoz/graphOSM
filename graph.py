@@ -5,37 +5,47 @@ from visitGraph import *
 import overpy
 import networkx as nx
 import matplotlib.pyplot as plt
-
+import os.path
 api = overpy.Overpass()
 
-global listNodeVisited
-listNodeVisited = []
+def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop):
 
-def manageGraph(gpsPoint, idNode, radius, listIndication):
-    importGraphFile = True
+    nameFile = "graphExport/" + str(idNode) + "_" + str(radius) + ".graph"
+    print(nameFile)
 
-    #TODO: controllo se è presente il file nella directory, se si importo, altrimenti genero
-
-    if importGraphFile:
+    if os.path.isfile(nameFile):
+        print("Grafo importato")
         # importiamo il grafo
         G = importGraph(idNode, radius)
     else:
+        print("Grafo generato")
         # Generiamo il grafo
         G = nx.Graph()
 
-        # forse posso togliere l'intersection e aggiungere solo l'id
-        nodeRoot = Intersection(idNode)
-        G.add_node(nodeRoot.id)
-        makeGraph(G, idNode, idNode, gpsPoint, radius)
-        exportGraph(G, idNode, radius)
+        makeGraph(G, idNode, gpsStart, radius)
 
-    # printGraph(G)
+        print("Grafo Esportato Start")
+        exportGraph(G, idNode, radius)
+        print("Grafo Esportato End")
+
+    printGraph(G)
 
     #listIndication la uso come stack, quindi inverto l'ordine degli elementi in quanto pop e push dal fondo
     listIndication.reverse()
 
-    visitGraph(G, idNode, listIndication)
 
+    print("------------")
+    visitGraphBackTrack(G, idNode, listIndication)
+    print(lastNodeVisitedGraphBackTrack)
+    nodeObjGraphBacktrack = Intersection(lastNodeVisitedGraphBackTrack)
+    print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
+                      float(gpsStop['longitude'])))
+
+    print("------------")
+    nodeGraphBestDecision = visitGraphBestDecision(G, idNode, listIndication)
+    print(nodeGraphBestDecision)
+    nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision)
+    print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
@@ -58,77 +68,32 @@ def printGraph(G):
     plt.show()  # display
 
 
-# Questa è ricorsiva. (G è il grafo in cui opero, nodeFrom è il nodo da cui parte l'edge, nodeCurrent è il nodo che sto analizzando, radius è il raggio
-def makeGraph(G, nodeFrom, nodeCurrent, gpsPointStart, radius):
+def makeGraph(G, nodeCurrent, gpsPointStart, radius):
 
-    listNodeVisited.append(nodeCurrent)
+    node = Intersection(nodeCurrent)
+    distanceOrigin = getDistance(node.lat, node.lon, gpsPointStart['latitude'], gpsPointStart['longitude'])
 
-    nodeNew = Intersection(nodeCurrent)
-    nodeOld = Intersection(nodeFrom)
-
-    # mi calcolo la distanza da Root del nodo corrente
-    distanceOrigin = getDistance(nodeNew.lat, nodeNew.lon, gpsPointStart['latitude'], gpsPointStart['longitude'])
-    # mi calcolo la distanza tra i due nodi analizzati, sarà il peso dell'edge
-    distanceCurrentFrom = getDistance(nodeNew.lat, nodeNew.lon, nodeOld.lat, nodeOld.lon)
-
-    # se la distanza è minore allora lo considero
     if (distanceOrigin <= radius):
+        # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
+        listWay = getListWayReached(nodeCurrent)
+        # per ogni strada ottengo la lista dei possibili incroci
+        for way in range(len(listWay)):
+            listIntersection = getListIntersection(listWay[way])
 
-        # controllo se i nodi sono diversi, utile nella prima istanza della funzione
-        if str(nodeNew.id) != str(nodeOld.id):
+            # per ogni incrocio richiamo la funzione
+            for intersection in range(len(listIntersection)):
+                # se non esiste l'arco lo aggiungo
+                if not(G.has_edge(str(nodeCurrent), str(listIntersection[intersection]))) and str(nodeCurrent)!=str(listIntersection[intersection]):
+                    nodeIntersection = Intersection(listIntersection[intersection])
+                    distanceCurrentFrom = getDistance(node.lat, node.lon, nodeIntersection.lat, nodeIntersection.lon)
 
-            # ottengo l'id dell'edge
-            idCommonWay = getCommonWay(nodeOld.id, nodeNew.id)
+                    idCommonWay = getCommonWay(nodeIntersection.id, node.id)
+                    road = Road(idCommonWay)
+                    if road.name != "":
+                        G.add_edge(str(nodeCurrent), str(listIntersection[intersection]), weight = round(distanceCurrentFrom,2))
+                        print(str(nodeCurrent) + " - " + str(listIntersection[intersection]))
+                        makeGraph(G, str(listIntersection[intersection]), gpsPointStart, radius)
 
-            road = Road(idCommonWay)
-
-            if road.name != "":
-
-                # mi creo il nuovo nodo
-                G.add_node(nodeNew.id)
-
-                print("CREATO NODO " + str(nodeNew.id))
-
-                # collego il nuovo nodo a quello parent (?) dovrei aggiungere anche distanceCurrentFrom
-                G.add_edge(nodeNew.id, nodeOld.id, weight = round(distanceCurrentFrom,2))
-
-                print("CREATO EDGE " + str(nodeNew.id) + " - " + str(nodeOld.id))
-
-                #printGraph(G)
-
-                nodeOld = nodeNew
-
-                # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
-                listWay = getListWayReached(nodeOld.id)
-
-                # per ogni strada ottengo la lista dei possibili incroci
-                for way in range(len(listWay)):
-                    listIntersection = getListIntersection(listWay[way])
-
-                    # per ogni incrocio richiamo la funzione
-                    for intersection in range(len(listIntersection)):
-                        if not(listIntersection[intersection] in listNodeVisited):
-                            makeGraph(G, nodeOld.id, listIntersection[intersection], gpsPointStart, radius)
-
-            return
-
-        # è il caso in cui gli id sono gli stessi (quindi la prima istanza
-        else:
-            # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
-            listWay = getListWayReached(nodeOld.id)
-
-            # per ogni strada ottengo la lista dei possibili incroci
-            for way in range(len(listWay)):
-                listIntersection = getListIntersection(listWay[way])
-
-                # per ogni incrocio richiamo la funzione
-                for intersection in range(len(listIntersection)):
-                    if not (listIntersection[intersection] in listNodeVisited):
-                        makeGraph(G, nodeOld.id, listIntersection[intersection], gpsPointStart, radius)
-
-            return
-
-    return
 
 
 def exportGraph(G, idRoot, radius):

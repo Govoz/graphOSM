@@ -21,3 +21,6 @@ class Intersection:
         string = str(self.id) + " - " + str(self.lat) + " , " + str(self.lon)
         return string
 
+    def getTuplesCoordinate(self):
+        tuple = (float(self.lat), float(self.lon))
+        return tuple
