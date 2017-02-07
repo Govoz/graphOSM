@@ -1,10 +1,8 @@
 from Intersection import *
 from bs4 import BeautifulSoup
 import math
-global soup
 
-soup = BeautifulSoup(open('mapCorreggio.osm',encoding="utf8"), 'xml')
-
+soup = BeautifulSoup(open('map945250651.osm',encoding="utf8"), 'xml')
 
 class Road:
     def __init__(self, idWay):
@@ -35,10 +33,10 @@ class Road:
         self.name = nameWay
         self.highway = highway
         self.speedLimit = maxSpeed
-        self.orientation = getOrientamentWay(self.id)
+        #self.orientation = getOrientamentWay(self.id)
 
     def __str__(self):
-        string = str(self.id) + " - " + str(self.name) + " - " + str(self.highway) + " - " + str(self.speedLimit) + " - " + str(self.orientation)
+        string = str(self.id) + " - " + str(self.name) + " - " + str(self.highway) + " - " + str(self.speedLimit)
         return string
 
 def getListIntersection(idWay):

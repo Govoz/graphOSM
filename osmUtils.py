@@ -1,8 +1,13 @@
 import gpxpy.geo
+import overpass
 import overpy
 from Road import *
 
 api = overpy.Overpass()
+api2 = overpass.API()
+
+global osmFile
+osmFile = None
 
 def getNearestNode(listNode, coordinates):
     distanceMin = 1000000000000000000000
@@ -46,6 +51,7 @@ def reverseGeocoding(gpsPoint):
 
     return node['id']
 
+#TODO: rendere parametrica con numero di quadranti in cui dividere (?)
 def convertDegreeToLabel(value):
     value = float(value)
     # if value > 315 or value <= 45:
@@ -62,3 +68,42 @@ def convertDegreeToLabel(value):
     else:
         quadrant = "O"
     return quadrant
+
+def getBoundingBox(lat, lon, offset):
+    print(type(offset))
+    latRadian = math.radians(float(lat))
+
+    degLatKm = 110.574235
+    degLongKm = 110.572833 * math.cos(latRadian)
+    deltaLat = offset / 1000.0 / degLatKm
+    deltaLong = offset / 1000.0 / degLongKm
+    print(deltaLat)
+    print(deltaLong)
+    minLat = float(lat) - deltaLat
+    minLong = float(lon) - deltaLong
+    maxLat = float(lat) + deltaLat
+    maxLong = float(lon) + deltaLong
+
+    boundingBox = {'minLat': minLat,
+                   'minLon': minLong,
+                   'maxLat': maxLat,
+                   'maxLon': maxLong}
+
+    return boundingBox
+
+
+# dato un ID e un radius mi ottengo il .osm dentro alla relativa bounding box
+def getOSMfile(rootId, radius):
+
+    percentualeToAdd = 20
+    offset = radius + (radius / 100 * percentualeToAdd)
+
+    rootNode = Intersection(rootId)
+    latNode = rootNode.lat
+    lonNode = rootNode.lon
+
+    boundingBox = getBoundingBox(latNode, lonNode, offset)
+
+    query = "(node(" + str(boundingBox['minLat']) +"," + str(boundingBox['minLon']) + "," + str(boundingBox['maxLat']) + "," + str(boundingBox['maxLon']) + ");<;);out meta;"
+    print(query)
+    #osm = api2.Get(query, responseformat="xml")

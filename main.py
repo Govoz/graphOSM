@@ -1,20 +1,20 @@
 #!/usr/bin/python
 from csvUtils import *
 from graph import *
+from Road import *
 
-# per comodità setto già il file
+
 pathFile = 'example.csv'
-# #pathFile = sys.argv[1]
+radius = 1000
 
 csv = importCsv(pathFile)
 
 listIndication = getAzimuth(csv)
 gpsStart = getGpsStart(csv)
 gpsStop = getGpsStop(csv)
-rootNode = reverseGeocoding(gpsStart)
 
-#rootNode = 945250651
-print(rootNode)
-manageGraph(gpsStart, rootNode, 1000, listIndication, gpsStop)
+rootNodeId = reverseGeocoding(gpsStart)
+getOSMfile(rootNodeId, radius)
 
-#TODO: usare xmlDict per convertire l'xml in dict
+manageGraph(gpsStart, rootNodeId, radius, listIndication, gpsStop)
+

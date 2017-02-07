@@ -41,11 +41,11 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop):
     print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
                       float(gpsStop['longitude'])))
 
-    print("------------")
-    nodeGraphBestDecision = visitGraphBestDecision(G, idNode, listIndication)
-    print(nodeGraphBestDecision)
-    nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision)
-    print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
+    # print("------------")
+    # nodeGraphBestDecision = visitGraphBestDecision(G, idNode, listIndication)
+    # print(nodeGraphBestDecision)
+    # nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision)
+    # print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
