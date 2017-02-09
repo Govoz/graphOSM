@@ -1,11 +1,8 @@
 from Intersection import *
-from bs4 import BeautifulSoup
 import math
 
-soup = BeautifulSoup(open('map945250651.osm',encoding="utf8"), 'xml')
-
 class Road:
-    def __init__(self, idWay):
+    def __init__(self, idWay, soup):
         self.id = str(idWay)
 
         allWay = soup.find_all('way')
@@ -39,7 +36,7 @@ class Road:
         string = str(self.id) + " - " + str(self.name) + " - " + str(self.highway) + " - " + str(self.speedLimit)
         return string
 
-def getListIntersection(idWay):
+def getListIntersection(idWay, soup):
     # ottengo tutti i nodi che appartengono alla way
     allWay = soup.find_all('way')
 
@@ -61,12 +58,12 @@ def getListIntersection(idWay):
     # filtro gli incroci
     listNodeFiltered = []
     for i in range(len(listNode)):
-        listWayIntersect = getListWayReached(listNode[i])
+        listWayIntersect = getListWayReached(listNode[i], soup)
         if (len(listWayIntersect) > 1):
             listNodeFiltered.append(listNode[i])
     return listNodeFiltered
 
-def getListWayReached(idNode):
+def getListWayReached(idNode, soup):
     allNode = soup.find_all('nd')
     listWay = []
 
@@ -80,20 +77,20 @@ def getListWayReached(idNode):
     return listWay
 
 #dati due ID di nodi trovo l'id della way che li congiunge
-def getCommonWay(x,y):
-    listX = getListWayReached(x)
-    listY = getListWayReached(y)
+def getCommonWay(x,y, soup):
+    listX = getListWayReached(x, soup)
+    listY = getListWayReached(y, soup)
 
     listcommon =  list(set(listX).intersection(listY))
     return listcommon[0]
 
-def getOrientamentWay(idWay):
+def getOrientamentWay(idWay, soup):
     #ottengo la lista di tutti i nodi, cerco quelli più a nord e più a sud e calcolo l'angolazione
-    listIntersectionID = getListIntersection(idWay)
+    listIntersectionID = getListIntersection(idWay, soup)
     listIntersection = []
 
     for i in range(len(listIntersectionID)):
-        obj = Intersection(listIntersectionID[i])
+        obj = Intersection(listIntersectionID[i], soup)
 
         listIntersection.append(obj)
 

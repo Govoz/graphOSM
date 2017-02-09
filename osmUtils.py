@@ -1,13 +1,15 @@
+import os
+import urllib.request
+from xml.dom.minidom import parseString
 import gpxpy.geo
 import overpass
 import overpy
+from bs4 import BeautifulSoup
+
 from Road import *
 
 api = overpy.Overpass()
 api2 = overpass.API()
-
-global osmFile
-osmFile = None
 
 def getNearestNode(listNode, coordinates):
     distanceMin = 1000000000000000000000
@@ -37,10 +39,10 @@ def getNearestNode(listNode, coordinates):
 def getDistance(latStart, lonStart, latX, lonX):
     return gpxpy.geo.haversine_distance(float(latStart), float(lonStart), float(latX), float(lonX))
 
-def reverseGeocoding(gpsPoint):
+def reverseGeocoding(gpsPoint, radius):
     coordinate = str(gpsPoint['latitude']) + "," + str(gpsPoint['longitude'])
 
-    query = "(node(around:50," + coordinate + "););out center;"
+    query = "(node(around:"+ str(radius) + "," + coordinate + "););out center;"
     print(query)
     result = api.query(query)
     listNode = result.nodes
@@ -70,40 +72,93 @@ def convertDegreeToLabel(value):
     return quadrant
 
 def getBoundingBox(lat, lon, offset):
-    print(type(offset))
+
     latRadian = math.radians(float(lat))
 
     degLatKm = 110.574235
     degLongKm = 110.572833 * math.cos(latRadian)
     deltaLat = offset / 1000.0 / degLatKm
     deltaLong = offset / 1000.0 / degLongKm
-    print(deltaLat)
-    print(deltaLong)
+
     minLat = float(lat) - deltaLat
     minLong = float(lon) - deltaLong
     maxLat = float(lat) + deltaLat
     maxLong = float(lon) + deltaLong
 
-    boundingBox = {'minLat': minLat,
-                   'minLon': minLong,
-                   'maxLat': maxLat,
-                   'maxLon': maxLong}
+    boundingBox = {'minLat': round(minLat,4),
+                   'minLon': round(minLong,4),
+                   'maxLat': round(maxLat,4),
+                   'maxLon': round(maxLong,4)}
 
     return boundingBox
 
+def getNodeDownDx(bb):
+    up = bb['maxLon']
+    sx = bb['minLat']
+
+    obj = {'latitude': sx,
+           'longitude': up}
+
+    node = reverseGeocoding(obj, 200)
+
+    return node
+
+def getNodeUpSx(bb):
+    down = bb['minLon']
+    dx = bb['maxLat']
+
+    obj = {'latitude': dx,
+           'longitude': down}
+
+    node = reverseGeocoding(obj, 200)
+    return node
+
+def importOSM(nameFile):
+    url = 'osmFile/' + nameFile
+    soup = BeautifulSoup(open(url, encoding="utf8"), 'xml')
+    return soup
 
 # dato un ID e un radius mi ottengo il .osm dentro alla relativa bounding box
 def getOSMfile(rootId, radius):
+    nameFile = str(rootId) + "_" + str(radius) + ".osm"
+    if os.path.isfile("osmFile/" + nameFile):
+        print("OSM importato")
+        # importiamo il grafo
+        osm = importOSM(nameFile)
+        return osm
+    else:
+        print("OSM generato")
+        percentualeToAdd = 20
+        offset = radius + (radius / 100 * percentualeToAdd)
 
-    percentualeToAdd = 20
-    offset = radius + (radius / 100 * percentualeToAdd)
+        #dall'id ottengo latNode e lonNode
+        query = "(node("+ str(rootId) + "););out center;"
+        result = api.query(query)
+        listNode = result.nodes
+        latNode = float(listNode[0].lat)
+        lonNode = float(listNode[0].lon)
 
-    rootNode = Intersection(rootId)
-    latNode = rootNode.lat
-    lonNode = rootNode.lon
+        boundingBox = getBoundingBox(latNode, lonNode, offset)
 
-    boundingBox = getBoundingBox(latNode, lonNode, offset)
+        downdxNode = getNodeDownDx(boundingBox)
+        upsxNode = getNodeUpSx(boundingBox)
 
-    query = "(node(" + str(boundingBox['minLat']) +"," + str(boundingBox['minLon']) + "," + str(boundingBox['maxLat']) + "," + str(boundingBox['maxLon']) + ");<;);out meta;"
-    print(query)
-    #osm = api2.Get(query, responseformat="xml")
+        query = "(node(" + str(downdxNode) + "););out center;"
+        result = api.query(query)
+        downdxNode = result.nodes
+
+        query = "(node(" + str(upsxNode) + "););out center;"
+        result = api.query(query)
+        upsxNode = result.nodes
+
+        url = "http://overpass-api.de/api/map?bbox=" + str(upsxNode[0].lon) + "," + str(downdxNode[0].lat) + "," +str(downdxNode[0].lon) + "," + str(upsxNode[0].lat)
+
+        xml = urllib.request.urlopen(url)
+        dom = parseString(xml.read())
+
+        with open("osmFile/" + nameFile, "wb") as text_file:
+            text_file.write(dom.toxml().encode('utf8'))
+
+        url = 'osmFile/' + nameFile
+        soup =  BeautifulSoup(open(url,encoding="utf8"), 'xml')
+        return soup

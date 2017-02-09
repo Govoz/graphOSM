@@ -1,9 +1,5 @@
-from bs4 import BeautifulSoup
-
-soup = BeautifulSoup(open('map945250651.osm',encoding="utf8"), 'xml')
-
 class Intersection:
-    def __init__(self, id):
+    def __init__(self, id, soup):
         self.id = id
         self.lat = 0
         self.lon = 0
