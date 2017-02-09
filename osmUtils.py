@@ -1,4 +1,5 @@
 import os
+
 import urllib.request
 from xml.dom.minidom import parseString
 import gpxpy.geo
@@ -54,21 +55,46 @@ def reverseGeocoding(gpsPoint, radius):
     return node['id']
 
 #TODO: rendere parametrica con numero di quadranti in cui dividere (?)
-def convertDegreeToLabel(value):
+def convertDegreeToLabel(value, nquadrants):
     value = float(value)
-    # if value > 315 or value <= 45:
-    #     quadrant = "N"
-    # elif 45 < value <= 135:
-    #     quadrant = "E"
-    # elif 135 < value <= 225:
-    #     quadrant = "S"
-    # elif 225 < value <= 315:
-    #     quadrant = "W"
+    quadrant = ""
 
-    if value > 0 and value < 180:
-        quadrant = "E"
-    else:
-        quadrant = "O"
+    if nquadrants == 8:
+        if value > 337.5 or value >= 22.5:
+            quadrant = "N"
+        elif 22.5 < value <= 67.5:
+            quadrant = "NE"
+        elif 67.5 < value <= 112.5:
+            quadrant = "E"
+        elif 112.5 < value <= 157.5:
+            quadrant = "SE"
+        elif 157.5 < value <= 202.5:
+            quadrant = "S"
+        elif 202.5 < value <= 247.5:
+            quadrant = "SO"
+        elif 247.5 < value <= 292.5:
+            quadrant = "O"
+        elif 292.5 < value <= 337.5:
+            quadrant = "NO"
+
+    if nquadrants == 4:
+        if value > 315 or value <= 45:
+            quadrant = "N"
+        elif 45 < value <= 135:
+            quadrant = "E"
+        elif 135 < value <= 225:
+            quadrant = "S"
+        elif 225 < value <= 315:
+            quadrant = "W"
+
+
+    elif nquadrants == 2:
+        if value > 0 and value < 180:
+            quadrant = "E"
+        else:
+            quadrant = "O"
+
+
     return quadrant
 
 def getBoundingBox(lat, lon, offset):
@@ -160,5 +186,6 @@ def getOSMfile(rootId, radius):
             text_file.write(dom.toxml().encode('utf8'))
 
         url = 'osmFile/' + nameFile
+
         soup =  BeautifulSoup(open(url,encoding="utf8"), 'xml')
         return soup

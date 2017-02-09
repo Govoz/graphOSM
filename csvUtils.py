@@ -34,8 +34,7 @@ def getGpsStop(csv):
     print("Il punto finale è: " + str(latitude) + "," + str(longitude))
     return obj
 
-def getAzimuth(csv):
-    windowsTime = 10
+def getAzimuth(csv, windowsTime, nquadrant):
 
     list = []
     for line in range(1, len(csv)):
@@ -80,7 +79,7 @@ def getAzimuth(csv):
 
     for element in range(len(listAverageValue)):
         value = float(listAverageValue[element])
-        quadrant = convertDegreeToLabel(value)
+        quadrant = convertDegreeToLabel(value, nquadrant)
 
         obj = {'value': value, 'direction': quadrant, 'time': windowsTime}
 
