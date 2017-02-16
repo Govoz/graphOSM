@@ -12,6 +12,7 @@ import os.path
 api = overpy.Overpass()
 
 def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadrant):
+    print(idNode)
 
     nameFile = "graphExport/" + str(idNode) + "_" + str(radius) + ".graph"
     print(nameFile)
@@ -34,24 +35,32 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadra
         print("Grafo Esportato End")
 
     #printGraph(G)
-
-    #listIndication la uso come stack, quindi inverto l'ordine degli elementi in quanto pop e push dal fondo
-    listIndication.reverse()
-
+    print(listIndication)
 
     # print("------------")
     # visitGraphBackTrack(G, idNode, listIndication, soup, nquadrant)
-    # print(lastNodeVisitedGraphBackTrack)
-    # nodeObjGraphBacktrack = Intersection(lastNodeVisitedGraphBackTrack, soup)
+    # print(listNodeBacktrack)
+    # node = getMinListIndication(listNodeBacktrack)
+    # print(node)
+    # nodeObjGraphBacktrack = Intersection(str(node), soup)
+    # print(nodeObjGraphBacktrack)
     # print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
     #                   float(gpsStop['longitude'])))
-    #
-    for i in range(40):
+
+
+    # print("------------")
+    # nodeGraphBestDecision = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant)
+    # #print(nodeGraphBestDecision)
+    # nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision, soup)
+    # print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
+
+    for i in range(20):
         print("------------")
-        nodeGraphBestDecision = visitGraphRandomDecision(G, idNode, listIndication, soup, nquadrant)
-        #print(nodeGraphBestDecision)
-        nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision, soup)
-        print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
+        nodeGraphRandomDecision = visitGraphRandomDecision(G, idNode, listIndication, soup, nquadrant)
+        print(nodeGraphRandomDecision)
+        nodeObjGraphRandomDecision = Intersection(nodeGraphRandomDecision, soup)
+        print(getDistance(nodeObjGraphRandomDecision.lat, nodeObjGraphRandomDecision.lon, float(gpsStop['latitude']),
+                          float(gpsStop['longitude'])))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina
 def printGraph(G):
@@ -77,14 +86,25 @@ def printGraph(G):
 def makeGraph(G, nodeCurrent, gpsPointStart, radius, soup):
 
     node = Intersection(nodeCurrent, soup)
+
+    print("Node")
+    print(node)
+
     distanceOrigin = getDistance(node.lat, node.lon, gpsPointStart['latitude'], gpsPointStart['longitude'])
 
     if (distanceOrigin <= radius):
         # ottengo la lista delle strada che posso raggiungere dal nodo appena aggiunto
         listWay = getListWayReached(nodeCurrent, soup)
+
+        print("listWay")
+        print(listWay)
+
         # per ogni strada ottengo la lista dei possibili incroci
         for way in range(len(listWay)):
             listIntersection = getListIntersection(listWay[way], soup)
+
+            print("listIntersection")
+            print(listIntersection)
 
             # per ogni incrocio richiamo la funzione
             for intersection in range(len(listIntersection)):
@@ -95,6 +115,10 @@ def makeGraph(G, nodeCurrent, gpsPointStart, radius, soup):
 
                     idCommonWay = getCommonWay(nodeIntersection.id, node.id, soup)
                     road = Road(idCommonWay, soup)
+
+                    print("Road:")
+                    print(road)
+
                     if road.highway != "":
                         G.add_edge(str(nodeCurrent), str(listIntersection[intersection]), weight = round(distanceCurrentFrom,2))
                         print(str(nodeCurrent) + " - " + str(listIntersection[intersection]))

@@ -31,6 +31,7 @@ def getNearestNode(listNode, coordinates):
             idNearest = id
             distanceMin = distance
 
+
     obj = {'latitude': float(latNearest),
            'longitude': float(lonNearest),
            'id': idNearest}
@@ -44,13 +45,38 @@ def reverseGeocoding(gpsPoint, radius):
     coordinate = str(gpsPoint['latitude']) + "," + str(gpsPoint['longitude'])
 
     query = "(node(around:"+ str(radius) + "," + coordinate + "););out center;"
-    print(query)
+    #print(query)
+
     result = api.query(query)
     listNode = result.nodes
 
     node = getNearestNode(listNode, gpsPoint)
 
-    print("ReverseGeocoding: Node: " + str(node['id']))
+    #print("ReverseGeocoding: Node: " + str(node['id']))
+
+    return node['id']
+
+def reverseGeocodingGraph(gpsPoint, radius, soup):
+    coordinate = str(gpsPoint['latitude']) + "," + str(gpsPoint['longitude'])
+
+    query = "(node(around:"+ str(radius) + "," + coordinate + "););out center;"
+    #print(query)
+
+    result = api.query(query)
+    listNode = result.nodes
+
+    #controllo che i nodi siano all'interno di strade.
+    listNodeFiltered = []
+    for i in range(len(listNode)):
+        element = listNode[i].id
+
+        listWay = getListWayReached(element, soup)
+        if len(listWay) > 0:
+            listNodeFiltered.append(listNode[i])
+
+    node = getNearestNode(listNodeFiltered, gpsPoint)
+
+    #print("ReverseGeocoding: Node: " + str(node['id']))
 
     return node['id']
 
@@ -60,7 +86,7 @@ def convertDegreeToLabel(value, nquadrants):
     quadrant = ""
 
     if nquadrants == 8:
-        if value > 337.5 or value >= 22.5:
+        if value > 337.5 or value <= 22.5:
             quadrant = "N"
         elif 22.5 < value <= 67.5:
             quadrant = "NE"
@@ -125,9 +151,8 @@ def getNodeDownDx(bb):
     obj = {'latitude': sx,
            'longitude': up}
 
-    node = reverseGeocoding(obj, 200)
-
-    return node
+    #node = reverseGeocoding(obj, 200)
+    return obj
 
 def getNodeUpSx(bb):
     down = bb['minLon']
@@ -136,8 +161,8 @@ def getNodeUpSx(bb):
     obj = {'latitude': dx,
            'longitude': down}
 
-    node = reverseGeocoding(obj, 200)
-    return node
+    #node = reverseGeocoding(obj, 200)
+    return obj
 
 def importOSM(nameFile):
     url = 'osmFile/' + nameFile
@@ -147,6 +172,9 @@ def importOSM(nameFile):
 # dato un ID e un radius mi ottengo il .osm dentro alla relativa bounding box
 def getOSMfile(rootId, radius):
     nameFile = str(rootId) + "_" + str(radius) + ".osm"
+    print("-----getOSMFile----")
+    print(nameFile)
+
     if os.path.isfile("osmFile/" + nameFile):
         print("OSM importato")
         # importiamo il grafo
@@ -165,19 +193,24 @@ def getOSMfile(rootId, radius):
         lonNode = float(listNode[0].lon)
 
         boundingBox = getBoundingBox(latNode, lonNode, offset)
+        print("Bounding Box")
+        print(boundingBox)
 
         downdxNode = getNodeDownDx(boundingBox)
         upsxNode = getNodeUpSx(boundingBox)
 
-        query = "(node(" + str(downdxNode) + "););out center;"
-        result = api.query(query)
-        downdxNode = result.nodes
+        # print(downdxNode)
+        # query = "(node(" + str(downdxNode) + "););out center;"
+        # result = api.query(query)
+        # downdxNode = result.nodes
+        # print(downdxNode)
+        #
+        # query = "(node(" + str(upsxNode) + "););out center;"
+        # result = api.query(query)
+        # upsxNode = result.nodes
 
-        query = "(node(" + str(upsxNode) + "););out center;"
-        result = api.query(query)
-        upsxNode = result.nodes
-
-        url = "http://overpass-api.de/api/map?bbox=" + str(upsxNode[0].lon) + "," + str(downdxNode[0].lat) + "," +str(downdxNode[0].lon) + "," + str(upsxNode[0].lat)
+        url = "http://overpass-api.de/api/map?bbox=" + str(upsxNode['longitude']) + "," + str(downdxNode['latitude']) + "," +str(downdxNode['longitude']) + "," + str(upsxNode['latitude'])
+        print(url)
 
         xml = urllib.request.urlopen(url)
         dom = parseString(xml.read())
@@ -186,6 +219,8 @@ def getOSMfile(rootId, radius):
             text_file.write(dom.toxml().encode('utf8'))
 
         url = 'osmFile/' + nameFile
+
+        
 
         soup =  BeautifulSoup(open(url,encoding="utf8"), 'xml')
         return soup

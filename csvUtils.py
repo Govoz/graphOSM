@@ -1,18 +1,20 @@
 import csv
 from osmUtils import *
 
-includedColumn = [30, 16, 22, 23] #30 is time, 16 is azimuth, 22 is latitude, 23 is longitude
+includedColumn = [30, 16, 22, 23] #31 is time, 16 is azimuth, 22 is latitude, 23 is longitude
 
 # importCSV restituisce una lista di obj composti da [time, azimuth]
 def importCsv(pathFile):
     listData = []
     with open(pathFile, 'rt') as csvfile:
         reader = csv.reader(csvfile)
+
         for row in reader:
             content = list(row[i] for i in includedColumn)
             listData.append(content)
 
     print("CSV importato")
+
     return listData
 
 
@@ -59,7 +61,7 @@ def getAzimuth(csv, windowsTime, nquadrant):
         else:
             listFiltered.append(listCurrent[:])
             del listCurrent[:]
-            limit = valueTime + 10000
+            limit = valueTime + (windowsTime * 1000)
             listCurrent.append(float(list[line]['value']))
 
     listFiltered.append(listCurrent[:])
@@ -88,5 +90,13 @@ def getAzimuth(csv, windowsTime, nquadrant):
     # l'ultimo elemento avrà una durata inferiore alla windowsTime
     listDirection[-1]['time'] = lastWindowsTime
 
+    # listIndication la uso come stack, quindi inverto l'ordine degli elementi in quanto pop e push dal fondo
+    #listDirection.reverse()
+
     print("ListIndication generate")
     return listDirection
+
+
+
+
+

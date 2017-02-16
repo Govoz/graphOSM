@@ -61,7 +61,7 @@ def getListIntersection(idWay, soup):
         listWayIntersect = getListWayReached(listNode[i], soup)
         if (len(listWayIntersect) > 1):
             listNodeFiltered.append(listNode[i])
-    return listNodeFiltered
+    return list(set(listNodeFiltered))
 
 def getListWayReached(idNode, soup):
     allNode = soup.find_all('nd')
@@ -69,10 +69,13 @@ def getListWayReached(idNode, soup):
 
     for i in range(len(allNode)):
         node = allNode[i]
-        # idNodeTuples =
+
         if node['ref'] == str(idNode):
             id = node.find_parent("way", id=True)["id"]
-            listWay.append(id)
+
+            objWay = Road(id, soup)
+            if objWay.highway != '':
+                listWay.append(id)
 
     return listWay
 
