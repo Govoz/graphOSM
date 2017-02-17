@@ -4,32 +4,31 @@ from osmUtils import *
 
 global listNodeVisitedGraph
 listNodeVisitedGraph = []
+
 global listNodeBacktrack
 listNodeBacktrack = []
 
 def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
 
-    # print("Nodo corrente: " + str(idRoot))
-    print(listIndication)
+    # listNodeBacktrack mi serve per ricavare il nodo che ha consumato più indicazioni
     obj = {'node': idRoot, 'indicationLen': len(listIndication)}
     listNodeBacktrack.append(obj)
 
-    # evito di estrarre un elemento da una lista vuota
+    # controllo se ho già consumato tutte le indicazioni e se il grafo ha quel determinato nodo
     if len(listIndication) > 0 and (G.has_node(str(idRoot))):
 
+        # aggiungo il nodo alla lista dei nodi visitati
         listNodeVisitedGraph.append(str(idRoot))
 
+        # mi ricavo l'indicazione da consumare
         indication = listIndication.pop()
         indicationDirection = indication['direction']
 
-        # print("Indicazione")
-        # print(indicationDirection)
-
         # ottengo la lista di vicini
         listNeighbors = G.neighbors(str(idRoot))
+
+        # se ha almeno un vicino
         if (len(listNeighbors) > 0):
-            # print("Lista Vicini:")
-            # print(listNeighbors)
 
             currentNode = Intersection(idRoot, soup)
             coordinateCurrentNode = (float(currentNode.lat), float(currentNode.lon))
@@ -48,31 +47,20 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
                     directionElement = calculate_initial_compass_bearing(coordinateCurrentNode, coordinateElement)
                     labelDirectionElement = convertDegreeToLabel(directionElement, nquadrant)
 
-                    # print("Il current per arrivare a Neighboor deve andare a " + str(labelDirectionElement))
-
+                    # se il nodo che analizzo e il vicino sono nella stessa direzione, analizzo il vicino
                     if (str(labelDirectionElement) is str((indicationDirection))):
-                        # print("Stessa Direzione -> Analizzo")
-
-                        lastNodeVisitedGraphBackTrack = str(idRoot)
-                        print(lastNodeVisitedGraphBackTrack)
 
                         road = Road(getCommonWay(idRoot, listNeighbors[element], soup), soup)
-                        # print("La strada è : ")
-                        # print(road)
 
                         speedLimit = float(road.speedLimit)
-                        #speedLimit = 20
 
                         time = float(indication['time'])
                         meterXsec = float(speedLimit / 3.6)
                         # meter sono i metri fatti nella finestra temporale in indicationDirection
                         meterWindows = meterXsec * time
 
-                        # print("Nella windows ho percorso: " + str(meterWindows))
-
                         # mi calcolo la distanza tra i due nodi
                         distance = getDistance(currentNode.lat, currentNode.lon, neighNode.lat, neighNode.lon)
-                        # print("Tra i due nodi la distanza è : " + str(distance))
 
                         # se i metri nella windows sono maggiori rispetto a quelli consumati, mi calcolo i rimanenti e riappendo alla lista delle indicazioni
                         if meterWindows > distance:
@@ -84,6 +72,8 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
                                    'time': timeRemaining}
                             listIndication.append(obj)
 
+                        # TODO: gestire il fatto che mi possano servire più finestre per andare dal nodo corrente al vicino
+
                         visitGraphBackTrack(G, listNeighbors[element], listIndication, soup, nquadrant)
 
                     else:
@@ -92,6 +82,7 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
                         listIndication.append(indication)
 
 
+#data una lista di obj: id e indicationLen ottengo l'obj con il numero minore di indicationLen
 def getMinListIndication(list):
     obj = list[0]
     nodeMin = obj['node']
@@ -108,105 +99,11 @@ def getMinListIndication(list):
 
     return nodeMin
 
-def visitGraphBackTrackIterative(G, idRoot, listIndication, soup, nquadrant):
-    listIndication = listIndication[:]
-    stack = []
-    listNodeVisited = set()
-    objToAppendStack = {'node': idRoot, 'listIndication':listIndication}
-    stack.append(objToAppendStack)
-    lastNodeVisitedGraphBackTrack = None
-
-    while(len(stack) > 0):
-        print("******************************")
-        objStack = stack.pop()
-        currentNode = objStack['node']
-        listIndicationStack = objStack['listIndication']
-        print(listIndicationStack)
-
-        print("Nodo corrente: " + str(currentNode))
-
-        if currentNode in listNodeVisited:
-            continue
-
-        listNodeVisited.add(currentNode)
-
-        #---------------------
-        if len(listIndicationStack) > 0 and (G.has_node(str(currentNode))):
-            indication = listIndicationStack.pop()
-
-            indicationDirection = indication['direction']
-
-            print("Indicazione")
-            print(indicationDirection)
-
-            # ottengo la lista di vicini
-            listNeighbors = G.neighbors(str(currentNode))
-            if (len(listNeighbors) > 0):
-                print("Lista Vicini:")
-                print(listNeighbors)
-
-                nodeObj = Intersection(currentNode, soup)
-                coordinateCurrentNode = (float(nodeObj.lat), float(nodeObj.lon))
-
-                # per ogni vicino mi cerco la strada che la collega e mi ricavo il limite di velocità
-                for element in range(len(listNeighbors)):
-                    # se l'elemento non è stato già visitato
-                    if not (str(listNeighbors[element]) in listNodeVisited):
-
-                        # ottengo l'obj del neighbors
-                        neighNode = Intersection(listNeighbors[element], soup)
-
-                        # per ogni vicino guardo se è nella stessa direzione dell'indicazione
-                        coordinateElement = (float(neighNode.lat), float(neighNode.lon))
-                        directionElement = calculate_initial_compass_bearing(coordinateCurrentNode, coordinateElement)
-                        labelDirectionElement = convertDegreeToLabel(directionElement, nquadrant)
-
-                        print("Il current per arrivare a Neighboor deve andare a " + str(labelDirectionElement))
-
-                        if (str(labelDirectionElement) is str((indicationDirection))):
-                            print("Stessa Direzione -> Analizzo")
-
-                            lastNodeVisitedGraphBackTrack = str(currentNode)
-                            road = Road(getCommonWay(currentNode, listNeighbors[element], soup), soup)
-                            print("La strada è : ")
-                            print(road)
-
-                            speedLimit = float(road.speedLimit)
-                            # speedLimit = 20
-
-                            time = float(indication['time'])
-                            meterXsec = float(speedLimit / 3.6)
-                            # meter sono i metri fatti nella finestra temporale in indicationDirection
-                            meterWindows = meterXsec * time
-
-                            print("Nella windows ho percorso: " + str(meterWindows))
-
-                            # mi calcolo la distanza tra i due nodi
-                            distance = getDistance(nodeObj.lat, nodeObj.lon, neighNode.lat, neighNode.lon)
-                            print("Tra i due nodi la distanza è : " + str(distance))
-
-                            # se i metri nella windows sono maggiori rispetto a quelli consumati, mi calcolo i rimanenti e riappendo alla lista delle indicazioni
-                            if meterWindows > distance:
-                                meterRemaining = meterWindows - distance
-                                # converto i metri in secondi tenendo conto dello speedLimit
-                                timeRemaining = meterRemaining / meterXsec
-
-                                obj = {'value': indication['value'], 'direction': labelDirectionElement,
-                                       'time': timeRemaining}
-                                listIndicationStack.append(obj)
-
-                            stackObj = {'node': str(listNeighbors[element]), 'listIndication': listIndicationStack}
-                            stack.append(stackObj)
-
-    return lastNodeVisitedGraphBackTrack
-
-
-
 
 # dato un nodo corrente e una lista di nodi da visitare, restituisce il nodo che rispecchia l'indicazione
 # se ce ne sono di più mi restituisce il più vicino
 def decisionNeighbors(idCurrentNode, listNeighbors, indicationCurrent, soup, nquadrants):
-    print(listNeighbors)
+
     labelIndication = indicationCurrent['direction']
     listNodeSameDirection = []
     nodeToVisit = None
@@ -227,7 +124,7 @@ def decisionNeighbors(idCurrentNode, listNeighbors, indicationCurrent, soup, nqu
         if str(labelBearing) == str(labelIndication):
             listNodeSameDirection.append(listNeighbors[i])
 
-    print(listNodeSameDirection)
+    # se ho più nodi da poter visitare restituisco il più vicino.
     if (len(listNodeSameDirection) > 1):
         nodeToVisit = getNearestNodeVisit(listNodeSameDirection, idCurrentNode, soup)
         print("NodeToVisit")
@@ -249,9 +146,9 @@ def visitGraphBestDecision(G, idCurrentNode, listIndication, soup, nquadrant):
         print(listIndication)
 
         # se il grafo contiene questo nodo allora vuol dire che mi trovo in un nodo valido
-        if (G.has_node(str(idCurrentNode))):
+        if (G.has_node(str())):
 
-            print("CurrentNode: " + str(idCurrentNode))
+            # print("CurrentNode: " + str(idCurrentNode))
 
             # ottengo l'indicazione corrente e il nodo da cui parto a consumarla
             indicationCurrent = listIndication.pop()
@@ -290,9 +187,21 @@ def visitGraphBestDecision(G, idCurrentNode, listIndication, soup, nquadrant):
                     timeRemaining = meterRemaining / meterXsec
 
                     obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent, 'time': timeRemaining}
-                    listIndication.append(obj['direction'])
+                    listIndication.append(obj)
 
                 #TODO: probabile bug quando i metri da consumare sono più di quelli della finestra temporale
+                # if distance > meterWindows:
+                #     meterRemaining = distance - meterWindows
+                #     timeRemaining = meterRemaining / meterXsec
+                #
+                #     nextIndication = listIndication.pop()
+                #     if indicationCurrent['direction'] == nextIndication['direction']:
+                #         timeNext = float(nextIndication['time'])
+                #         obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent['direction'],
+                #                'time': timeRemaining + timeNext}
+                #         listIndication.append(obj)
+                #     else:
+                #         listIndication.append(nextIndication)
 
                 idCurrentNode = bestNeighborsID
                 lastBestNeighborsID = bestNeighborsID
@@ -437,6 +346,8 @@ def algorithmDeadReckoning(coordinate, listIndication, speedLimit):
     listIndication.reverse()
     lat = coordinate['latitude']
     lon = coordinate['longitude']
+    obj = {'latitude': float(lat),
+           'longitude': float(lon)}
     newCoordinate = None
 
     while (len(listIndication) > 0):

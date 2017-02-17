@@ -1,7 +1,7 @@
 import csv
 from osmUtils import *
 
-includedColumn = [30, 16, 22, 23] #31 is time, 16 is azimuth, 22 is latitude, 23 is longitude
+includedColumn = [31, 16, 22, 23] #31 is time, 16 is azimuth, 22 is latitude, 23 is longitude
 
 # importCSV restituisce una lista di obj composti da [time, azimuth]
 def importCsv(pathFile):
