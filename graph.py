@@ -1,9 +1,6 @@
 import datetime
-
 import time
-
 import pickle
-
 from visitGraph import *
 import overpy
 import networkx as nx
@@ -35,7 +32,7 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadra
         exportGraph(G, idNode, radius)
         print("Grafo Esportato End")
 
-    printGraph(G)
+    #printGraph(G)
 
     if algorithm == 0:
         print("------------")
@@ -47,25 +44,39 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadra
         print(nodeObjGraphBacktrack)
         print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
                           float(gpsStop['longitude'])))
+        print("Numero di output")
+        print(len(listNodeBacktrack))
+
+        for i in range(len(listNodeBacktrack)):
+            print("-------------")
+            nodeObjGraphBacktrack = Intersection(str(listNodeBacktrack[i]['node']), soup)
+            print(nodeObjGraphBacktrack.id)
+            print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
+                          float(gpsStop['longitude'])))
 
     elif algorithm == 1:
         print("------------")
-        nodeGraphBestDecision = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant)
+        newCoordinate = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant)
         #print(nodeGraphBestDecision)
-        nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision, soup)
-        print(getDistance(nodeObjGraphBestDecision.lat, nodeObjGraphBestDecision.lon , float(gpsStop['latitude']), float(gpsStop['longitude'])))
+        #nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision, soup)
+        print(getDistance(newCoordinate['latitude'], newCoordinate['longitude'] , float(gpsStop['latitude']), float(gpsStop['longitude'])))
 
     elif algorithm == 2:
+        listOutput = []
+        sumDistance = 0
         for i in range(20):
             print("------------")
             nodeGraphRandomDecision = visitGraphRandomDecision(G, idNode, listIndication, soup, nquadrant)
-            print(nodeGraphRandomDecision)
-            nodeObjGraphRandomDecision = Intersection(nodeGraphRandomDecision, soup)
-            print(getDistance(nodeObjGraphRandomDecision.lat, nodeObjGraphRandomDecision.lon, float(gpsStop['latitude']),
-                              float(gpsStop['longitude'])))
+
+            distance = getDistance(nodeGraphRandomDecision['latitude'], nodeGraphRandomDecision['longitude'], float(gpsStop['latitude']),
+                              float(gpsStop['longitude']))
+            sumDistance += distance
+            listOutput.append(distance)
+        print("Media")
+        print(sumDistance / len(listOutput))
 
     elif algorithm == 3:
-        calculate = algorithmDeadReckoning(gpsStart, listIndication, 70)
+        calculate = algorithmDeadReckoning(gpsStart, listIndication, 50)
         print(getDistance(calculate['latitude'], calculate['longitude'], gpsStop['latitude'], gpsStop['longitude']))
 
 #TODO: sistemare le coordinate in maniera che assomigli alla cartina

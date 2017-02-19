@@ -10,20 +10,21 @@ onlyfiles = [f for f in listdir('csvFile') if isfile(join('csvFile', f))]
 #pathFile = 'csvFile/' + onlyfiles[i]
 
 print("**************")
-pathFile = 'csvFile/Sensor_record_20170129_094650_AndroSensor.csv'
+pathFile = 'csvFile/Sensor_record_20170125_151323_AndroSensor.csv'
 print(pathFile)
 
 # esporto tutto con raggio 2000m, non cambiare
 radius = 2000
-windowsTime = 30
+windowsTime = 10
 nQuadrants = 2
-
 # 0  backtrack, 1  bestDecision, 2 randomDecision, 3 deadReckoning
-algorithm = 1
+algorithm = 2
 
 csv = importCsv(pathFile)
 
 listIndication = getAzimuth(csv, windowsTime, nQuadrants)
+
+print(listIndication)
 
 gpsStart = getGpsStart(csv)
 gpsStop = getGpsStop(csv)

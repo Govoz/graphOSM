@@ -9,6 +9,10 @@ global listNodeBacktrack
 listNodeBacktrack = []
 
 def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
+    listIndication = listIndication[:]
+    print("----------------------------")
+    print("Nodo Corrente:")
+    print(idRoot)
 
     # listNodeBacktrack mi serve per ricavare il nodo che ha consumato più indicazioni
     obj = {'node': idRoot, 'indicationLen': len(listIndication)}
@@ -19,9 +23,15 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
 
         # aggiungo il nodo alla lista dei nodi visitati
         listNodeVisitedGraph.append(str(idRoot))
+        print("A inizio computazione")
+        print(listIndication)
 
         # mi ricavo l'indicazione da consumare
         indication = listIndication.pop()
+
+        print("Indicazione da consumare")
+        print(indication)
+
         indicationDirection = indication['direction']
 
         # ottengo la lista di vicini
@@ -47,6 +57,11 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
                     directionElement = calculate_initial_compass_bearing(coordinateCurrentNode, coordinateElement)
                     labelDirectionElement = convertDegreeToLabel(directionElement, nquadrant)
 
+                    # print("Neigh:")
+                    # print(neighNode)
+                    # print(directionElement)
+                    # print(labelDirectionElement)
+
                     # se il nodo che analizzo e il vicino sono nella stessa direzione, analizzo il vicino
                     if (str(labelDirectionElement) is str((indicationDirection))):
 
@@ -70,16 +85,35 @@ def visitGraphBackTrack(G, idRoot, listIndication, soup, nquadrant):
 
                             obj = {'value': indication['value'], 'direction': labelDirectionElement,
                                    'time': timeRemaining}
-                            listIndication.append(obj)
 
-                        # TODO: gestire il fatto che mi possano servire più finestre per andare dal nodo corrente al vicino
+                            print(listIndication)
+                            print(obj)
+                            print("Consumo meno della finestra")
+                            listIndication.append(obj)
+                            print(listIndication)
+
+                        # se devo consumare più di una finestra.
+                        elif meterWindows < distance:
+                            meterRemaining = distance - meterWindows
+                            timeRemaining = meterRemaining / meterXsec
+
+                            nextIndication = listIndication.pop()
+                            if indicationDirection == nextIndication['direction']:
+                                timeNext = float(nextIndication['time'])
+                                obj = {'value': indication['value'], 'direction': indication['direction'],
+                                       'time': timeRemaining + timeNext}
+                                listIndication.append(obj)
+                                print(obj)
+                                print("Consumo più di una finestra")
+                            else:
+                                print(nextIndication)
+                                listIndication.append(nextIndication)
+                                print("Mi servirebbe una altra windows ma non è disponibile")
 
                         visitGraphBackTrack(G, listNeighbors[element], listIndication, soup, nquadrant)
+        else:
+            listIndication.append(indication)
 
-                    else:
-                        print("Direzione Errata -> Ignoro")
-                        print(labelDirectionElement)
-                        listIndication.append(indication)
 
 
 #data una lista di obj: id e indicationLen ottengo l'obj con il numero minore di indicationLen
@@ -100,11 +134,27 @@ def getMinListIndication(list):
     return nodeMin
 
 
+
+def getSameDirectionVisit(listNodeSameDirection, valueIndication, soup):
+    nodeVisit = listNodeSameDirection[0]
+    print(nodeVisit)
+    differenceValue = math.fabs(float(nodeVisit['value']) - float(valueIndication))
+
+    for node in range(len(listNodeSameDirection)):
+        nodeDifferenceValue = math.fabs(float(listNodeSameDirection[node]['value']) - float(valueIndication))
+        if nodeDifferenceValue < differenceValue:
+            nodeVisit = listNodeSameDirection[node]
+            differenceValue = nodeDifferenceValue
+
+    return nodeVisit['idNode']
+
 # dato un nodo corrente e una lista di nodi da visitare, restituisce il nodo che rispecchia l'indicazione
 # se ce ne sono di più mi restituisce il più vicino
 def decisionNeighbors(idCurrentNode, listNeighbors, indicationCurrent, soup, nquadrants):
 
     labelIndication = indicationCurrent['direction']
+    valueIndication = indicationCurrent['value']
+
     listNodeSameDirection = []
     nodeToVisit = None
 
@@ -117,38 +167,41 @@ def decisionNeighbors(idCurrentNode, listNeighbors, indicationCurrent, soup, nqu
         labelBearing = convertDegreeToLabel(bearing, nquadrants)
 
         print(listNeighbors[i])
-        print("Bearing: " + str(bearing))
-        print("Bearing Label: " + str(labelBearing))
-        print("Indicazione: " + str(labelIndication))
+        print("Bearing del Nodo: " + str(bearing))
+        print("Bearing Label del Nodo: " + str(labelBearing))
+        print("Indicazione da Consumare: " + str(labelIndication))
 
         if str(labelBearing) == str(labelIndication):
-            listNodeSameDirection.append(listNeighbors[i])
+            obj = {'idNode': listNeighbors[i], 'value': bearing}
+            listNodeSameDirection.append(obj)
 
     # se ho più nodi da poter visitare restituisco il più vicino.
     if (len(listNodeSameDirection) > 1):
-        nodeToVisit = getNearestNodeVisit(listNodeSameDirection, idCurrentNode, soup)
-        print("NodeToVisit")
+        #nodeToVisit = getNearestNodeVisit(listNodeSameDirection, idCurrentNode, soup)
+        nodeToVisit = getSameDirectionVisit(listNodeSameDirection, valueIndication, soup)
+        print("########")
         print(nodeToVisit)
     elif (len(listNodeSameDirection) == 1):
-        nodeToVisit = listNodeSameDirection[0]
+        nodeToVisit = listNodeSameDirection[0]['idNode']
 
     return nodeToVisit
 
 
 def visitGraphBestDecision(G, idCurrentNode, listIndication, soup, nquadrant):
+    bestNeighborsID = None
     lastBestNeighborsID = None
-
-    print(listIndication)
+    indicationCurrent = None
+    speedLimit = 0
 
     # smetto di iterare quando ho finito le indicazioni da consumare
     while (len(listIndication) > 0):
-
         print(listIndication)
 
-        # se il grafo contiene questo nodo allora vuol dire che mi trovo in un nodo valido
-        if (G.has_node(str())):
 
-            # print("CurrentNode: " + str(idCurrentNode))
+        # se il grafo contiene questo nodo allora vuol dire che mi trovo in un nodo valido
+        if (G.has_node(str(idCurrentNode))):
+
+            print("CurrentNode: " + str(idCurrentNode))
 
             # ottengo l'indicazione corrente e il nodo da cui parto a consumarla
             indicationCurrent = listIndication.pop()
@@ -164,7 +217,7 @@ def visitGraphBestDecision(G, idCurrentNode, listIndication, soup, nquadrant):
 
             if (bestNeighborsID != None):
                 bestNeighborsNode = Intersection(bestNeighborsID, soup)
-
+                lastBestNeighborsID = bestNeighborsID
                 print("------------")
                 print("BestChoise: " + str(bestNeighborsID))
                 print("------------")
@@ -186,30 +239,45 @@ def visitGraphBestDecision(G, idCurrentNode, listIndication, soup, nquadrant):
                     # converto i metri in secondi tenendo conto dello speedLimit
                     timeRemaining = meterRemaining / meterXsec
 
-                    obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent, 'time': timeRemaining}
+                    obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent['direction'], 'time': timeRemaining}
+
                     listIndication.append(obj)
 
-                #TODO: probabile bug quando i metri da consumare sono più di quelli della finestra temporale
-                # if distance > meterWindows:
-                #     meterRemaining = distance - meterWindows
-                #     timeRemaining = meterRemaining / meterXsec
-                #
-                #     nextIndication = listIndication.pop()
-                #     if indicationCurrent['direction'] == nextIndication['direction']:
-                #         timeNext = float(nextIndication['time'])
-                #         obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent['direction'],
-                #                'time': timeRemaining + timeNext}
-                #         listIndication.append(obj)
-                #     else:
-                #         listIndication.append(nextIndication)
+                # è il caso dove devo consumare una altra window
+                elif meterWindows < distance and len(listIndication) > 0:
+                    meterRemaining = distance - meterWindows
+                    timeRemaining = meterRemaining / meterXsec
+
+                    nextIndication = listIndication.pop()
+                    if indicationCurrent['direction'] == nextIndication['direction']:
+                        # timeNext = float(nextIndication['time'])
+                        # obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent['direction'],
+                        #                'time': timeRemaining + timeNext}
+                        # listIndication.append(obj)
+                        continue
+
+                    else:
+                        listIndication.append(nextIndication)
+                        print("Mi servirebbe una altra windows ma non è disponibile")
 
                 idCurrentNode = bestNeighborsID
-                lastBestNeighborsID = bestNeighborsID
+
             else:
                 print("Nessuna scelta possibile")
+
                 break
 
-    return (lastBestNeighborsID)
+    print(lastBestNeighborsID)
+
+    lastObj = Intersection(lastBestNeighborsID, soup)
+    print(lastObj)
+    time = float(indicationCurrent['time'])
+    meterXsec = float(speedLimit / 3.6) / 1000
+    # meter sono i metri fatti nella finestra temporale in indicationDirection
+    meterWindows = meterXsec * time
+    newCoordinate = getNewCoordinates(lastObj.lat, lastObj.lon, meterWindows, indicationCurrent['value'])
+
+    return (newCoordinate)
 
 
 def getNearestNodeVisit(listNodeId, idCurrentNode, soup):
@@ -236,6 +304,8 @@ def getNearestNodeVisit(listNodeId, idCurrentNode, soup):
 
 def visitGraphRandomDecision(G, idCurrentNode, listIndication, soup, nquadrant):
     lastRandomNeighborsID = None
+    indicationCurrent = None
+    speedLimit = 0
 
     # passo per valore la lista
     listIndication = listIndication[:]
@@ -260,7 +330,7 @@ def visitGraphRandomDecision(G, idCurrentNode, listIndication, soup, nquadrant):
 
             if (NextNeighborsID != None):
                 bestNeighborsNode = Intersection(NextNeighborsID, soup)
-
+                lastRandomNeighborsID = NextNeighborsID
                 # print("RandomChoise: " + str(NextNeighborsID))
 
                 road = Road(getCommonWay(idCurrentNode, NextNeighborsID, soup), soup)
@@ -283,13 +353,39 @@ def visitGraphRandomDecision(G, idCurrentNode, listIndication, soup, nquadrant):
                     obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent, 'time': timeRemaining}
                     listIndication.append(obj)
 
+                # è il caso dove devo consumare una altra window
+                elif meterWindows < distance and len(listIndication) > 0:
+                    meterRemaining = distance - meterWindows
+                    timeRemaining = meterRemaining / meterXsec
+
+                    nextIndication = listIndication.pop()
+                    if indicationCurrent['direction'] == nextIndication['direction']:
+                        timeNext = float(nextIndication['time'])
+                        obj = {'value': indicationCurrent['value'], 'direction': indicationCurrent['direction'],
+                               'time': timeRemaining + timeNext}
+                        listIndication.append(obj)
+                        continue
+                    else:
+                        listIndication.append(nextIndication)
+                        print("Mi servirebbe una altra windows ma non è disponibile")
+
                 idCurrentNode = NextNeighborsID
                 lastRandomNeighborsID = NextNeighborsID
             else:
                 #print("Nessuna scelta possibile")
                 break
 
-    return (lastRandomNeighborsID)
+    print(lastRandomNeighborsID)
+
+    lastObj = Intersection(lastRandomNeighborsID, soup)
+    print(lastObj)
+    time = float(indicationCurrent['time'])
+    meterXsec = float(speedLimit / 3.6) / 1000
+    # meter sono i metri fatti nella finestra temporale in indicationDirection
+    meterWindows = meterXsec * time
+    newCoordinate = getNewCoordinates(lastObj.lat, lastObj.lon, meterWindows, indicationCurrent['value'])
+
+    return (newCoordinate)
 
 
 def randomDecision(idCurrentNode, listNeighbors, indicationCurrent, soup, nquadrant):
@@ -319,8 +415,7 @@ def randomDecision(idCurrentNode, listNeighbors, indicationCurrent, soup, nquadr
     return nodeToVisit
 
 
-# faccio i calcoli e ottengo delle coordinate. Ottengo il nodo più vicino a quelle coordinate. Controllo se ha una
-# road Common Way assieme al nodeId
+# faccio i calcoli e ottengo delle coordinate.
 
 def getNewCoordinates(lat, lon, distance, direction):
     x1 = math.radians(float(lat))
@@ -346,8 +441,7 @@ def algorithmDeadReckoning(coordinate, listIndication, speedLimit):
     listIndication.reverse()
     lat = coordinate['latitude']
     lon = coordinate['longitude']
-    obj = {'latitude': float(lat),
-           'longitude': float(lon)}
+
     newCoordinate = None
 
     while (len(listIndication) > 0):
