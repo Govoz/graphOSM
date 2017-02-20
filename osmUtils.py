@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 
 import urllib.request
@@ -181,7 +184,7 @@ def getOSMfile(rootId, radius):
         osm = importOSM(nameFile)
         return osm
     else:
-        print("OSM generato")
+        print("OSM generato Inizio")
         percentualeToAdd = 20
         offset = radius + (radius / 100 * percentualeToAdd)
 
@@ -220,7 +223,6 @@ def getOSMfile(rootId, radius):
 
         url = 'osmFile/' + nameFile
 
-        
-
         soup =  BeautifulSoup(open(url,encoding="utf8"), 'xml')
+        print("OSM Generato Fine")
         return soup

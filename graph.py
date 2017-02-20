@@ -8,12 +8,14 @@ import matplotlib.pyplot as plt
 import os.path
 api = overpy.Overpass()
 
-def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadrant, algorithm):
 
-    print(idNode)
 
+def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadrant, algorithm, speedLimit):
+
+    listIndication = listIndication[:]
+
+    distance = 0
     nameFile = "graphExport/" + str(idNode) + "_" + str(radius) + ".graph"
-    print(nameFile)
 
     if os.path.isfile(nameFile):
         print("Grafo importato")
@@ -34,52 +36,61 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadra
 
     #printGraph(G)
 
+    print("------------")
+
     if algorithm == 0:
-        print("------------")
-        visitGraphBackTrack(G, idNode, listIndication, soup, nquadrant)
-        print(listNodeBacktrack)
-        node = getMinListIndication(listNodeBacktrack)
-        print(node)
+
+        visitGraphBackTrack(G, idNode, listIndication, soup, nquadrant, speedLimit)
+        node = getMinListIndication(getlistNodeBacktrack())
+
         nodeObjGraphBacktrack = Intersection(str(node), soup)
-        print(nodeObjGraphBacktrack)
-        print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
-                          float(gpsStop['longitude'])))
-        print("Numero di output")
-        print(len(listNodeBacktrack))
+        distanceMin = getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
+                          float(gpsStop['longitude']))
+
+        # distanza del nodo che ha consumato più indicazioni
+        distanceNode = distanceMin
 
         for i in range(len(listNodeBacktrack)):
-            print("-------------")
             nodeObjGraphBacktrack = Intersection(str(listNodeBacktrack[i]['node']), soup)
-            print(nodeObjGraphBacktrack.id)
-            print(getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
-                          float(gpsStop['longitude'])))
+            distanceTemp = getDistance(nodeObjGraphBacktrack.lat, nodeObjGraphBacktrack.lon, float(gpsStop['latitude']),
+                          float(gpsStop['longitude']))
+            if distanceTemp < distanceMin:
+                distanceMin = distanceTemp
+
+        #distance = str(distanceNode) + "-" + str(distanceMin)
+        distance = {'distanceNode': distanceNode, 'distanceMin': distanceMin}
+
+        reInitListNodeBacktrack()
+        reInitListNodeVisitedGraph()
+
+
 
     elif algorithm == 1:
-        print("------------")
-        newCoordinate = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant)
-        #print(nodeGraphBestDecision)
+        newCoordinate = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant, speedLimit)
+
         #nodeObjGraphBestDecision = Intersection(nodeGraphBestDecision, soup)
-        print(getDistance(newCoordinate['latitude'], newCoordinate['longitude'] , float(gpsStop['latitude']), float(gpsStop['longitude'])))
+        distance = getDistance(newCoordinate['latitude'], newCoordinate['longitude'] , float(gpsStop['latitude']), float(gpsStop['longitude']))
+        reInitListNodeVisitedGraph()
 
     elif algorithm == 2:
         listOutput = []
         sumDistance = 0
         for i in range(20):
-            print("------------")
-            nodeGraphRandomDecision = visitGraphRandomDecision(G, idNode, listIndication, soup, nquadrant)
+            nodeGraphRandomDecision = visitGraphRandomDecision(G, idNode, listIndication, soup, nquadrant, speedLimit)
 
             distance = getDistance(nodeGraphRandomDecision['latitude'], nodeGraphRandomDecision['longitude'], float(gpsStop['latitude']),
                               float(gpsStop['longitude']))
             sumDistance += distance
             listOutput.append(distance)
-        print("Media")
-        print(sumDistance / len(listOutput))
+            reInitListNodeVisitedGraph()
+        distance = sumDistance / len(listOutput)
 
     elif algorithm == 3:
-        calculate = algorithmDeadReckoning(gpsStart, listIndication, 50)
-        print(getDistance(calculate['latitude'], calculate['longitude'], gpsStop['latitude'], gpsStop['longitude']))
+        calculate = algorithmDeadReckoning(gpsStart, listIndication, speedLimit)
+        distance = getDistance(calculate['latitude'], calculate['longitude'], gpsStop['latitude'], gpsStop['longitude'])
 
-#TODO: sistemare le coordinate in maniera che assomigli alla cartina
+    return distance
+
 def printGraph(G):
     pos = nx.spring_layout(G)
 

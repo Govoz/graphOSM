@@ -1,5 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import csv
 from osmUtils import *
+import time
+import datetime
 
 #includedColumn = [30, 16, 22, 23] #30 is time, 16 is azimuth, 22 is latitude, 23 is longitude (Bedo)
 includedColumn = [17, 6, 9, 10]  #(Govo)
@@ -48,12 +53,12 @@ def getAzimuth(csv, windowsTime, nquadrant):
         list.append(obj)
 
     # in secondi
-    lastWindowsTime = float(list[-1]['time']) % float(windowsTime * 1000) / 1000
+    lastWindowsTime = float(list[-1]['time']) % (float(windowsTime) * 1000) / 1000
 
     #filtro per finestra temporale e faccio la media
     listFiltered = []
     listCurrent = []
-    limit = int(list[0]['time']) + (windowsTime * 1000)
+    limit = int(list[0]['time']) + (int(windowsTime) * 1000)
 
     for line in range(len(list)):
         valueTime = int(list[line]['time'])
@@ -63,7 +68,7 @@ def getAzimuth(csv, windowsTime, nquadrant):
         else:
             listFiltered.append(listCurrent[:])
             del listCurrent[:]
-            limit = valueTime + (windowsTime * 1000)
+            limit = valueTime + (int(windowsTime) * 1000)
             listCurrent.append(float(list[line]['value']))
 
     listFiltered.append(listCurrent[:])
@@ -99,6 +104,29 @@ def getAzimuth(csv, windowsTime, nquadrant):
     return listDirection
 
 
+def writeResultOnTxt(pathFile, nQuadrants, windowsTime, algorithm, speedLimit, distance):
 
+    nameFile = pathFile.replace("csvFile/","")
+    text_file = open("output\output.csv", "a")
+    stringAlgorithm = ''
+
+    if algorithm == 0:
+        stringAlgorithm = 'Backtrack'
+        distance = str(distance['distanceNode']) + ',' + str(distance['distanceMin'])
+    elif algorithm == 1:
+        stringAlgorithm = 'BestDecision'
+    elif algorithm == 2:
+        stringAlgorithm = 'RandomDecision'
+    elif algorithm == 3:
+        stringAlgorithm = 'DeadReckoning'
+
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+    string = st + "," + str(nameFile) + "," + str(nQuadrants) + "," + str(windowsTime) + "," + str(speedLimit) + "," + str(stringAlgorithm) + "," + str(distance)
+
+    text_file.write(string + "\n")
+    text_file.close()
+    print("Scrittura eseguita con successo")
 
 
