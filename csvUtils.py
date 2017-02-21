@@ -6,8 +6,8 @@ from osmUtils import *
 import time
 import datetime
 
-#includedColumn = [30, 16, 22, 23] #30 is time, 16 is azimuth, 22 is latitude, 23 is longitude (Bedo)
-includedColumn = [17, 6, 9, 10]  #(Govo)
+includedColumn = [31, 16, 22, 23] #30 is time, 16 is azimuth, 22 is latitude, 23 is longitude (Bedo)
+#includedColumn = [17, 6, 9, 10]  #(Govo)
 
 
 # importCSV restituisce una lista di obj composti da [time, azimuth]
