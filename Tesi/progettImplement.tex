@@ -1,0 +1,207 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%12pt: grandezza carattere
+                                        %a4paper: formato a4
+                                        %openright: apre i capitoli a destra
+                                        %twoside: serve per fare un
+                                        %   documento fronteretro
+                                        %report: stile tesi (oppure book)
+\documentclass[12pt,a4paper,openright,twoside]{report}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per scrivere in italiano
+\usepackage[italian]{babel}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per accettare i caratteri
+                                        %   digitati da tastiera come è à
+                                        %   si può usare anche
+                                        %   \usepackage[T1]{fontenc}
+                                        %   però con questa libreria
+                                        %   il tempo di compilazione
+                                        %   aumenta
+\usepackage[utf8]{inputenc}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per impostare il documento
+\usepackage{fancyhdr}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per avere l'indentazione
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   all'inizio dei capitoli, ...
+\usepackage{indentfirst}
+
+\usepackage{url}
+%
+%%%%%%%%%libreria per mostrare le etichette
+%\usepackage{showkeys}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per inserire grafici
+\usepackage{graphicx}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per utilizzare font
+                                        %   particolari ad esempio
+                                        %   \textsc{}
+\usepackage{newlfont}
+
+\usepackage{listings}
+\usepackage{algorithmic}
+\lstset{breaklines=true
+}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%librerie matematiche
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{latexsym}
+\usepackage{amsthm}
+
+%
+\oddsidemargin=30pt \evensidemargin=20pt%impostano i margini
+\hyphenation{sil-la-ba-zio-ne pa-ren-te-si}%serve per la sillabazione: tra parentesi 
+					   %vanno inserite come nell'esempio le parole 
+%					   %che latex non riesce a tagliare nel modo giusto andando a capo.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%comandi per l'impostazione
+                                        %   della pagina, vedi il manuale
+                                        %   della libreria fancyhdr
+                                        %   per ulteriori delucidazioni
+\pagestyle{fancy}\addtolength{\headwidth}{20pt}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter.\ #1}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\cfoot{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\linespread{1.3}                        %comando per impostare l'interlinea
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%definisce nuovi comandi
+%
+\begin{document}
+\begin{titlepage}                       %crea un ambiente libero da vincoli
+                                        %   di margini e grandezza caratteri:
+                                        %   si pu\`o modificare quello che si
+                                        %   vuole, tanto fuori da questo
+                                        %   ambiente tutto viene ristabilito
+%
+\thispagestyle{empty}                   %elimina il numero della pagina
+\topmargin=6.5cm                        %imposta il margina superiore a 6.5cm
+\raggedleft                             %incolonna la scrittura a destra
+\large                                  %aumenta la grandezza del carattere
+                                        %   a 14pt
+                             
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
+\end{titlepage}
+\pagenumbering{roman}                   %serve per mettere i numeri romani
+\chapter{Progettazione ed Implementazione}                 %crea l'introduzione (un capitolo
+
+                                        %   non numerato)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries
+Lavori Correlati}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
+Progettazione ed Implementazione}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Progettazione ed Implementazione}
+%%%%% Questa \`e l'introduzione \cite{K1} \\
+Il progetto di tesi è composto da due parti distinte:
+\begin{itemize}
+\item Un'applicazione Android in grado di rilevare uno spostamento del mezzo, di registrare dati dai sensori inerziali e di inviare quest'ultimi al server tramite una connessione Wi-Fi.
+\item Un server sviluppato in Python in grado di ricevere dati dall'applicazione Android, interpretarli usando le API di OpenStreetMap e calcolare la posizione del mezzo mediante diversi algoritmi.
+\end{itemize}
+
+\begin{center}
+DISEGNO CHE SPIEGA IL FUNZIONAMENTO DEL SISTEMA
+\end{center}
+
+\section{Applicazione Android}
+L'applicazione è stata scritta in Java, mediante Android Studio. La versione minima di SKD supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,3 \% dei device in uso.
+\subsection{Concept}
+L'idea di base del progetto è quella di implementare un'antifurto inerziale per mezzi di trasporto. L'applicazione deve essere installata su un device, il quale deve essere posizionato in maniera salda al mezzo.
+
+Si presuppone che il device sia posizionato in maniera tale che l'Azimuth del device sia uguale all'Azimuth del mezzo di trasporto. In un possibile sviluppo futuro si potrebbe calcolare l'orientamento al momento dell'inizializzazione e considerare questo offset nel momento in cui si salvano i dati.
+
+
+L'applicazione una volta avviata si mette in attesa che il mezzo venga rubato, per riconoscere il furto e quindi lo spostamento del mezzo, comincia a rilevare i dati provenienti dall'accelerometro, ne calcola la magnitudo e nel caso quest'ultima sia maggiore di una certa costante significa che il device ha subito un'accelerazione di una certa intensità e quindi un possibile furto.
+
+La fase di inizializzazione consiste nell'ottenere un unico dato, ossia le coordinate geografiche del mezzo parcheggiato. Siccome il mezzo sul quale è posizionato il dispositivo è parcheggiato, la velocità è pari a 0 e siccome presupponiamo che l'Azimuth del device sia pari all'Azimuth del mezzo non è nemmeno importante capire come è orientato il device all'interno del veicolo.
+
+
+Dopo che l'applicazione ha rilevato un furto comincia a registrare i dati generati dai sensori e prova a collegarsi ad una qualche rete Wi-Fi, in caso di avvenuta connessione invia i dati ad un server remoto.
+
+\subsection{Implementazione}
+L'applicazione è composta da due Activity, ognuna delle quali corrisponde ad una diversa modalità di utilizzo dell'applicazione. Una volta lanciata l'applicazione l'utente potrà cambiare la modalità di utilizzo mediante un pulsante posto in alto a destra sulla AppBar.
+\begin{itemize}
+\item \textbf{Anti-Theft Mode}\\
+E' la modalità di utilizzo in cui l'applicazione funge da antifurto. 
+
+L'utente dovrà posizionare il device e premere il pulsante "Activate" che attiverà il motion detection. Questa modalità implementa il funzionamento descritto nella sezione riguardante al concept dell'applicazione.
+
+\item \textbf{Test Mode}\\
+Questa modalità mi è servita per costruirmi un dataset utile allo sviluppo della parte server. In questa modalità l'utente dovrà posizionare l'applicazione
+nel punto desiderato e quando vuole far partire la registrazione dovrà premere sul pulsante "Start", mentre dovrà premere il pulsante "Stop" per interrompere la registrazione e salvare il file contenente i dati generati dai sensori in locale sul device. Inoltre l'utente clickando sulle label corrispondenti alle coordinate potrà visualizzare il punto corrispondente su Google Maps, potrà vedere il nome del file appena esportato ed il contenuto di quest'ultimo.
+\end{itemize}
+
+L'applicazione presenta diverse classi, ora andremo a presentarle nel dettaglio.
+\subsubsection*{MotionDetection}
+La classe MotionDetection si occupa di rilevare un movimento del mezzo. Viene invocata solamente nella Anti-Theft Mode quando l'utente preme su "Activate". \\
+MotionDetection implementa l'interfaccia SensorEventListener e chiede al SystemService tramite il SensorManager la possibilità di leggere i dati generati dall'accelerometro ad una frequenza pari a 5Hz.
+Ogni volta che l'applicazione rileva una minima accelerazione ne calcola la magnitudo dalla quale ci sottraiamo la forza di gravità
+
+\begin{center}
+$ magnitude = \sqrt{ x^2 + y^2 + z^2} - gravity$
+\end{center}
+
+Se la magnitudo è maggiore rispetto ad una certa costante, l'applicazione capisce che il mezzo su cui è posizionato il device ha subito un cambiamento di velocità e quindi è stato spostato dal punto originario. Dopo diverse prove ho impostato la sensibilità del MotionDetection ad un valore pari ad 1 in maniera che l'applicazione sia in grado di minimizzare sia i falsi positivi che i falsi negativi, quindi, che riesca ad interpretare come un furto lo spostamento del mezzo ma che non riesca ad interpretare come tale, ad esempio, le vibrazioni prodotte dal passaggio di mezzi pesanti nelle immediate vicinanze.
+
+Nel momento in cui l'applicazione rileva lo spostamento del mezzo, vengono lanciati in esecuzione i due Service, il primo relativo alla registrazione dei dati provenienti dai sensori, il secondo relativo all'invio dei dati al server.	
+
+\subsubsection*{gpsPosition}
+gpsPosition è la classe adibita alla geolocalizzazione del device. Mediante il LocationManager ottiene dal SystemService la possibilità di ottenere informazioni dal Location\_Service.
+
+\subsubsection*{jsonUtils}
+Questa classe gestisce il jsonObject contenente tutti i valori ottenuti dai sensori. Nel caso in cui l'applicazione sia in esecuzione in modalità Test Mode, il jsonObject viene salvato in un file .json nella memoria locale del device. Nel caso in cui l'applicazione sia in esecuzione in modalità Anti-Theft Mode, invece, il jsonObject viene passato al Service adibito all'invio dei dati al server.
+
+\subsubsection*{parallelIntentService}
+ParallelIntentService estende la classe Service ed implementa un comportamento simile agli IntentService.
+E' stata utile per gestire due service parallelamente in due thread differenti e non entrambi nell'UI thread.
+SPIEGARE UN PO IL FUNZIONAMENTO E METTERE IL LINK
+
+\subsubsection*{httpRequest}
+Per gestire le richieste HTTP ho usato "android-async-http", una comoda libreria per trasmettere informazioni ad un server sia in maniera sincrona che asincrona.
+La richiesta HTTP avviene nello stesso thread in cui avviene la chiamata ad essa e fino a che la richiesta non è conclusa, il thread si mette in wait, facendo quindi una comunicazione di tipo sincrono.
+SPIEGARE MEGLIO IL FUNZIONAMENTO E METTERE IL LINK
+
+\subsubsection*{logData}
+logData è un Service il cui scopo è quello di registrare tutti i dati provenienti dai sensori e salvarli mediante i metodi forniti da jsonUtils in un unico jsonObject.
+
+Tramite il SensorManager l'applicazione ottiene dal SystemService l'accesso al SENSOR\_SERVICE. Il SensorManager si mette in ascolto dai dati provenienti da diversi sensori: accelerometro, magnetometro e giroscopio .
+
+Oltre a questi sensori, l'applicazione calcola la matrice rotazionale del device tramite i valori raccolti dal magnetometro e dall'accelerometro. Una volta ottenuta la matrice rotazionale tramite il getRotationMatrix, otteniamo un'array di valori i quali indicano l'orientamento del device tramite getOrientation.
+I valori ottenuti saranno <Azimuth, Pith, Roll>.
+Il calcolo dell'orientamento tramite matrice rotazionale è indispensabile per i dispositivi che non dispongono del giroscopio e per ottenere un valore di Azimuth corretto esente da errori relativi all'orientamento del dispositivo.
+
+L'analisi dei dati generati dal sensore avviene ad una frequenza di 20Hz.
+
+
+\subsubsection*{checkSend}
+checkSend è un Service il quale si occupa dell'inviare i dati al server. Ogni volta che il Service è in esecuzione controlla se il Wi-Fi è abilitato ed attivo. In caso di risposta affermativa, controlla se il dispositivo è attualmente connesso ad una rete Wi-Fi mediante il metodo checkConnection().
+
+checkConnection() mediante il ConnectivityManager ottiene le informazioni relative alla network attiva, se è presente una network attiva ed è di tipo Wi-Fi, controlla se il device è connesso, scrive sul Json le informazioni relative alla network e invia i dati.
+Se il dispositivo non è collegato ad alcuna rete Wi-Fi, tramite il metodo searchFreeWifi() ottengo una lista delle rete Wi-Fi disponibili, le filtro escludendo le reti che hanno politiche di accesso e restituisco la network con il maggior valore di RSSI, ossia quella in cui il segnale è maggiore. Il service proverà a collegarsi, in caso di avvenuta connessione, salverà nel Json le informazioni relative alla network e invierà i dati.
+
+L'invio dei dati è gestito dal metodo sendData(), il quale farà una richiesta HTTP di tipo POST al server mediante la classe httpRequest.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+
+
+
+\begin{thebibliography}{90}             %crea l'ambiente bibliografia
+\rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
+\thepage}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Bibliografia
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Bibliografia}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
+%%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
+
+\end{thebibliography}
+
+\end{document}

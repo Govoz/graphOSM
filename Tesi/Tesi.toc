@@ -1,0 +1,32 @@
+\select@language {italian}
+\select@language {italian}
+\contentsline {chapter}{Abstract}{i}
+\contentsline {chapter}{\numberline {1}Introduzione}{1}
+\contentsline {chapter}{\numberline {2}Lavori Correlati}{3}
+\contentsline {section}{\numberline {2.1}Inertial Navigation System}{3}
+\contentsline {subsection}{\numberline {2.1.1}Dead Reckoning}{5}
+\contentsline {section}{\numberline {2.2}Sensori}{7}
+\contentsline {subsection}{\numberline {2.2.1}MEMS}{7}
+\contentsline {subsection}{\numberline {2.2.2}Accelerometro}{8}
+\contentsline {subsection}{\numberline {2.2.3}Giroscopio}{10}
+\contentsline {subsection}{\numberline {2.2.4}Magnetometro}{11}
+\contentsline {section}{\numberline {2.3}GPS}{12}
+\contentsline {section}{\numberline {2.4}Wi-Fi}{13}
+\contentsline {section}{\numberline {2.5}OpenStreetMap e Grafi}{14}
+\contentsline {subsection}{\numberline {2.5.1}Grafi}{16}
+\contentsline {chapter}{\numberline {3}Progettazione ed implementazione}{17}
+\contentsline {section}{\numberline {3.1}Applicazione Android}{18}
+\contentsline {subsection}{\numberline {3.1.1}Concept}{19}
+\contentsline {subsection}{\numberline {3.1.2}Implementazione}{20}
+\contentsline {section}{\numberline {3.2}Server}{25}
+\contentsline {subsection}{\numberline {3.2.1}Algoritmi di visita}{27}
+\contentsline {subsubsection}{Backtrack}{27}
+\contentsline {subsubsection}{BestDecision}{28}
+\contentsline {subsubsection}{RandomDecision}{28}
+\contentsline {subsubsection}{DeadReckoning}{28}
+\contentsline {chapter}{\numberline {4}Performance Evaluation}{29}
+\contentsline {subsection}{\numberline {4.0.1}Fase Preliminare}{29}
+\contentsline {chapter}{Conclusioni}{31}
+\contentsline {chapter}{\numberline {A}Prima Appendice}{33}
+\contentsline {chapter}{\numberline {B}Seconda Appendice}{35}
+\contentsline {chapter}{Bibliografia}{37}

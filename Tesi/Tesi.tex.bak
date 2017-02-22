@@ -37,18 +37,12 @@
                                         %   particolari ad esempio
                                         %   \textsc{}
 \usepackage{newlfont}
-
-\usepackage{listings}
-\usepackage{algorithmic}
-\lstset{breaklines=true
-}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%librerie matematiche
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{latexsym}
 \usepackage{amsthm}
-
 %
 \oddsidemargin=30pt \evensidemargin=20pt%impostano i margini
 \hyphenation{sil-la-ba-zio-ne pa-ren-te-si}%serve per la sillabazione: tra parentesi 
@@ -81,29 +75,56 @@
 \raggedleft                             %incolonna la scrittura a destra
 \large                                  %aumenta la grandezza del carattere
                                         %   a 14pt
-                             
+\newpage                                %va in una pagina nuova
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
 \end{titlepage}
 \pagenumbering{roman}                   %serve per mettere i numeri romani
-\chapter{Lavori Correlati}                 %crea l'introduzione (un capitolo
-
+\chapter*{Abstract}                 %crea l'introduzione (un capitolo
                                         %   non numerato)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \rhead[\fancyplain{}{\bfseries
-Lavori Correlati}]{\fancyplain{}{\bfseries\thepage}}
+ABSTRACT}]{\fancyplain{}{\bfseries\thepage}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
-Lavori Correlati}}
+ABSTRACT}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
                                         %   nell'indice
-\addcontentsline{toc}{chapter}{Lavori Correlati}
-%%%%% Questa \`e l'introduzione \cite{K1} \\
+\addcontentsline{toc}{chapter}{Abstract}
+Questa \`e l'abstract.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\tableofcontents                        %crea l'indice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries\leftmark}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
+INDICE}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\listoffigures                          %crea l'elenco delle figure
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\listoftables                           %crea l'elenco delle tabelle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Introduzione}                %crea il capitolo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+\pagenumbering{arabic}                  %mette i numeri arabi
+Questo \`e l'introduzione.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Lavori Correlati}                %crea il capitolo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 In letteratura esistono diversi studi riguardanti i possibili utilizzi dei dati generati dai sensori degli smartphone, molti dei quali cercano di interpretare i dati generati quando il device si trova a bordo di un veicolo per ottenere informazioni di diverso tipo, come per esempio: determinare il tipo di mezzo di trasporto nel quale si trova lo smartphone \cite{K1, K2, K3, K4} e determinare le condizioni della sede stradale o le condizioni di traffico \cite{K5, K6}. \\
 
 I risultati di questi studi sono interessanti per cercare di ottenere un sistema di navigazione inerziale sempre più efficace (INS, Inertial Navigation System).
 
-\section {Inertial Navigation System}
+\section{Inertial Navigation System}
 L' Inertial Navigation System (INS) è un sistema in grado di determinare tramite un meccanismo di Dead Reckoning la posizione di un oggetto in movimento sfruttando esclusivamente i dati raccolti da sensori inerziali.\\
 
 Il sistema è formato da una componente elettronica contenente una serie di sensori (Inertial Measurement Unit, IMU) e da un calcolatore. 
@@ -161,7 +182,7 @@ Dato il bearing relativo i-esimo $\omega_i$ per ogni istante è facile calcolare
 $\theta_k = \sum_{i=0}^k \omega_i$
 \end{center}
 
-\section {Sensori}
+\section{Sensori}
 
 I sensori disponibili in uno smartphone sono diversi e variano da modello a modello, alcuni sono implementati in maniera hardware (MEMS), altri generano dati mediante algoritmi, quindi in maniera software. 
 
@@ -252,7 +273,7 @@ $directionGrad = directionRad * 180/ \pi$
 
 La magnitudo in un ambiente privo di fonti magnetiche non potrà mai raggiungere lo zero ma si avvicinerà a valori di circa 30-40 $\mu T$, questo è dovuto al campo geomagnetico del pianeta.
 
-\section {GPS}
+\section{GPS}
 Il GPS (Global Positioning System) è un sistema di posizionamento satellitare civile gestito dal governo degli Stati Uniti d'America (GSU). Esso permette di ottenere le coordinate geografiche, quindi la geolocalizzazione, di un oggetto.
 Ha un livello di accuratezza molto elevato, in ambito militare ha una precisione di circa 1m, in ambito civile di circa 5-10m.
 
@@ -278,7 +299,7 @@ Le coordinate geografiche sono calcolate a partire dal tempo $ \Delta T $ che ci
 
 Per conoscere la posizione abbiamo bisogno della distanza di almeno 4 satelliti.
 
-\section {Wi-Fi}
+\section{Wi-Fi}
 Il Wi-Fi è una tecnologia che permette ai dispositivi di trasmettere dati in maniera wireless, quindi senza l'ausilio di cavi. Si basa sulle specifiche dello standard IEEE 802.11.1
 
 Oltre a permettere di accedere ad una rete locale è possibile connettersi tramite un access point ad Internet e trasmettere dati a dei server remoti.
@@ -301,7 +322,7 @@ Al giorno d'oggi è sempre più facile trovare delle Open-Network \cite{K11}, os
 
 
 
-\section {OpenStreetMap e Grafi}
+\section{OpenStreetMap e Grafi}
 OpenStreetMap (OSM) \cite{K12} è un progetto collaborativo open-data che offre un servizio cartografico.\\
 OpenStreetMap è stato fondato nel 2004 da Steve Coast e ad ora è usato da molti servizi come Flickr, Strava, WolframAlpha e tanti altri \cite{K13}.
 
@@ -334,13 +355,225 @@ In questo modo è facile implementare diversi algoritmi di visita partendo da un
 
 Implementando un grafo tramite liste di adiacenza, una DFS (depth-first search) ha una complessità computazionale pari a $\Omega(|V| + |E|) $ dove per $\left|V \right|$ si intende il numero di nodi del grafo e con $\left| E \right|$ il numero di archi.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Progettazione ed implementazione}                %crea il capitolo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+Il progetto di tesi è composto da due parti distinte:
+
+\begin{itemize}
+\item Un'applicazione Android in grado di rilevare uno spostamento del mezzo, di registrare dati dai sensori inerziali e di inviare quest'ultimi al server tramite una connessione Wi-Fi.
+\item Un server sviluppato in Python in grado di ricevere dati dall'applicazione Android, interpretarli usando le API di OpenStreetMap e calcolare la posizione del mezzo mediante diversi algoritmi.
+\end{itemize}
+
+\begin{figure}[h]
+\centering 
+\includegraphics[scale=0.4]{fig10} 
+\caption{Schema di funzionamento del progetto.} 
+\end{figure}
+\newpage
+\section{Applicazione Android}
+L'applicazione è stata scritta in Java, mediante Android Studio. \\
+La versione minima di SKD supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,7 \% dei device in uso \cite{K17}.
+
+\begin{figure}[h!]
+\centering 
+\includegraphics[scale=0.6]{fig11} 
+\caption{Statistiche relative alle versioni di Android installate nei device. Dato aggiornato al 6 Febbraio 2017.} 
+\end{figure}
+
+\subsection{Concept}
+L'idea di base del progetto è quella di implementare un localizzatore inerziale che funga da antifurto per mezzi di trasporto. L'applicazione deve essere installata su un device Android, il quale deve essere posizionato in maniera salda e stabile al mezzo.
+
+Si presuppone che il device sia posizionato in maniera tale che l'Azimuth del device sia uguale all'Azimuth del mezzo di trasporto. In un possibile sviluppo futuro si potrebbe calcolare l'orientamento al momento dell'inizializzazione e considerare questo offset nel momento in cui si analizzano i dati.
+
+
+L'applicazione una volta avviata si mette in attesa che il mezzo venga rubato, per riconoscere il furto e quindi lo spostamento del mezzo, comincia a rilevare ed analizzare i dati provenienti dall'accelerometro.
+
+La fase di inizializzazione consiste nell'ottenere un unico dato, ossia le coordinate geografiche del mezzo parcheggiato. Siccome il mezzo sul quale è posizionato il dispositivo è fermo, la velocità è pari a 0 km/h e siccome presupponiamo che l'Azimuth del device sia pari all'Azimuth del mezzo non è nemmeno importante capire come è orientato il device all'interno del veicolo.
+
+
+Dopo che l'applicazione ha rilevato il furto comincia a registrare i dati generati dai sensori e prova a collegarsi ad una rete Wi-Fi, in caso di avvenuta connessione invia i dati ad un server remoto.
+\newpage
+\subsection{Implementazione}
+L'applicazione è composta da due Activity, ognuna delle quali corrisponde ad una diversa modalità di utilizzo dell'applicazione. Una volta lanciata l'applicazione l'utente potrà cambiare la modalità di utilizzo mediante un pulsante posto in alto a destra sulla AppBar.
+\begin{itemize}
+\item \textbf{Anti-Theft Mode}\\
+E' la modalità di utilizzo in cui l'applicazione funge da antifurto. 
+
+L'utente dovrà posizionare il device e premere il pulsante "Activate" che attiverà il motion detection. Questa modalità implementa il funzionamento descritto nel paragrafo riguardante al concept dell'applicazione.
+
+\item \textbf{Test Mode}\\
+Questa modalità mi è servita per costruirmi un dataset utile allo sviluppo della parte server. In questa modalità l'utente dovrà posizionare l'applicazione
+nel punto desiderato e quando vuole far partire la registrazione dovrà premere sul pulsante "Start", mentre dovrà premere il pulsante "Stop" per interrompere la registrazione e salvare il file contenente i dati generati dai sensori in locale sul device. Inoltre l'utente clickando sulle label corrispondenti alle coordinate potrà visualizzare il punto corrispondente su Google Maps, potrà vedere il nome del file appena esportato ed il contenuto di quest'ultimo.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering 
+\includegraphics[scale=0.1]{TestActivity} 
+\includegraphics[scale=0.1]{MainActivity} 
+\caption{Anti-Theft Mode a sinistra, Test Mode a destra.} 
+\end{figure}
+
+L'applicazione presenta diverse classi, ora andremo a presentarle nel dettaglio.
+\subsubsection*{MotionDetection}
+La classe MotionDetection si occupa di rilevare un movimento del mezzo. Viene invocata solamente nella Anti-Theft Mode quando l'utente preme su "Activate". \\
+MotionDetection implementa l'interfaccia SensorEventListener e chiede al SystemService tramite il SensorManager la possibilità di leggere i dati generati dall'accelerometro ad una frequenza pari a 5Hz.
+Ogni volta che l'applicazione rileva una minima accelerazione ne calcola la magnitudo dalla quale ci sottraiamo la forza di gravità
+
+\begin{center}
+$ magnitude = \sqrt{ x^2 + y^2 + z^2} - gravity$
+\end{center}
+
+Se la magnitudo è maggiore rispetto ad una certa costante, l'applicazione capisce che il mezzo su cui è posizionato il device ha subito un cambiamento di velocità e quindi è stato spostato dal punto originario. Dopo diverse prove ho impostato la sensibilità del MotionDetection ad un valore pari ad 1 in maniera che l'applicazione sia in grado di minimizzare sia i falsi positivi che i falsi negativi, quindi, che riesca ad interpretare come un furto lo spostamento del mezzo ma che non riesca ad interpretare come tale, ad esempio, le vibrazioni prodotte dal passaggio di mezzi pesanti nelle immediate vicinanze.
+
+Nel momento in cui l'applicazione rileva lo spostamento del mezzo, vengono lanciati in esecuzione i due Service, il primo relativo alla registrazione dei dati provenienti dai sensori, il secondo relativo all'invio dei dati al server.	
+
+\subsubsection*{gpsPosition}
+gpsPosition è la classe adibita alla geolocalizzazione del device. Mediante il LocationManager ottiene dal SystemService la possibilità di ottenere informazioni dal Location\_Service. \\
+Ogni volta che viene invocata registra la posizione corrente del device nel jsonObject.
+
+\subsubsection*{jsonUtils}
+Questa classe gestisce il jsonObject contenente tutti i valori ottenuti dai sensori. Nel caso in cui l'applicazione sia in esecuzione in modalità Test Mode, il jsonObject viene salvato in un file .json nella memoria locale del device. Nel caso in cui l'applicazione sia in esecuzione in modalità Anti-Theft Mode, invece, il jsonObject viene passato al Service adibito all'invio dei dati al server.
+
+\subsubsection*{parallelIntentService}
+ParallelIntentService \cite{K18} estende la classe Service ed implementa un comportamento simile agli IntentService.
+E' stata utile per gestire due Service parallelamente in due thread differenti e non entrambi nell'UI thread.
+
+\subsubsection*{httpRequest}
+Per gestire le richieste HTTP ho usato Android Asynchronous Http Client \cite{K19}, una comoda libreria per gestire richieste HTTP sia in maniera asincrona che sincrona.
+La richiesta HTTP avviene nello stesso thread in cui avviene la chiamata ad essa e fino a che la richiesta non è conclusa, il thread relativo si mette in wait, facendo quindi una comunicazione di tipo sincrono.
+
+\subsubsection*{logData}
+logData è un Service ed estende la classe parallelIntentService, ed implementa SensorEventListener.\\
+Lo scopo della classe è quello di registrare tutti i dati provenienti dai sensori e salvarli mediante i metodi forniti da jsonUtils in un unico jsonObject.
+
+Tramite il SensorManager l'applicazione ottiene dal SystemService l'accesso al SENSOR\_SERVICE. Il SensorManager si mette in ascolto dai dati provenienti da diversi sensori: accelerometro, magnetometro e giroscopio.
+
+Oltre a questi sensori, l'applicazione calcola la matrice rotazionale del device tramite i valori raccolti dal magnetometro e dall'accelerometro. Una volta ottenuta la matrice rotazionale tramite il getRotationMatrix, otteniamo un'array di valori i quali indicano l'orientamento del device tramite getOrientation.
+I valori ottenuti saranno: Azimuth, Pith e Roll.
+Il calcolo dell'orientamento tramite la matrice rotazionale è indispensabile per i dispositivi che non dispongono del giroscopio e per ottenere un valore di Azimuth corretto esente da errori relativi all'orientamento del dispositivo.
+
+L'analisi dei dati generati dal sensore avviene ad una frequenza di 20Hz.
+
+
+\subsubsection*{checkSend}
+checkSend è un Service ed anche esso estende la classe parallelIntentService.
+checkSend si occupa dell'invio dei dati al server. Ogni volta che il thread relativo è in esecuzione la classe controlla se il Wi-Fi è abilitato ed attivo. In caso di risposta affermativa, controlla se il dispositivo è attualmente connesso ad una rete Wi-Fi mediante il metodo checkConnection().
+
+checkConnection() mediante il ConnectivityManager ottiene le informazioni relative alla network attiva, se è presente una network attiva ed è di tipo Wi-Fi, controlla se il device è connesso, nel caso lo fosse scrive sul jsonObject le informazioni relative alla network e invia i dati al server.
+Se il dispositivo non è collegato ad alcuna rete Wi-Fi, tramite il metodo searchFreeWifi() ottengo una lista delle rete Wi-Fi disponibili, le filtro escludendo le reti che hanno politiche di accesso e restituisco la network con il maggior valore di RSSI, ossia quella in cui il segnale è maggiore. 
+Nel caso searchFreeWifi() restituisca una network, l'applicazione proverà a collegarsi, in caso di avvenuta connessione, salverà nel jsonObject le informazioni relative alla network e invierà i dati al server.
+
+L'invio dei dati è gestito dal metodo sendData(), il quale farà una richiesta HTTP di tipo POST al server mediante la classe httpRequest.
+
+\newpage
+\section{Server}
+Il server è stato sviluppato in Python 3.
+
+Come l'applicazione Android, anche esso ha una duplice modalità di utilizzo. Abbiamo la modalità che si interfaccia con l'applicazione Android in Anti-Theft Mode, quindi riceve i dati, li analizza e genera dei possibili punti geografici in cui il mezzo si potrebbe trovare tramite i vari algoritmi. L'altra modalità di utilizzo è quella che si interfaccia con la Test Mode dell'applicazione Android, ossia cerca di valutare l'efficienza dei vari algoritmi confrontando le posizioni calcolate dagli algoritmi con la posizione reale di fine registrazione. 
+Il funzionamento è il medesimo.
+
+I valori con cui gli algoritmi lavorano sono esclusivamente i valori relativi al magnetometro, quindi l'Azimuth.
+
+Il server, appena riceve i dati, ottiene le informazioni relative al punto geografico di partenza, quindi latitudine, longitudine e timestamp relativo all'inizio della registrazione.
+Una volta ottenute le coordinate geografiche di partenza avviene il reverseGeocoding, esso consiste in una query a OpenStreetMap dalla quale otteniamo l'ID del nodo più vicino alle coordinate geografiche date in input. La query viene eseguita mediante Python Overpass Wrapper (Overpy). Dalla query otteniamo una lista di Nodi all'interno di un certo raggio, da questa lista filtriamo i nodi che appartengono ad una strada, controllando se da ogni nodo è possibile raggiungerne almeno una, successivamente cerchiamo il più vicino alle coordinate di partenza.
+Una volta ottenuto l'ID del nodo, il sistema si calcolo una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. Successivamente, si interfaccia direttamente con le API di OpenStreetMap e scarica il file OSM-XML relativo alla BoundingBox. La richiesta avviene mediante urllib. Una volta ottenuto l'XML, esso viene salvato per poterlo usare in futuro in maniera più rapida per eventuali nuove localizzazioni. L'XML viene parsato mediante BeatifulSoup.
+
+
+La fase successiva consiste nella generazione del grafo pesato mediante NetworkX. La funzione adibita alla costruzione del grafo è una funziona ricorsiva che ha come parametri il grafo stesso, l'ID del nodo che si sta analizzando, le coordinate del nodo Root, il raggio ossia la distanza in metri massima tra il nodo Root e il nodo da aggiungere, e l'oggetto parsato mediante BeatifulSoup corrispondente al file OSM-XML.
+
+Per ogni nodo che analizziamo ricaviamo mediante il costruttore di Intersection le coordinate geografiche, ne calcoliamo la distanza dal nodo Root e nel caso la distanza sia minore rispetto al raggio della BoundingBox continuiamo ad analizzarlo.
+
+Otteniamo una lista di strade le quali si possono raggiungere direttamente dal nodo, nel caso il nodo facesse parte della shape della strada allora la lista avrà un solo elemento, ossia la strada stessa, nel caso il nodo fosse un intersezione allora avremmo tutte le strade che intersecano l'incrocio.
+
+Successivamente, per ognuna di queste strade, otteniamo la lista di intersezioni e se l'intersezione non fa già parte del grafo allora otteniamo il nodo relativo all'intersezione, la distanza tra le due intersezioni e informazioni sulla strada che le collega. Aggiungiamo l'arco tra il nodo corrente e il nodo trovato nel grafo, dando come peso la distanza in metri tra i due nodi, successivamente viene richiamata la funzione ricorsiva dando come nodo da analizzare il nodo appena trovato.
+
+Una volta generato il grafo lo esportiamo per poterlo usare in future computazioni successive in maniera più rapida.
+
+La fase seguente è quella relativa agli algoritmi di visita del grafo e viene descritta in maniera più accurata nel prossimo paragrafo.
+\newpage
+\subsection{Algoritmi di visita}
+I dati ottenuti dall'applicazione Android servono per generare indicazioni che gli algoritmi di visita del grafo useranno per prendere decisioni su che arco visitare.
+Le indicazioni vengono generate tramite una funzione getAzimuth che prenderà come parametro i dati stessi, la lunghezza della finestra temporale e il numero di quadranti in cui dividere la circonferenza. La funzione scorrerà i dati ottenuti ed aggregherà i valori contenuti nella medesima finestra temporale, ne calcolerà la media, il quadrante in cui l'Azimuth medio ricade e la durata dell'indicazione che sarà pari alla lunghezza della finestra temporale, ad eccezione dell'ultima indicazione.
+La lista delle indicazioni è implementata come uno stack.
+
+Ora passiamo agli algoritmi:
+
+\subsubsection{Backtrack}
+Questo algoritmo corrisponde ad una visità in profondità del grafo (DFS). E' una funzione ricorsiva che ha come parametri il grafo da visitare, l'ID del nodo corrente, la lista delle indicazioni ed il numero di quadranti. Ad ogni iterazione si controlla se esistono indicazioni da consumare e se il grafo contiene il nodo da analizzare, in caso di risposta affermativa settiamo il nodo come visitato, otteniamo l'indicazione da consumare e la lista dei nodi adiacenti al nodo corrente. Per ogni nodo adiacente, se non è stato già visitato, ne ricaviamo le coordinate e calcoliamo il bearing tra il nodo corrente e il nodo in questione. Se il nodo è nello stesso quadrante della indicazione da consumare allora ottengo la distanza tra i due nodi, il limite di velocità della strada che li collega e calcolo i secondi da consumare se il mezzo andasse esattamente ad una velocità pari al limite della strada. Se i secondi consumati sono minori rispetto ai secondi rimanenti nella finestra temporale, mi calcolo la differenza e riaggiungo l'indicazione alla lista delle indicazioni. Se invece i secondi da consumare sono maggiori rispetto alla finestra temporale, ottengo una nuova indicazione e se il quadrante di quest'ultima è uguale al quadrante della precedente allora consumo i secondi rimanenti da questa nuova indicazione.
+
+La computazione si blocca quando la visita arriva ad un nodo che non ha più nodi da visitare o quando le indicazioni sono già state consumate tutte. Ogni volta che la computazione si blocca, l'ultimo nodo visitato viene aggiunto ad una lista che corrisponde ai possibili output.
+
+\subsubsection{BestDecision}
+BestDecision è un algoritmo iterativo. La visita parte dal nodo Root e la gestione delle indicazioni è uguale all'algoritmo Backtrack. La visita avviene usando un algoritmo decisionale, ad ogni iterazione l'algoritmo valuta tutti i nodi adiacenti al nodo corrente, per ogni nodo ne calcola il bearing. Viene scelto il nodo il cui bearing si avvicina di più al valore dell'Azimuth dell'indicazione da consumare. 
+
+\subsubsection{RandomDecision}
+E' un algoritmo molto simile al BestDecision solo che ogni volta che l'algoritmo deve scegliere il nodo successivo da visitare, filtra i nodi adiacenti escludendo i nodi che si trovano in quadranti diversi da quello indicato dall'indicazione, se i nodi rimanenti sono più di uno allora effettua una scelta casuale.
+
+\subsubsection{DeadReckoning}
+L'algoritmo di DeadReckoning non è un algoritmo di visita del grafo in quanto non usa informazioni provenienti da OpenStreetMap. Come parametri ha le coordinate di partenza da cui iniziare a computare, la lista delle indicazioni e il limite di velocità con cui fare i calcoli.
+L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione calcola i metri corrispondenti allo spostamento, il bearing di esso e calcola le nuove coordinate.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter{Performance Evaluation}                %crea il capitolo
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+\subsection{Fase Preliminare}
+Per effettuare i test ho raccolto diverse tracce mediante l'applicazione Android in TestMode.
+
+Per ognuna di queste tracce ho eseguito gli script Python variando di volta in volta alcuni parametri:
+\begin{itemize}
+\item Numero di quadranti: 2,4,8.
+\item Ampiezza della finestra temporale: 20sec, 10sec, 5sec, 1sec.
+\item Algoritmo di visita: Backtrack, BestDecision, RandomDecision e DeadReckoning.
+\item Limite di velocità: 30,50,70,90.
+\end{itemize}
+Per un totale di 192 risultati per ogni traccia.
+Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della vel
 
 
 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%per fare le conclusioni
+\chapter*{Conclusioni}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries
+CONCLUSIONI}]{\fancyplain{}{\bfseries\thepage}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries
+CONCLUSIONI}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Conclusioni
+                                        %   nell'indice
+\addcontentsline{toc}{chapter}{Conclusioni} Queste sono le
+conclusioni.\\
+In queste conclusioni voglio fare un riferimento alla
+bibliografia: questo \`e il mio riferimento \cite{K3,K4}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\renewcommand{\chaptermark}[1]{\markright{\thechapter \ #1}{}}
+\lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
+\appendix                               %imposta le appendici
+\chapter{Prima Appendice}               %crea l'appendice
+In questa Appendice non si \`e utilizzato il comando:\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\verb"" è equivalente all'
+                                        %   ambiente verbatim,
+                                        %   ma si utilizza all'interno
+                                        %   di un discorso.
+\verb"\clearpage{\pagestyle{empty}\cleardoublepage}", ed infatti
+l'ultima pagina 8 ha l'intestazione con il numero di pagina in
+alto.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries \thechapter \:Prima Appendice}]
+{\fancyplain{}{\bfseries\thepage}}
+\chapter{Seconda Appendice}             %crea l'appendice
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
+\rhead[\fancyplain{}{\bfseries \thechapter \:Seconda Appendice}]
+{\fancyplain{}{\bfseries\thepage}}
 \begin{thebibliography}{90}             %crea l'ambiente bibliografia
 \rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
 \thepage}}
@@ -349,7 +582,6 @@ Implementando un grafo tramite liste di adiacenza, una DFS (depth-first search) 
 \addcontentsline{toc}{chapter}{Bibliografia}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
 %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
-
 \bibitem{K1} Widhalm P, Nitsche P, Brandle N. "Transport Mode Detection with Realistic Smartphone Sensor Data". In Proceedings of IEEE CCNC, Las Vegas, USA, 2012; 573-576.
 \bibitem{K2} Bedogni L, Di Felice M, Bononi L. "Context-aware Android applications through transportation mode detection techniques". Wirel. Commun. Mob. Comput. 16, 16 (November 2016), 2523-2541.
 \bibitem{K3} L. Bedogni, M. Di Felice, L. Bononi, “By Train or By Car? Detecting the User’s Motion Type through Smartphone Sensors Data” on proceedings of the 5th IFIP International Conference Wireless Days 2012 (WD 2012), November 21-23, 2012, Dublin, Ireland
@@ -367,7 +599,15 @@ Munster, Germany, July 4-7 1989.
 \bibitem{K14} Robert Bogue , 2013, "Recent developments in MEMS sensors: a review of applications, markets and technologies", Sensor Review, Vol. 33 Iss: 4, pp.300 - 304
 \bibitem{K15} E.D.Kaplan, C.J.Hegarty, Understanding GPS, principles and applications. Second Edition. Artech House.
 \bibitem{K16} \url{https://fon.com/maps/}
+\bibitem{K17} \url{https://developer.android.com/about/dashboards/index.html}
+\bibitem{K18} \url{https://github.com/schoentoon/ParallelIntentService}
+\bibitem{K19} \url{http://loopj.com/android-async-http/}
 
 \end{thebibliography}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter*{Ringraziamenti}
+\thispagestyle{empty}
+Qui possiamo ringraziare il mondo intero!!!!!!!!!!\\
+Ovviamente solo se uno vuole, non \`e obbligatorio.
 \end{document}
