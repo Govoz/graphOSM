@@ -25,8 +25,9 @@
 \contentsline {subsubsection}{RandomDecision}{28}
 \contentsline {subsubsection}{DeadReckoning}{28}
 \contentsline {chapter}{\numberline {4}Performance Evaluation}{29}
-\contentsline {subsection}{\numberline {4.0.1}Fase Preliminare}{29}
-\contentsline {chapter}{Conclusioni}{31}
-\contentsline {chapter}{\numberline {A}Prima Appendice}{33}
-\contentsline {chapter}{\numberline {B}Seconda Appendice}{35}
-\contentsline {chapter}{Bibliografia}{37}
+\contentsline {section}{\numberline {4.1}Fase Preliminare}{29}
+\contentsline {section}{\numberline {4.2}Considerazioni}{38}
+\contentsline {chapter}{Conclusioni}{39}
+\contentsline {chapter}{\numberline {A}Prima Appendice}{41}
+\contentsline {chapter}{\numberline {B}Seconda Appendice}{43}
+\contentsline {chapter}{Bibliografia}{45}

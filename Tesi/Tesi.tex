@@ -20,6 +20,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per impostare il documento
 \usepackage{fancyhdr}
+\usepackage{float}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%libreria per avere l'indentazione
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   all'inizio dei capitoli, ...
@@ -91,7 +92,7 @@ ABSTRACT}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Introduzione
                                         %   nell'indice
 \addcontentsline{toc}{chapter}{Abstract}
-Questa \`e l'abstract.
+Questo elaborato è atto ad analizzare un'implementazione di un localizzatore inerziale per smartphone. Verranno mostrate nozioni sull'attuale stato dell'arte riguardo a sistemi di navigazione inerziale dando spazio anche a nozioni riguardanti i sensori più comuni presenti negli odierni smartphone. In seguito, è presente una descrizione della fase di  progettazione ed implementazione di un sistema composto da un'applicazione Android e un server in Python in grado di implementare, mediante diversi algoritmi e con l'ausilio delle API di OpenStreetMap, un localizzatore inerziale. Per concludere verranno mostrati i test eseguiti e le considerazioni fatte su di essi.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \tableofcontents                        %crea l'indice
@@ -107,11 +108,25 @@ INDICE}}
 \listoftables                           %crea l'elenco delle tabelle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
+\pagenumbering{arabic}                  %mette i numeri arabi
 \chapter{Introduzione}                %crea il capitolo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-\pagenumbering{arabic}                  %mette i numeri arabi
-Questo \`e l'introduzione.
+
+I primi sistemi di navigazione inerziale risalgono alla 2\textsuperscript{$\circ$} Guerra Mondiale, diversi articoli \cite{K20} fanno risalire al 1942 il primo uso di un sistema di navigazione inerziale da parte dei tedeschi per lo sviluppo del missile V-2. Negli anni seguenti, con lo sviluppo parallelo di calcolatori più efficienti e di sistemi sensoristici migliori, i sistemi di navigazione inerziale hanno cominciato a diffondersi anche in ambito navale, subacqueo ed aereo. Con l'avvento della nanotecnologia si è potuto sviluppare sensori con prestazioni migliori e di dimensioni ridotte (MEMS), di conseguenza, gli ambiti di utilizzo di quest'ultimi si sono notevolmente ampliati. 
+Moltissimi oggetti di uso quotidiano hanno al loro interno sensori di qualsiasi tipo. In ambito automotive, dagli anni '80, i sensori si sono sempre più affermati come dispositivi di estrema importanza, per aumentare prestazioni, sicurezza e diminuire i consumi. 
+Da qualche anno a questa parte, nella maggior parte degli smartphone sono presenti diversi sensori come l'accelerometro, giroscopio e il magnetometro. I campi di utilizzo di questi sensori sono innumerevoli, spaziano dai videogiochi fino ad applicazioni multimediali.
+
+Si è pensato di implementare un localizzatore inerziale di veicoli mediante uno smartphone come uno strumento per localizzare il veicolo dopo un'eventuale furto di quest'ultimo. I sensori con cui andremo a lavorare sono il magnetometro, il giroscopio e l'accelerometro. Il sistema progettato ed implementato verterà sia sulla rilevazione del furto e dei dati generati dai sensori e sia la parte algoritmica riguardante la fase di localizzazione vera e propria.
+
+L'elaborato sarà articolato come segue:
+
+\begin{itemize}
+\item Nel capitolo 2 ci sarà una panoramica riguardante l'attuale stato dell'arte, un'introduzione ai concetti base e agli strumenti utilizzati per lo sviluppo della parte progettuale.
+\item Nel capitolo 3 ci sarà una descrizione del lavoro progettuale ed implementativo. Ci sarà una sezione riguardante l'applicazione Android ed una riguardante allo sviluppo degli algoritmi lato server.
+\item Il capitolo 4 presenterà i risultati e le considerazioni riguardanti ai test effettuati, descrivendo i comportamenti dei vari algoritmi rispetto ai dati raccolti.
+\item Nel capitolo 5 ci saranno le conclusioni di questo trattato descrivendo anche i possibili sviluppi futuri.
+\end{itemize}
 
 
 
@@ -215,7 +230,7 @@ In uno smartphone abbiamo tre accelerometri, ognuno dei quali misura l'acceleraz
 \includegraphics[scale=0.2]{fig4} 
 \caption{Accelerometro MEMS} 
 \end{figure}
-In figura 1.3 possiamo vedere lo schema di funzionamento di un accelerometro MEMS. Abbiamo una massa libera al centro del dispositivo, collegata alle estremità da una molla per parte ad una parte esterna e fissa alla struttura del device. Quando c'è un'accelerazione, la massa rimane ferma mentre la parte esterna si muove contraendo le molle e facendo in modo che la massa vada a contatto con le armature dell'accelerometro generando un segnale elettrico. 
+In figura 1.3 possiamo vedere lo schema di funzionamento di un accelerometro MEMS. Abbiamo una massa libera al centro del sensore, collegata alle estremità da una molla per parte ad una parte esterna e fissa alla struttura del device. Quando c'è un'accelerazione, la massa rimane ferma mentre la parte esterna si muove contraendo le molle e facendo in modo che la massa vada a contatto con le armature dell'accelerometro generando un segnale elettrico. 
 
 Nei valori misurati dall'accelerometro è inclusa la forza di gravità, infatti ponendo lo smartphone su un tavolo vediamo che l'accelerometro relativo all'asse Z rileva un'accelerazione pari a 9,8 $m/s^2$.
 Per avere valori corretti bisogna capire anche come è orientato nello spazio il device, tramite il giroscopio e applicare un filtro passa-alto per rimuovere la forza di gravità dai tre assi e isolare quindi l'accelerazione lineare.
@@ -246,7 +261,7 @@ Come vediamo nella figura 1.4, l'orientamento del device si può esprimere media
 
 
 Con il giroscopio possiamo determinare l'orientamento del device nello spazio, questa informazione è fondamentale per interpretare correttamente i valori prodotti da altri sensori, come l'accelerometro.
-E' un tipo di sensore che non molti smartphone posseggono, è possibile, però, simulare il sensore mediante i valori ottenuti dal magnetometro e dalla accelerazione mediante il calcolo delle matrici rotazionali, questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
+E' un tipo di sensore che non molti smartphone posseggono, è possibile, però, simulare il sensore mediante i valori ottenuti dal magnetometro e dall'accelerometro mediante il calcolo delle matrici rotazionali, questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
 \subsection{Magnetometro}
 Il magnetometro è un dispositivo che misura l'intensità del campo magnetico relativamente ai suoi 3 assi. L'unità di misura è $\mu T$. 
 
@@ -280,7 +295,7 @@ Ha un livello di accuratezza molto elevato, in ambito militare ha una precisione
 Il sistema è formato da tre segmenti: il segmento spaziale, il segmento di controllo ed il segmento utente. \cite{K15}
 
 
-Nel segmento spaziale ci sono da 24 a 31 satelliti Navstar che si muovono lungo 6 piani orbitali con una inclinazione di circa 55 gradi rispetto l'equatore, quindi ogni piano orbitale ha 4 satelliti. Da ogni punto della terra sono sempre visibili almeno 4 satelliti, questo in condizioni favorevoli, ossia senza disturbi come edifici o montagne. Ogni satellite dispone di almeno un orologio atomico e trasmette i dati su due frequenze L1(1575,42 Mhz) e L2(1227,60Mhz).
+Nel segmento spaziale ci sono da 24 a 31 satelliti Navstar che si muovono lungo 6 piani orbitali con una inclinazione di circa 55 gradi rispetto l'equatore, quindi ogni piano orbitale ha almeno 4 satelliti. Da ogni punto della terra sono sempre visibili almeno 4 satelliti, questo in condizioni favorevoli, ossia senza disturbi come edifici o montagne. Ogni satellite dispone di almeno un orologio atomico e trasmette i dati su due frequenze L1(1575,42 Mhz) e L2(1227,60Mhz).
 
 
 Il segmento di controllo è formato da stazioni di controllo situate in punti diversi del pianeta che si occupano di controllare il funzionamento dei satelliti e degli orologi atomici, la sincronizzazione degli orologi atomici e si occupano della distorsione artificiale (SA, Selective Availability) del segnale per usi civili.
@@ -292,6 +307,8 @@ Nel segmento utente fanno parte tutti i dispositivi che fungono da ricevitori GP
 \includegraphics[scale=0.6]{fig8} 
 \caption{Punto GPS calcolato mediante 4 satelliti. \cite{K16}} 
 \end{figure}
+
+
 Il sistema si basa sulla tecnica della trilaterazione. 
 
 
@@ -394,7 +411,7 @@ L'applicazione una volta avviata si mette in attesa che il mezzo venga rubato, p
 La fase di inizializzazione consiste nell'ottenere un unico dato, ossia le coordinate geografiche del mezzo parcheggiato. Siccome il mezzo sul quale è posizionato il dispositivo è fermo, la velocità è pari a 0 km/h e siccome presupponiamo che l'Azimuth del device sia pari all'Azimuth del mezzo non è nemmeno importante capire come è orientato il device all'interno del veicolo.
 
 
-Dopo che l'applicazione ha rilevato il furto comincia a registrare i dati generati dai sensori e prova a collegarsi ad una rete Wi-Fi, in caso di avvenuta connessione invia i dati ad un server remoto.
+Dopo che l'applicazione ha rilevato il furto, comincia a registrare i dati generati dai sensori e prova a collegarsi ad una rete Wi-Fi, in caso di avvenuta connessione invia i dati ad un server remoto.
 \newpage
 \subsection{Implementazione}
 L'applicazione è composta da due Activity, ognuna delle quali corrisponde ad una diversa modalità di utilizzo dell'applicazione. Una volta lanciata l'applicazione l'utente potrà cambiare la modalità di utilizzo mediante un pulsante posto in alto a destra sulla AppBar.
@@ -405,7 +422,7 @@ E' la modalità di utilizzo in cui l'applicazione funge da antifurto.
 L'utente dovrà posizionare il device e premere il pulsante "Activate" che attiverà il motion detection. Questa modalità implementa il funzionamento descritto nel paragrafo riguardante al concept dell'applicazione.
 
 \item \textbf{Test Mode}\\
-Questa modalità mi è servita per costruirmi un dataset utile allo sviluppo della parte server. In questa modalità l'utente dovrà posizionare l'applicazione
+Questa modalità mi è servita per costruirmi un dataset utile allo sviluppo della parte server. In questa modalità l'utente dovrà posizionare il device
 nel punto desiderato e quando vuole far partire la registrazione dovrà premere sul pulsante "Start", mentre dovrà premere il pulsante "Stop" per interrompere la registrazione e salvare il file contenente i dati generati dai sensori in locale sul device. Inoltre l'utente clickando sulle label corrispondenti alle coordinate potrà visualizzare il punto corrispondente su Google Maps, potrà vedere il nome del file appena esportato ed il contenuto di quest'ultimo.
 \end{itemize}
 
@@ -420,7 +437,7 @@ L'applicazione presenta diverse classi, ora andremo a presentarle nel dettaglio.
 \subsubsection*{MotionDetection}
 La classe MotionDetection si occupa di rilevare un movimento del mezzo. Viene invocata solamente nella Anti-Theft Mode quando l'utente preme su "Activate". \\
 MotionDetection implementa l'interfaccia SensorEventListener e chiede al SystemService tramite il SensorManager la possibilità di leggere i dati generati dall'accelerometro ad una frequenza pari a 5Hz.
-Ogni volta che l'applicazione rileva una minima accelerazione ne calcola la magnitudo dalla quale ci sottraiamo la forza di gravità
+Ogni volta che l'applicazione rileva una minima accelerazione ne calcola la magnitudo dalla quale sottrae la forza di gravità
 
 \begin{center}
 $ magnitude = \sqrt{ x^2 + y^2 + z^2} - gravity$
@@ -449,7 +466,7 @@ La richiesta HTTP avviene nello stesso thread in cui avviene la chiamata ad essa
 logData è un Service ed estende la classe parallelIntentService, ed implementa SensorEventListener.\\
 Lo scopo della classe è quello di registrare tutti i dati provenienti dai sensori e salvarli mediante i metodi forniti da jsonUtils in un unico jsonObject.
 
-Tramite il SensorManager l'applicazione ottiene dal SystemService l'accesso al SENSOR\_SERVICE. Il SensorManager si mette in ascolto dai dati provenienti da diversi sensori: accelerometro, magnetometro e giroscopio.
+Tramite il SensorManager l'applicazione ottiene dal SystemService l'accesso al SENSOR\_SERVICE. Il SensorManager comincia ad elaborare i dati provenienti da diversi sensori: accelerometro, magnetometro e giroscopio.
 
 Oltre a questi sensori, l'applicazione calcola la matrice rotazionale del device tramite i valori raccolti dal magnetometro e dall'accelerometro. Una volta ottenuta la matrice rotazionale tramite il getRotationMatrix, otteniamo un'array di valori i quali indicano l'orientamento del device tramite getOrientation.
 I valori ottenuti saranno: Azimuth, Pith e Roll.
@@ -486,7 +503,7 @@ La fase successiva consiste nella generazione del grafo pesato mediante NetworkX
 
 Per ogni nodo che analizziamo ricaviamo mediante il costruttore di Intersection le coordinate geografiche, ne calcoliamo la distanza dal nodo Root e nel caso la distanza sia minore rispetto al raggio della BoundingBox continuiamo ad analizzarlo.
 
-Otteniamo una lista di strade le quali si possono raggiungere direttamente dal nodo, nel caso il nodo facesse parte della shape della strada allora la lista avrà un solo elemento, ossia la strada stessa, nel caso il nodo fosse un intersezione allora avremmo tutte le strade che intersecano l'incrocio.
+Otteniamo una lista di strade, le quali si possono raggiungere direttamente dal nodo, nel caso il nodo facesse parte della shape della strada allora la lista avrà un solo elemento, ossia la strada stessa, nel caso in cui il nodo sia un intersezione allora avremmo tutte le strade che intersecano l'incrocio.
 
 Successivamente, per ognuna di queste strade, otteniamo la lista di intersezioni e se l'intersezione non fa già parte del grafo allora otteniamo il nodo relativo all'intersezione, la distanza tra le due intersezioni e informazioni sulla strada che le collega. Aggiungiamo l'arco tra il nodo corrente e il nodo trovato nel grafo, dando come peso la distanza in metri tra i due nodi, successivamente viene richiamata la funzione ricorsiva dando come nodo da analizzare il nodo appena trovato.
 
@@ -495,14 +512,16 @@ Una volta generato il grafo lo esportiamo per poterlo usare in future computazio
 La fase seguente è quella relativa agli algoritmi di visita del grafo e viene descritta in maniera più accurata nel prossimo paragrafo.
 \newpage
 \subsection{Algoritmi di visita}
-I dati ottenuti dall'applicazione Android servono per generare indicazioni che gli algoritmi di visita del grafo useranno per prendere decisioni su che arco visitare.
+I dati ottenuti dall'applicazione Android servono per generare indicazioni che gli algoritmi di visita del grafo useranno per prendere decisioni su che arco percorrere.
 Le indicazioni vengono generate tramite una funzione getAzimuth che prenderà come parametro i dati stessi, la lunghezza della finestra temporale e il numero di quadranti in cui dividere la circonferenza. La funzione scorrerà i dati ottenuti ed aggregherà i valori contenuti nella medesima finestra temporale, ne calcolerà la media, il quadrante in cui l'Azimuth medio ricade e la durata dell'indicazione che sarà pari alla lunghezza della finestra temporale, ad eccezione dell'ultima indicazione.
 La lista delle indicazioni è implementata come uno stack.
 
-Ora passiamo agli algoritmi:
+Ora passiamo a descrivere gli algoritmi:
 
 \subsubsection{Backtrack}
-Questo algoritmo corrisponde ad una visità in profondità del grafo (DFS). E' una funzione ricorsiva che ha come parametri il grafo da visitare, l'ID del nodo corrente, la lista delle indicazioni ed il numero di quadranti. Ad ogni iterazione si controlla se esistono indicazioni da consumare e se il grafo contiene il nodo da analizzare, in caso di risposta affermativa settiamo il nodo come visitato, otteniamo l'indicazione da consumare e la lista dei nodi adiacenti al nodo corrente. Per ogni nodo adiacente, se non è stato già visitato, ne ricaviamo le coordinate e calcoliamo il bearing tra il nodo corrente e il nodo in questione. Se il nodo è nello stesso quadrante della indicazione da consumare allora ottengo la distanza tra i due nodi, il limite di velocità della strada che li collega e calcolo i secondi da consumare se il mezzo andasse esattamente ad una velocità pari al limite della strada. Se i secondi consumati sono minori rispetto ai secondi rimanenti nella finestra temporale, mi calcolo la differenza e riaggiungo l'indicazione alla lista delle indicazioni. Se invece i secondi da consumare sono maggiori rispetto alla finestra temporale, ottengo una nuova indicazione e se il quadrante di quest'ultima è uguale al quadrante della precedente allora consumo i secondi rimanenti da questa nuova indicazione.
+Questo algoritmo corrisponde ad una visità in profondità del grafo (DFS). E' una funzione ricorsiva che ha come parametri il grafo da visitare, l'ID del nodo corrente, la lista delle indicazioni ed il numero di quadranti. Ad ogni istanza si controlla se esistono indicazioni da consumare e se il grafo contiene il nodo da analizzare, in caso di risposta affermativa settiamo il nodo come visitato, otteniamo l'indicazione da consumare e la lista dei nodi adiacenti al nodo corrente. Per ogni nodo adiacente, se non è stato già visitato, ne ricaviamo le coordinate e calcoliamo il bearing tra il nodo corrente e il nodo in questione. Se il nodo è nello stesso quadrante della indicazione da consumare allora ottengo la distanza tra i due nodi, il limite di velocità della strada che li collega e calcolo i secondi da consumare se il mezzo andasse esattamente ad una velocità pari al limite della strada. 
+
+Se i secondi consumati sono minori rispetto ai secondi rimanenti nell'indicazione da seguire, mi calcolo la differenza e riaggiungo l'indicazione alla lista delle indicazioni. Se invece i secondi da consumare sono maggiori rispetto alla finestra temporale, ottengo una nuova indicazione e se il quadrante di quest'ultima è uguale al quadrante della precedente allora consumo i secondi rimanenti da questa nuova indicazione.
 
 La computazione si blocca quando la visita arriva ad un nodo che non ha più nodi da visitare o quando le indicazioni sono già state consumate tutte. Ogni volta che la computazione si blocca, l'ultimo nodo visitato viene aggiunto ad una lista che corrisponde ai possibili output.
 
@@ -513,8 +532,9 @@ BestDecision è un algoritmo iterativo. La visita parte dal nodo Root e la gesti
 E' un algoritmo molto simile al BestDecision solo che ogni volta che l'algoritmo deve scegliere il nodo successivo da visitare, filtra i nodi adiacenti escludendo i nodi che si trovano in quadranti diversi da quello indicato dall'indicazione, se i nodi rimanenti sono più di uno allora effettua una scelta casuale.
 
 \subsubsection{DeadReckoning}
-L'algoritmo di DeadReckoning non è un algoritmo di visita del grafo in quanto non usa informazioni provenienti da OpenStreetMap. Come parametri ha le coordinate di partenza da cui iniziare a computare, la lista delle indicazioni e il limite di velocità con cui fare i calcoli.
-L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione calcola i metri corrispondenti allo spostamento, il bearing di esso e calcola le nuove coordinate.
+L'algoritmo di DeadReckoning non è un algoritmo di visita del grafo in quanto non si interfaccia con OpenStreetMap e con il grafo che l'algoritmo genera.
+E' un algoritmo iterativo e come parametri ha le coordinate di partenza da cui iniziare a computare, la lista delle indicazioni e il limite di velocità con cui fare i calcoli.
+L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione calcola i metri corrispondenti allo spostamento, il bearing di esso, successivamente calcola le nuove coordinate.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
@@ -522,10 +542,10 @@ L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione c
 \chapter{Performance Evaluation}                %crea il capitolo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-\subsection{Fase Preliminare}
-Per effettuare i test ho raccolto diverse tracce mediante l'applicazione Android in TestMode.
+\section{Fase Preliminare}
+Per effettuare i test ho raccolto alcune tracce mediante l'applicazione Android nella modalità TestMode.
 
-Per ognuna di queste tracce ho eseguito gli script Python variando di volta in volta alcuni parametri:
+Per ognuna di queste tracce ho eseguito gli algoritmi di visita variando di volta in volta alcuni parametri:
 \begin{itemize}
 \item Numero di quadranti: 2,4,8.
 \item Ampiezza della finestra temporale: 20sec, 10sec, 5sec, 1sec.
@@ -533,15 +553,147 @@ Per ognuna di queste tracce ho eseguito gli script Python variando di volta in v
 \item Limite di velocità: 30,50,70,90.
 \end{itemize}
 Per un totale di 192 risultati per ogni traccia.
-Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h.
+Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h. 
+Per cercare di capire le differenze di prestazione degli algoritmi in caso di ambito urbano ed extraurbano, le traccie non comprendono più di un tipo di ambito diverso. 
 
-Successivamente, ho generato un file CSV con i risultati di queste computazioni calcolando la distanza tra le coordinate proposte dagli algoritmi e le coordinate reali del punto di fine registrazione.
-Dal momento che l'algoritmo di Backtrack genera una lista di possibili locazioni, ho tenuto in considerazione il nodo più vicino alle coordinate generate dall'algoritmo di DeadReckoning.
-Per la RandomDecision invece è stato eseguito l'algoritmo 20 volte e calcolata la media delle distanze di ogni coordinate trovata.
+Ogni volta che un algoritmo calcola un risultato calcola anche l'errore in metri di quest'ultimo, ossia la distanza tra le coordinate calcolate e quelle reali. Successivamente lo scrive su un file CSV, generando quindi un unico file contenente tutti i risultati di tutte le tracce.
+Per valutare l'efficienza degli algoritmi, oltre all'errore in metri è stato generato anche l'errore in percentuale in base alla distanza del tracciato effettivamente percorso. Questo dato è stato inserito manualmente.
 
+Dal momento che l'algoritmo di Backtrack genera una lista di possibili output, ho tenuto in considerazione il nodo più vicino alle coordinate reali. In un possibile sviluppo futuro si può pensare a come trovare il migliore output da questa lista.
+Per la RandomDecision invece è stato eseguito l'algoritmo 20 volte e calcolata la media delle distanze di ogni coordinata trovata.
+Nel algoritmo di DeadReckoning gli unici parametri significativi sono il limite di velocità e l'ampiezza della finestra temporale.
 
+Dopo aver generato il file CSV contenente tutte le informazioni relative a tutte le computazioni, ho implementato uno script in Python, tramite matPlotLib, in grado di generare diversi grafici per cercare di valutare in maniera più accurata i risultati.
 
+Nel primo tipo di grafico generato possiamo vedere per ogni traccia l'errore in percentuale di ogni algoritmo. Abbiamo generato 12 grafici, uno per ogni combinazione di numero di quadranti e ampiezza della finestra temporale.
 
+Nel secondo tipo di grafico ho calcolato l'errore medio di tutte le tracce in percentuale per ogni singolo algoritmo. Anche in questo caso abbiamo generato 12 grafici.
+
+Nel terzo tipo di grafico abbiamo generato per ogni algoritmo 4 grafici, in ognuno dei quali abbiamo fissato l'ampiezza della finestra temporale ed analizzato l'andamento dell'errore in metri, per ogni numero di quadranti, in relazione alla lunghezza del tracciato effettivamente percorso di ogni traccia. In totali abbiamo generato 4 grafici per ogni algoritmo, quindi 16 grafici in totale.
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{firstChart2-1} 
+\includegraphics[scale=0.4]{firstChart2-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{firstChart2-10} 
+\includegraphics[scale=0.4]{firstChart2-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{firstChart4-1} 
+\includegraphics[scale=0.4]{firstChart4-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{firstChart4-10} 
+\includegraphics[scale=0.4]{firstChart4-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{firstChart8-1} 
+\includegraphics[scale=0.4]{firstChart8-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{firstChart8-10} 
+\includegraphics[scale=0.4]{firstChart8-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{secondChart2-1} 
+\includegraphics[scale=0.4]{secondChart2-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{secondChart2-10} 
+\includegraphics[scale=0.4]{secondChart2-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{secondChart4-1} 
+\includegraphics[scale=0.4]{secondChart4-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{secondChart4-10} 
+\includegraphics[scale=0.4]{secondChart4-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{secondChart8-1} 
+\includegraphics[scale=0.4]{secondChart8-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{secondChart8-10} 
+\includegraphics[scale=0.4]{secondChart8-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{thirdChartBacktrack-1} 
+\includegraphics[scale=0.4]{thirdChartBacktrack-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{thirdChartBacktrack-10} 
+\includegraphics[scale=0.4]{thirdChartBacktrack-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{thirdChartBestDecision-1} 
+\includegraphics[scale=0.4]{thirdChartBestDecision-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{thirdChartBestDecision-10} 
+\includegraphics[scale=0.4]{thirdChartBestDecision-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{thirdChartRandomDecision-1} 
+\includegraphics[scale=0.4]{thirdChartRandomDecision-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{thirdChartRandomDecision-10} 
+\includegraphics[scale=0.4]{thirdChartRandomDecision-20} 
+\end{figure}
+
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{thirdChartDeadReckoning-1} 
+\includegraphics[scale=0.4]{thirdChartDeadReckoning-5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{thirdChartDeadReckoning-10} 
+\includegraphics[scale=0.4]{thirdChartDeadReckoning-20} 
+\end{figure}
+
+\newpage
+\section{Considerazioni}
+...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -606,6 +758,7 @@ Munster, Germany, July 4-7 1989.
 \bibitem{K17} \url{https://developer.android.com/about/dashboards/index.html}
 \bibitem{K18} \url{https://github.com/schoentoon/ParallelIntentService}
 \bibitem{K19} \url{http://loopj.com/android-async-http/}
+\bibitem{K20} W. Wrigley, "History of Inertial Navigation", Navigation, vol.24, no.1. Blackwell Publishing Ltd, 1977.
 
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
