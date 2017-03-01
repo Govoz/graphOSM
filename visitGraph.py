@@ -440,5 +440,6 @@ def algorithmDeadReckoning(coordinate, listIndication, speedLimit):
         lon = newCoordinate['longitude']
 
         coordinateFinal = str(lat) + " , " + str(lon)
+        print(coordinateFinal)
 
     return newCoordinate

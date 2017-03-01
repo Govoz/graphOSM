@@ -64,7 +64,6 @@ def manageGraph(gpsStart, idNode, radius, listIndication, gpsStop, soup, nquadra
         reInitListNodeVisitedGraph()
 
 
-
     elif algorithm == 1:
         newCoordinate = visitGraphBestDecision(G, idNode, listIndication, soup, nquadrant, speedLimit)
 

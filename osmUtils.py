@@ -80,7 +80,7 @@ def reverseGeocodingGraph(gpsPoint, radius, soup):
     node = getNearestNode(listNodeFiltered, gpsPoint)
 
     #print("ReverseGeocoding: Node: " + str(node['id']))
-
+    print(node)
     return node['id']
 
 #TODO: rendere parametrica con numero di quadranti in cui dividere (?)

@@ -37,9 +37,10 @@ def firstGraph(listData, quadrant, windowsTime):
             elif element[7] == 'DeadReckoning':
                 listDataDeadReckoning.append(element)
 
+
     newListDataBacktrack = []
     index = 0
-    while (index < len(listDataBacktrack)):
+    while (index< len(listDataBacktrack)):
         minTemp = float(listDataBacktrack[index][3])
         minRow = listDataBacktrack[index]
         for i in range(index, index + 4):
@@ -50,9 +51,10 @@ def firstGraph(listData, quadrant, windowsTime):
 
         index = index + 4
 
+
     newListBestDecision = []
     index = 0
-    while (index < len(listDataBestDecision)):
+    while (index< len(listDataBestDecision)):
         minTemp = float(listDataBestDecision[index][3])
         minRow = listDataBestDecision[index]
         for i in range(index, index + 4):
@@ -65,7 +67,7 @@ def firstGraph(listData, quadrant, windowsTime):
 
     newListRandomDecision = []
     index = 0
-    while (index < len(listDataRandomDecision)):
+    while (index< len(listDataRandomDecision)):
         minTemp = float(listDataRandomDecision[index][3])
         minRow = listDataRandomDecision[index]
         for i in range(index, index + 4):
@@ -78,7 +80,7 @@ def firstGraph(listData, quadrant, windowsTime):
 
     newListDeadReckoning = []
     index = 0
-    while (index < len(listDataDeadReckoning)):
+    while (index< len(listDataDeadReckoning)):
         minTemp = float(listDataDeadReckoning[index][3])
         minRow = listDataDeadReckoning[index]
         for i in range(index, index + 4):
@@ -102,6 +104,7 @@ def firstGraph(listData, quadrant, windowsTime):
         listTuplesBacktrack.append(float(newListDataBacktrack[i][3]))
     backtrackValue = tuple(listTuplesBacktrack)
 
+
     listTuplesBestDecision = []
     for i in range(len(newListBestDecision)):
         listTuplesBestDecision.append(float(newListBestDecision[i][3]))
@@ -117,14 +120,14 @@ def firstGraph(listData, quadrant, windowsTime):
         listTuplesDeadReckoning.append(float(newListDeadReckoning[i][3]))
     deadReckoningValue = tuple(listTuplesDeadReckoning)
 
-    print('Backtrack')
-    print(backtrackValue)
-    print('BestDecision')
-    print(bestDecisionValue)
-    print('RandomDecision')
-    print(randomDecisionValue)
-    print('DeadReckoning')
-    print(deadReckoningValue)
+    # print('Backtrack')
+    # print(backtrackValue)
+    # print('BestDecision')
+    # print(bestDecisionValue)
+    # print('RandomDecision')
+    # print(randomDecisionValue)
+    # print('DeadReckoning')
+    # print(deadReckoningValue)
 
     fig, ax = plt.subplots()
 
@@ -160,8 +163,9 @@ def firstGraph(listData, quadrant, windowsTime):
 
     plt.ylabel('e%')
     plt.title('Errore in rapporto alla distanza della traccia. Quadranti: ' + str(quadrant) + ', WindowsTime: ' + str(windowsTime))
-    plt.xticks(index + (bar_width / 2) * 2  , ('File1', 'File2', 'File3', 'File4', 'File5', 'File6'))
+    plt.xticks(index + (bar_width / 2) * 2  , ('File1', 'File2', 'File3', 'File4', 'File5', 'File6', 'File7', 'File8', 'File9', 'File10', 'File11', 'File12'))
     plt.legend()
+    plt.gca().set_ylim([0,100])
     plt.tight_layout()
     plt.grid(True)
     plt.savefig('output/firstChart' + str(quadrant) + '-' + str(windowsTime) + '.png')
@@ -348,8 +352,8 @@ def thirdGraph(listData, algorithm, windowsTime):
         elif int(element[4]) == 8:
             listEightQuadrants.append(element)
 
-    for i in range(len(listEightQuadrants)):
-        print(listEightQuadrants[i])
+    # for i in range(len(listEightQuadrants)):
+    #     print(listEightQuadrants[i])
 
     tupleErrorTwoQuadrants = []
     tupleDistanceTwoQuadrants = []
@@ -369,27 +373,65 @@ def thirdGraph(listData, algorithm, windowsTime):
         tupleDistanceEightQuadrants.append(listEightQuadrants[i][2])
         tupleErrorEightQuadrants.append(listEightQuadrants[i][8])
 
+    print(tupleDistanceTwoQuadrants)
+    print(tupleErrorTwoQuadrants)
+    #--------------------
+    # fig, ax = plt.subplots()
+    #
+    # #prima tutte le x e poi tutte le y
+    # ax.plot(tuple(tupleDistanceTwoQuadrants), tuple(tupleErrorTwoQuadrants), label = '2 quadr.')
+    # ax.plot(tuple(tupleDistanceFourQuadrants), tuple(tupleErrorFourQuadrants), label = '4 quadr.')
+    # ax.plot(tuple(tupleDistanceEightQuadrants), tuple(tupleErrorEightQuadrants),'-.', label = '8 quadr.')
+    #
+    # plt.ylabel('error meter')
+    # plt.xlabel('track meter')
+    # plt.title(str(algorithm) + ', WindowsTime: ' + str(windowsTime))
+    # plt.tight_layout()
+    #
+    # if str(algorithm) != 'DeadReckoning':
+    #     plt.legend()
+    #
+    # plt.gca().set_xlim([450, 3500])
+    # plt.gca().set_ylim([0, 3000])
+    #
+    # plt.gca().yaxis.grid(True)
+    # plt.savefig('output/thirdChart' + str(algorithm) + '-' + str(windowsTime) + '.png')
+    #plt.show()
+
+def fourGraph(listData, windowsTime):
+    listDataAlgorithm = []
 
     fig, ax = plt.subplots()
+    tupleDistance = ['450', '500', '550', '600', '750', '800', '1400', '1500', '3000', '3100', '3200', '4300']
 
-    #prima tutte le x e poi tutte le y
-    ax.plot(tuple(tupleDistanceTwoQuadrants), tuple(tupleErrorTwoQuadrants), label = '2 quadr.')
-    ax.plot(tuple(tupleDistanceFourQuadrants), tuple(tupleErrorFourQuadrants), label = '4 quadr.')
-    ax.plot(tuple(tupleDistanceEightQuadrants), tuple(tupleErrorEightQuadrants),'-.', label = '8 quadr.')
+    tupleErrorBacktrack = ['90.7315425348', '109.1977160895', '63.3658097656', '52.1916703737', '78.6214097379', '9.1013507054', '151.5211752288', '92.3764589123', '23.7132594758', '26.528958505', '158.5173099758', '25.0245732642']
+
+    tupleErrorBestDecision = ['281.7181503534', '142.3756005013', '134.7335578788', '229.2108322158', '258.8628991327', '143.6713889754', '296.8816370321', '616.666556843', '548.8097028586', '397.2573905226', '1446.6819557786', '662.550017939']
+
+    tupleErrorRandomDecision = ['292.4105961086', '230.2915928929', '185.6343553959', '70.7283389631', '641.1441453639', '389.9793796673', '480.2108776574', '501.5484886495', '757.6201536304', '401.2665738501', '2093.0454540616', '560.7486954416']
+
+    tupleErrorDeadReckoning = ['135.2419234843', '73.2550928473', '62.4171063996', '286.4862688067', '285.2648802419', '597.6241403245', '129.4325231947', '174.5837898067', '856.9915226249', '507.8791121878', '262.4487209878', '914.2478697389']
+
+    # prima tutte le x e poi tutte le y
+    ax.plot(tuple(tupleDistance), tuple(tupleErrorBacktrack), label='Backtrack')
+    ax.plot(tuple(tupleDistance), tuple(tupleErrorBestDecision), label='BestDecision')
+    ax.plot(tuple(tupleDistance), tuple(tupleErrorRandomDecision), '-.', label='RandomDecision')
+    ax.plot(tuple(tupleDistance), tuple(tupleErrorDeadReckoning), '-.', label='DeadReckoning')
 
     plt.ylabel('error meter')
     plt.xlabel('track meter')
     plt.title(str(algorithm) + ', WindowsTime: ' + str(windowsTime))
     plt.tight_layout()
 
-    plt.legend()
+    if str(algorithm) != 'DeadReckoning':
+        plt.legend()
 
-    plt.gca().set_xlim([450, 3500])
-    plt.gca().set_ylim([0, 300])
+    plt.gca().set_xlim([450, 4500])
+    plt.gca().set_ylim([0, 3000])
 
     plt.gca().yaxis.grid(True)
-    plt.savefig('output/thirdChart' + str(algorithm) + '-' + str(windowsTime) + '.png')
-    #plt.show()
+    plt.savefig('output/fourChart' + str(windowsTime) + '.png')
+    # plt.show()
 
 
 #----------------------------------------#
@@ -399,9 +441,15 @@ algorithm = ['Backtrack', 'BestDecision', 'RandomDecision', 'DeadReckoning']
 
 listData = importCsv()
 
-for x in range(len(windowsTimeRange)):
-    #for i in range(len(nQuadrantsRange)):
-     #    firstGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
-     #   secondGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
-    #for w in range(len(algorithm)):
-     thirdGraph(listData, algorithm[3], windowsTimeRange[x])
+# for x in range(len(windowsTimeRange)):
+#     for i in range(len(nQuadrantsRange)):
+#         #firstGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
+#         #secondGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
+#         for w in range(len(algorithm)):
+#             thirdGraph(listData, algorithm[w], windowsTimeRange[x])
+#
+# thirdGraph(listData, algorithm[0], 20)
+# thirdGraph(listData, algorithm[1], 20)
+# thirdGraph(listData, algorithm[2], 20)
+# thirdGraph(listData, algorithm[3], 20)
+fourGraph(listData, 20)

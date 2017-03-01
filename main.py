@@ -9,7 +9,7 @@ from osmUtils import *
 # osmfilter.exe osmFile\test\353755078_2000.osm --parameter-file=my_parameters --drop-relations > osmFile\test\353755078_2000osmfilter.osm
 
 # esporto tutto con raggio 2000m, non cambiare
-radius = 2000
+radius = 1000
 # windowsTime = 10
 # nQuadrants = 2
 # # 0  backtrack, 1  bestDecision, 2 randomDecision, 3 deadReckoning
@@ -22,7 +22,7 @@ algorithmRange = [0, 1, 2, 3]
 speedLimitRange = [30, 50, 70, 90]
 
 
-pathFile = 'csvFile/Sensor_record_20170129_102209_AndroSensor.csv'
+pathFile = 'csvFile/Sensor_record_20170228_200204_AndroSensor.csv'
 
 # windowsTime = 10
 # nQuadrants = 2
@@ -34,13 +34,13 @@ gpsStart = getGpsStart(csv)
 gpsStop = getGpsStop(csv)
 
 distanceStartStop = getDistance(gpsStart['latitude'], gpsStart['longitude'], gpsStop['latitude'], gpsStop['longitude'])
-
-# ottengo un nodo generico da cui creare il .osm
+# # ottengo un nodo generico da cui creare il .osm
 nodeToCreateSoupFile = reverseGeocoding(gpsStart, 100)
 soup = getOSMfile(nodeToCreateSoupFile, radius)
+
 # ora cerco il nodo da cui far cominciare il grafo, deve appartenere ad una strada.
 rootNodeId = reverseGeocodingGraph(gpsStart, 200, soup)
-
+#
 i = 0
 
 for alg in range(len(algorithmRange)):
@@ -55,17 +55,18 @@ for alg in range(len(algorithmRange)):
 
                 listIndication = getAzimuth(csv, windowsTime, nQuadrants)
 
-                distance = manageGraph(gpsStart, rootNodeId, radius, listIndication, gpsStop, soup, nQuadrants, algorithm, speedLimit)
+                distance = manageGraph(gpsStart, rootNodeId, 750, listIndication, gpsStop, soup, nQuadrants, algorithm, speedLimit)
                 print(distance)
                 print(algorithm)
                 writeResultOnTxt(pathFile, nQuadrants, windowsTime, algorithm, speedLimit, distance)
                 i += 1
                 print(str(i) + "/192")
 
-# #
-# windowsTime = 10
+
+# windowsTime = 1
 # nQuadrants = 2
-# algorithm = 1
+# algorithm = 3
 # listIndication = getAzimuth(csv, windowsTime, nQuadrants)
 #
-# distance = manageGraph(gpsStart, rootNodeId, radius, listIndication, gpsStop, soup, nQuadrants, algorithm, 50)
+# distance = manageGraph(gpsStart, rootNodeId, 750, listIndication, gpsStop, soup, nQuadrants, algorithm, 50)
+# print(distance)

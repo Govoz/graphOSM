@@ -65,6 +65,49 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%definisce nuovi comandi
 %
 \begin{document}
+\begin{titlepage}
+\begin{center}
+{{\Large{\textsc{Alma Mater Studiorum $\cdot$ Universit\`a di
+Bologna}}}} \rule[0.1cm]{15.8cm}{0.1mm}
+\rule[0.5cm]{15.8cm}{0.6mm}
+{\small{\bf SCUOLA DI SCIENZE\\
+Corso di Laurea in Informatica }}
+\end{center}
+\vspace{15mm}
+\begin{center}
+{\LARGE{\bf Un sistema di localizzazione inerziale mediante uno smartphone.}}\\
+\end{center}
+\vspace{40mm}
+\par
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+{\large{\bf Relatore:\\
+Chiar.mo Prof.\\
+Luciano Bononi}}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}\raggedleft
+{\large{\bf Presentata da:\\
+Federico Govoni}}
+\end{minipage}
+\vspace{8mm}
+\par
+\noindent
+\begin{minipage}[t]{0.47\textwidth}
+{\large{\bf Correlatore:\\
+Dott.\\
+Luca Bedogni}}
+\end{minipage}
+\vspace{20mm}
+\begin{center}
+{\large{\bf Sessione III\\%inserire il numero della sessione in cui ci si laurea
+Anno Accademico 2015/16}}%inserire l'anno accademico a cui si è iscritti
+\end{center}
+\end{titlepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}%non numera l'ultima pagina sinistra
+
+
+
 \begin{titlepage}                       %crea un ambiente libero da vincoli
                                         %   di margini e grandezza caratteri:
                                         %   si pu\`o modificare quello che si
@@ -104,9 +147,7 @@ INDICE}}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \listoffigures                          %crea l'elenco delle figure
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
-\clearpage{\pagestyle{empty}\cleardoublepage}
-\listoftables                           %crea l'elenco delle tabelle
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+
 \clearpage{\pagestyle{empty}\cleardoublepage}
 \pagenumbering{arabic}                  %mette i numeri arabi
 \chapter{Introduzione}                %crea il capitolo
@@ -117,7 +158,7 @@ I primi sistemi di navigazione inerziale risalgono alla 2\textsuperscript{$\circ
 Moltissimi oggetti di uso quotidiano hanno al loro interno sensori di qualsiasi tipo. In ambito automotive, dagli anni '80, i sensori si sono sempre più affermati come dispositivi di estrema importanza, per aumentare prestazioni, sicurezza e diminuire i consumi. 
 Da qualche anno a questa parte, nella maggior parte degli smartphone sono presenti diversi sensori come l'accelerometro, giroscopio e il magnetometro. I campi di utilizzo di questi sensori sono innumerevoli, spaziano dai videogiochi fino ad applicazioni multimediali.
 
-Si è pensato di implementare un localizzatore inerziale di veicoli mediante uno smartphone come uno strumento per localizzare il veicolo dopo un'eventuale furto di quest'ultimo. I sensori con cui andremo a lavorare sono il magnetometro, il giroscopio e l'accelerometro. Il sistema progettato ed implementato verterà sia sulla rilevazione del furto e dei dati generati dai sensori e sia la parte algoritmica riguardante la fase di localizzazione vera e propria.
+Si è pensato di implementare un localizzatore inerziale di veicoli mediante uno smartphone come uno strumento per localizzare il veicolo dopo un'eventuale furto di quest'ultimo. I sensori con cui andremo a lavorare sono il magnetometro, il giroscopio e l'accelerometro. Il sistema progettato ed implementato verterà sia sulla rilevazione del furto e sulla raccolta dei dati generati dai sensori e sia sulla parte algoritmica riguardante la fase di localizzazione vera e propria.
 
 L'elaborato sarà articolato come segue:
 
@@ -156,13 +197,13 @@ I sensori sono: l'accelerometro, il giroscopio e il magnetometro. Il loro funzio
 Il sistema, come detto in precedenza, sfrutta esclusivamente i sensori inerziali, a parte nella fase di inizializzazione.\\
 L'inizializzazione consiste nel settare il sistema con tre parametri: la velocità iniziale, l'orientamento iniziale e le coordinate geografiche di partenza. Velocità e posizione di partenza sono dati forniti da strumenti esterni e sono fondamentali per le computazioni successive.\\
 
-L'Inertial Navigation Systema è un sistema ampliamento già usato in ambito marittimo, aeronautico ed aerospaziale. 
+L'Inertial Navigation System è un sistema ampliamento già usato in ambito marittimo, aeronautico ed aerospaziale. 
 In ambito automotive è usato come sistema di navigazione nel caso in cui la tecnologia GPS non sia in grado di funzionare correttamente come nel caso di parcheggi sotterranei, gallerie e in ambito urbano nel caso in cui si percorra una strada in un area piena di edifici che disturbano il passaggio delle onde radio.
 
 L'Inertial Navigation System presenta diversi pregi, è un sistema autonomo che non ha bisogno di strumenti esterni o particolari condizioni di visibilità per funzionare. Non ha bisogno di ricevitori e non emette segnali che possono essere identificati da radar.
 Presenta anche alcuni difetti, come lo scarto quadratico medio dell'errore relativo che aumenta con l'aumentare della durata della navigazione e il costo di attrezzature e sensori in grado di garantire una buona accuratezza.
 
-\subsection{Dead Reckoning}
+\subsubsection{Dead Reckoning}
 Il meccanismo di Dead Reckoning consiste nel determinare la posizione di un corpo in movimento sapendo la posizione di partenza ed altre informazioni come la velocità, direzione e durata dello spostamento.
 
 Possiamo ricondurre questo concetto ad una semplice somma vettoriale. Poniamo la posizione di partenza in un punto nel piano cartesiano, mentre lo spostamento è indicato come un vettore che parte dalla posizione di partenza, che ha come direzione la direzione dello spostamento mentre come modulo, la distanza percorsa, la quale viene ricavata dalla velocità e dalla durata dello spostamento.
@@ -217,7 +258,7 @@ Nella piattaforma Android possiamo suddividerli in quattro macroaree \cite{K9}:
 
 \subsection{MEMS}
 MEMS (Micro Electro-Mechanical Systems) è la tecnologia grazie alla quale è possibile realizzare sensori integrati nello smartphone.\\
-Un dispositivo MEMS ha un fattore di miniaturizzazione molto elevato, le dimensioni sono contenute, nell'ordine di pochi millimetri di volume.\\
+Un dispositivo MEMS ha un fattore di miniaturizzazione molto elevato e le dimensioni sono contenute, nell'ordine di pochi millimetri cubi di volume.\\
 Questo sistema integra dispositivi meccanici, elettrici ed elettronici.\\
 La parte meccanica comprende i sensori veri e propri, piccoli chip in grado di misurare fenomeni di natura meccanica, magnetica ed ambientale.\\
 Gli elementi meccanici ed elettronici sono integrati in uno substrato di silicio. La parte elettronica del sistema elabora i dati e comunica con lo smartphone. \cite{K14}
@@ -235,7 +276,7 @@ In figura 1.3 possiamo vedere lo schema di funzionamento di un accelerometro MEM
 Nei valori misurati dall'accelerometro è inclusa la forza di gravità, infatti ponendo lo smartphone su un tavolo vediamo che l'accelerometro relativo all'asse Z rileva un'accelerazione pari a 9,8 $m/s^2$.
 Per avere valori corretti bisogna capire anche come è orientato nello spazio il device, tramite il giroscopio e applicare un filtro passa-alto per rimuovere la forza di gravità dai tre assi e isolare quindi l'accelerazione lineare.
 
-Mediante l'accelerometro e il calcolo della sua magnitudo possiamo determinare accelerazioni e decelerazioni, quindi capire, ad esempio, quando e in che modo un'autovettura frena o accelera e quindi capire anche quando è presente un cambio di velocità del mezzo. \cite{K1, K2, K3, K4, K5, K6}
+Mediante l'accelerometro e il calcolo della sua magnitudo possiamo determinare accelerazioni e decelerazioni, quindi capire quando e in che modo un'autovettura frena o accelera e di conseguenza capire anche quando è presente un cambio di velocità del mezzo. \cite{K1, K2, K3, K4, K5, K6}
 
 \begin{center}
 $ magnitude = \sqrt{ x^2 + y^2 + z^2}$
@@ -257,11 +298,11 @@ $\overrightarrow{L} =  \overrightarrow{r} \times \overrightarrow{p}$
 \caption{Giroscopio} 
 \end{figure}
 
-Come vediamo nella figura 1.4, l'orientamento del device si può esprimere mediante la velocità rotazionale intorno ai suoi 3 assi, nello specifico, la velocità angolare intorno all'asse x è denominata Pitch, intorno all'asse y è denominata Roll, intorno all'asse z è denominata Yaw mentre l'orientamento del device rispetto al nord magnetico è denominato Azimuth.
+Come vediamo nella figura 2.4, l'orientamento del device si può esprimere mediante la velocità rotazionale intorno ai suoi 3 assi, nello specifico, la velocità angolare intorno all'asse x è denominata Pitch, intorno all'asse y è denominata Roll, intorno all'asse z è denominata Yaw mentre l'orientamento del device rispetto al nord magnetico è denominato Azimuth.
 
 
 Con il giroscopio possiamo determinare l'orientamento del device nello spazio, questa informazione è fondamentale per interpretare correttamente i valori prodotti da altri sensori, come l'accelerometro.
-E' un tipo di sensore che non molti smartphone posseggono, è possibile, però, simulare il sensore mediante i valori ottenuti dal magnetometro e dall'accelerometro mediante il calcolo delle matrici rotazionali, questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
+E' un tipo di sensore che non molti smartphone posseggono, è possibile però, simulare il sensore mediante i valori ottenuti dal magnetometro e dall'accelerometro mediante il calcolo delle matrici rotazionali, questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
 \subsection{Magnetometro}
 Il magnetometro è un dispositivo che misura l'intensità del campo magnetico relativamente ai suoi 3 assi. L'unità di misura è $\mu T$. 
 
@@ -339,7 +380,7 @@ Al giorno d'oggi è sempre più facile trovare delle Open-Network \cite{K11}, os
 
 
 
-\section{OpenStreetMap e Grafi}
+\section{OpenStreetMap}
 OpenStreetMap (OSM) \cite{K12} è un progetto collaborativo open-data che offre un servizio cartografico.\\
 OpenStreetMap è stato fondato nel 2004 da Steve Coast e ad ora è usato da molti servizi come Flickr, Strava, WolframAlpha e tanti altri \cite{K13}.
 
@@ -360,8 +401,8 @@ I tag sono formati da un insieme di coppie chiave-valore. \\
 Ogni way ha un wayId univoco, una lista di nodi e diversi tag. I più ricorrenti sono "highway", "name", "area", "oneway" e "maxspeed".
 \item Relation: una relation è formata da uno o più tags e da un insieme di nodi/way o altre relation che vengono usate per definire relazioni logiche o geografiche tra più elementi. Può essere usata, per esempio, per definire le fermate di un autobus o le stazioni ferroviarie di una determinata linea.
 \end{itemize}
-
-\subsection{Grafi}
+\newpage
+\section{Grafi}
 Un paese, una provincia o addirittura tutto il pianeta può essere inteso come un enorme grafo pesato.
 
 Un nodo del grafo può rappresentare un'intersezione, ossia un punto geografico in cui convergono più strade. Mentre un arco del grafo può rappresentare la strada che collega due intersezioni.
@@ -392,7 +433,7 @@ Il progetto di tesi è composto da due parti distinte:
 \newpage
 \section{Applicazione Android}
 L'applicazione è stata scritta in Java, mediante Android Studio. \\
-La versione minima di SKD supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,7 \% dei device in uso \cite{K17}.
+La versione minima di SDK supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,7 \% dei device in uso \cite{K17}.
 
 \begin{figure}[h!]
 \centering 
@@ -492,20 +533,35 @@ Il server è stato sviluppato in Python 3.
 Come l'applicazione Android, anche esso ha una duplice modalità di utilizzo. Abbiamo la modalità che si interfaccia con l'applicazione Android in Anti-Theft Mode, quindi riceve i dati, li analizza e genera dei possibili punti geografici in cui il mezzo si potrebbe trovare tramite i vari algoritmi. L'altra modalità di utilizzo è quella che si interfaccia con la Test Mode dell'applicazione Android, ossia cerca di valutare l'efficienza dei vari algoritmi confrontando le posizioni calcolate dagli algoritmi con la posizione reale di fine registrazione. 
 Il funzionamento è il medesimo.
 
-I valori con cui gli algoritmi lavorano sono esclusivamente i valori relativi al magnetometro, quindi l'Azimuth.
+I valori con cui gli algoritmi lavorano sono esclusivamente i valori relativi all'Azimuth.
 
 Il server, appena riceve i dati, ottiene le informazioni relative al punto geografico di partenza, quindi latitudine, longitudine e timestamp relativo all'inizio della registrazione.
 Una volta ottenute le coordinate geografiche di partenza avviene il reverseGeocoding, esso consiste in una query a OpenStreetMap dalla quale otteniamo l'ID del nodo più vicino alle coordinate geografiche date in input. La query viene eseguita mediante Python Overpass Wrapper (Overpy). Dalla query otteniamo una lista di Nodi all'interno di un certo raggio, da questa lista filtriamo i nodi che appartengono ad una strada, controllando se da ogni nodo è possibile raggiungerne almeno una, successivamente cerchiamo il più vicino alle coordinate di partenza.
-Una volta ottenuto l'ID del nodo, il sistema si calcolo una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. Successivamente, si interfaccia direttamente con le API di OpenStreetMap e scarica il file OSM-XML relativo alla BoundingBox. La richiesta avviene mediante urllib. Una volta ottenuto l'XML, esso viene salvato per poterlo usare in futuro in maniera più rapida per eventuali nuove localizzazioni. L'XML viene parsato mediante BeatifulSoup.
+Una volta ottenuto l'ID del nodo, il sistema si calcolo una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. 
+
+In seguito, il sistema si interfaccia direttamente con le API di OpenStreetMap e scarica il file OSM-XML relativo alla BoundingBox. La richiesta avviene mediante urllib. Una volta ottenuto l'XML, esso viene salvato per poterlo usare in futuro in maniera più rapida per eventuali nuove localizzazioni. L'XML viene parsato mediante BeautifulSoup.
 
 
-La fase successiva consiste nella generazione del grafo pesato mediante NetworkX. La funzione adibita alla costruzione del grafo è una funziona ricorsiva che ha come parametri il grafo stesso, l'ID del nodo che si sta analizzando, le coordinate del nodo Root, il raggio ossia la distanza in metri massima tra il nodo Root e il nodo da aggiungere, e l'oggetto parsato mediante BeatifulSoup corrispondente al file OSM-XML.
+La fase successiva consiste nella generazione del grafo pesato mediante NetworkX, il quale è una libreria Python che fornisce un'implementazione di un grafo mediante una struttura dati di tipo dictionary basata su liste di adiacenza.
+
+Il file OSM-XML è un file contenente tutte le informazioni riguardanti ad una determinata area geografica. Per interpretare tali informazioni ho implementato due classi: Intersection e Road.
+
+La classe Intersection è la classe relativa alle intersezioni stradali, ossia i nodi in cui convergono più strade. Ogni oggetto di tipo Intersection ha un ID, una latitudine ed una longitudine.
+
+
+La classe Road è la classe relativa alle strade, ossia i segmenti che collegano tra loro due intersezioni. Ogni oggetto di tipo Road ha un ID, il nome della strada, il tipo di strada ed il limite di velocità. 
+
+
+Ho implementato diverse funzioni indispensabili per costruire e navigare il grafo. Abbiamo \textit{getListIntersection} che prende in input un oggetto di tipo Road e restituisce una lista di Intersection presenti nella strada. \textit{getListWayReached} che prende in input un oggetto di tipo Intersection e restituisce la lista di Road che convergono in esso. \textit{getCommonWay} è una funzione che ha come parametri due oggetti di tipo Intersection e restituisce, se esiste, l'oggetto Road che li congiunge.
+
+
+La funzione adibita alla costruzione del grafo è una funziona ricorsiva che ha come parametri il grafo stesso, l'ID del nodo che si sta analizzando, le coordinate del nodo Root, il raggio, ossia la distanza in metri massima tra il nodo Root e il nodo da aggiungere, e l'oggetto parsato mediante BeautifulSoup corrispondente al file OSM-XML.
 
 Per ogni nodo che analizziamo ricaviamo mediante il costruttore di Intersection le coordinate geografiche, ne calcoliamo la distanza dal nodo Root e nel caso la distanza sia minore rispetto al raggio della BoundingBox continuiamo ad analizzarlo.
 
 Otteniamo una lista di strade, le quali si possono raggiungere direttamente dal nodo, nel caso il nodo facesse parte della shape della strada allora la lista avrà un solo elemento, ossia la strada stessa, nel caso in cui il nodo sia un intersezione allora avremmo tutte le strade che intersecano l'incrocio.
 
-Successivamente, per ognuna di queste strade, otteniamo la lista di intersezioni e se l'intersezione non fa già parte del grafo allora otteniamo il nodo relativo all'intersezione, la distanza tra le due intersezioni e informazioni sulla strada che le collega. Aggiungiamo l'arco tra il nodo corrente e il nodo trovato nel grafo, dando come peso la distanza in metri tra i due nodi, successivamente viene richiamata la funzione ricorsiva dando come nodo da analizzare il nodo appena trovato.
+Successivamente, per ognuna di queste strade, otteniamo la lista di intersezioni e se l'intersezione non fa già parte del grafo allora otteniamo il nodo relativo all'intersezione, la distanza tra le due intersezioni e le informazioni sulla strada che le collega. In seguito, aggiungiamo nel grafo l'arco tra il nodo corrente e il nodo trovato, dando come peso la distanza in metri tra i due nodi, successivamente viene richiamata la funzione ricorsiva dando come nodo da analizzare il nodo appena trovato.
 
 Una volta generato il grafo lo esportiamo per poterlo usare in future computazioni successive in maniera più rapida.
 
@@ -513,28 +569,28 @@ La fase seguente è quella relativa agli algoritmi di visita del grafo e viene d
 \newpage
 \subsection{Algoritmi di visita}
 I dati ottenuti dall'applicazione Android servono per generare indicazioni che gli algoritmi di visita del grafo useranno per prendere decisioni su che arco percorrere.
-Le indicazioni vengono generate tramite una funzione getAzimuth che prenderà come parametro i dati stessi, la lunghezza della finestra temporale e il numero di quadranti in cui dividere la circonferenza. La funzione scorrerà i dati ottenuti ed aggregherà i valori contenuti nella medesima finestra temporale, ne calcolerà la media, il quadrante in cui l'Azimuth medio ricade e la durata dell'indicazione che sarà pari alla lunghezza della finestra temporale, ad eccezione dell'ultima indicazione.
+Le indicazioni vengono generate tramite una funzione \textit{getAzimuth} che prenderà come parametri i dati stessi, la lunghezza della finestra temporale e il numero di quadranti in cui dividere la circonferenza. La funzione scorrerà i dati ottenuti ed aggregherà i valori contenuti nella medesima finestra temporale, ne calcolerà la media, il quadrante in cui l'Azimuth medio ricade e la durata dell'indicazione che sarà pari alla lunghezza della finestra temporale, ad eccezione dell'ultima indicazione.
 La lista delle indicazioni è implementata come uno stack.
 
 Ora passiamo a descrivere gli algoritmi:
 
 \subsubsection{Backtrack}
-Questo algoritmo corrisponde ad una visità in profondità del grafo (DFS). E' una funzione ricorsiva che ha come parametri il grafo da visitare, l'ID del nodo corrente, la lista delle indicazioni ed il numero di quadranti. Ad ogni istanza si controlla se esistono indicazioni da consumare e se il grafo contiene il nodo da analizzare, in caso di risposta affermativa settiamo il nodo come visitato, otteniamo l'indicazione da consumare e la lista dei nodi adiacenti al nodo corrente. Per ogni nodo adiacente, se non è stato già visitato, ne ricaviamo le coordinate e calcoliamo il bearing tra il nodo corrente e il nodo in questione. Se il nodo è nello stesso quadrante della indicazione da consumare allora ottengo la distanza tra i due nodi, il limite di velocità della strada che li collega e calcolo i secondi da consumare se il mezzo andasse esattamente ad una velocità pari al limite della strada. 
+Questo algoritmo corrisponde ad una visità in profondità del grafo (DFS). E' una funzione ricorsiva che ha come parametri il grafo da visitare, l'ID del nodo corrente, la lista delle indicazioni ed il numero di quadranti. Ad ogni istanza si controlla se esistono indicazioni da consumare e se il grafo contiene il nodo da analizzare, in caso di risposta affermativa settiamo il nodo come visitato, otteniamo l'indicazione da consumare e la lista dei nodi adiacenti al nodo corrente. Per ogni nodo adiacente, se non è stato già visitato, ne ricaviamo le coordinate e calcoliamo il bearing tra il nodo corrente e il nodo in questione. Se il nodo è nello stesso quadrante dell'indicazione da consumare allora ottengo la distanza tra i due nodi, il limite di velocità della strada che li collega e calcolo i secondi da consumare, presupponendo che il mezzo vada ad una velocità pari al limite di velocità della strada. 
 
 Se i secondi consumati sono minori rispetto ai secondi rimanenti nell'indicazione da seguire, mi calcolo la differenza e riaggiungo l'indicazione alla lista delle indicazioni. Se invece i secondi da consumare sono maggiori rispetto alla finestra temporale, ottengo una nuova indicazione e se il quadrante di quest'ultima è uguale al quadrante della precedente allora consumo i secondi rimanenti da questa nuova indicazione.
 
 La computazione si blocca quando la visita arriva ad un nodo che non ha più nodi da visitare o quando le indicazioni sono già state consumate tutte. Ogni volta che la computazione si blocca, l'ultimo nodo visitato viene aggiunto ad una lista che corrisponde ai possibili output.
 
 \subsubsection{BestDecision}
-BestDecision è un algoritmo iterativo. La visita parte dal nodo Root e la gestione delle indicazioni è uguale all'algoritmo Backtrack. La visita avviene usando un algoritmo decisionale, ad ogni iterazione l'algoritmo valuta tutti i nodi adiacenti al nodo corrente, per ogni nodo ne calcola il bearing. Viene scelto il nodo il cui bearing si avvicina di più al valore dell'Azimuth dell'indicazione da consumare. 
+BestDecision è un algoritmo iterativo. La visita parte dal nodo Root e la gestione delle indicazioni è uguale all'algoritmo Backtrack. La visita avviene usando un algoritmo decisionale, ad ogni iterazione l'algoritmo valuta tutti i nodi adiacenti al nodo corrente e  per ogni nodo ne calcola il bearing. Viene scelto il nodo il cui bearing si avvicina di più al valore dell'Azimuth dell'indicazione da consumare. 
 
 \subsubsection{RandomDecision}
-E' un algoritmo molto simile al BestDecision solo che ogni volta che l'algoritmo deve scegliere il nodo successivo da visitare, filtra i nodi adiacenti escludendo i nodi che si trovano in quadranti diversi da quello indicato dall'indicazione, se i nodi rimanenti sono più di uno allora effettua una scelta casuale.
+E' un algoritmo molto simile al BestDecision solo che ogni volta che l'algoritmo deve scegliere il nodo successivo da visitare, filtra i nodi adiacenti escludendo i nodi che si trovano in quadranti diversi da quello indicato dall'indicazione e se i nodi rimanenti sono più di uno, allora effettua una scelta casuale.
 
 \subsubsection{DeadReckoning}
 L'algoritmo di DeadReckoning non è un algoritmo di visita del grafo in quanto non si interfaccia con OpenStreetMap e con il grafo che l'algoritmo genera.
 E' un algoritmo iterativo e come parametri ha le coordinate di partenza da cui iniziare a computare, la lista delle indicazioni e il limite di velocità con cui fare i calcoli.
-L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione calcola i metri corrispondenti allo spostamento, il bearing di esso, successivamente calcola le nuove coordinate.
+L'algoritmo itera fino a che ha indicazioni da consumare, per ogni indicazione calcola i metri corrispondenti allo spostamento, il bearing di esso e successivamente calcola le nuove coordinate.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
@@ -547,29 +603,37 @@ Per effettuare i test ho raccolto alcune tracce mediante l'applicazione Android 
 
 Per ognuna di queste tracce ho eseguito gli algoritmi di visita variando di volta in volta alcuni parametri:
 \begin{itemize}
-\item Numero di quadranti: 2,4,8.
+\item Numero di quadranti: 2, 4, 8.
 \item Ampiezza della finestra temporale: 20sec, 10sec, 5sec, 1sec.
 \item Algoritmo di visita: Backtrack, BestDecision, RandomDecision e DeadReckoning.
-\item Limite di velocità: 30,50,70,90.
+\item Limite di velocità: 30, 50, 70, 90.
 \end{itemize}
 Per un totale di 192 risultati per ogni traccia.
-Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h. 
-Per cercare di capire le differenze di prestazione degli algoritmi in caso di ambito urbano ed extraurbano, le traccie non comprendono più di un tipo di ambito diverso. 
 
-Ogni volta che un algoritmo calcola un risultato calcola anche l'errore in metri di quest'ultimo, ossia la distanza tra le coordinate calcolate e quelle reali. Successivamente lo scrive su un file CSV, generando quindi un unico file contenente tutti i risultati di tutte le tracce.
-Per valutare l'efficienza degli algoritmi, oltre all'errore in metri è stato generato anche l'errore in percentuale in base alla distanza del tracciato effettivamente percorso. Questo dato è stato inserito manualmente.
+Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h. Questo perchè nel calcolare i metri percorsi ignoro le accelerazioni e le decelerazioni e in ambito urbano sono molto più influenti rispetto all'ambito extra-urbano.
+
+Per cercare di capire le differenze di prestazione degli algoritmi in caso di ambito urbano ed extraurbano, le tracce non comprendono più di un tipo di ambito diverso. 
+
+Ogni volta che un algoritmo calcola un risultato calcola anche l'errore in metri di quest'ultimo, ossia la distanza tra le coordinate calcolate e quelle reali. Successivamente lo salva su un file CSV, generando quindi un unico file contenente tutti i risultati di tutte le tracce.
+Per valutare l'efficienza degli algoritmi, oltre all'errore in metri, è stato generato anche l'errore in percentuale in base alla distanza del tracciato effettivamente percorso. Questo dato è stato calcolato ed inserito manualmente.
 
 Dal momento che l'algoritmo di Backtrack genera una lista di possibili output, ho tenuto in considerazione il nodo più vicino alle coordinate reali. In un possibile sviluppo futuro si può pensare a come trovare il migliore output da questa lista.
-Per la RandomDecision invece è stato eseguito l'algoritmo 20 volte e calcolata la media delle distanze di ogni coordinata trovata.
+
+Per la RandomDecision invece, per ogni combinazione di parametri è stato eseguito l'algoritmo 20 volte e calcolata la media delle distanze di ogni coordinata trovata.
+
 Nel algoritmo di DeadReckoning gli unici parametri significativi sono il limite di velocità e l'ampiezza della finestra temporale.
 
-Dopo aver generato il file CSV contenente tutte le informazioni relative a tutte le computazioni, ho implementato uno script in Python, tramite matPlotLib, in grado di generare diversi grafici per cercare di valutare in maniera più accurata i risultati.
+Dopo aver generato il file CSV contenente le informazioni relative a tutte le computazioni, ho implementato uno script in Python, mediante matPlotLib, in grado di generare diversi grafici per cercare di valutare in maniera più accurata i risultati. Nei grafici generati non ho tenuto conto del parametro "limite di velocità" in quanto non è oggetto della valutazione e ho tenuto conto del miglior risultato ottenuto variando questo parametro.
 
-Nel primo tipo di grafico generato possiamo vedere per ogni traccia l'errore in percentuale di ogni algoritmo. Abbiamo generato 12 grafici, uno per ogni combinazione di numero di quadranti e ampiezza della finestra temporale.
+Le tracce prese in considerazione sono di tipologie differenti, variano per distanza, durata in secondi, numero di curve, contesto urbano o extraurbano.
 
-Nel secondo tipo di grafico ho calcolato l'errore medio di tutte le tracce in percentuale per ogni singolo algoritmo. Anche in questo caso abbiamo generato 12 grafici.
+Nel primo tipo di grafico generato possiamo vedere per ogni traccia l'errore in percentuale di ogni algoritmo. Abbiamo generato 12 grafici, uno per ogni combinazione di numero di quadranti e ampiezza della finestra temporale. I file sull'asse x sono disposti in ordine di maggior distanza percorsa.
 
-Nel terzo tipo di grafico abbiamo generato per ogni algoritmo 4 grafici, in ognuno dei quali abbiamo fissato l'ampiezza della finestra temporale ed analizzato l'andamento dell'errore in metri, per ogni numero di quadranti, in relazione alla lunghezza del tracciato effettivamente percorso di ogni traccia. In totali abbiamo generato 4 grafici per ogni algoritmo, quindi 16 grafici in totale.
+Nel secondo tipo di grafico ho calcolato l'errore medio di tutte le tracce in percentuale per ogni singolo algoritmo. Anche in questo caso abbiamo generato 12 grafici. Abbiamo preso in considerazione tutti gli errori rilevati per tipo di algoritmo e non l'errore minimo risultante da una determinata combinazione di limite di velocità, numero di quadranti e ampiezza della finestra temporale.
+
+Nel terzo tipo di grafico abbiamo generato per ogni algoritmo 4 grafici, in ognuno dei quali abbiamo fissato l'ampiezza della finestra temporale, ed analizzato l'andamento dell'errore in metri in relazione alla lunghezza del tracciato effettivamente percorso da ogni traccia, ogni linea del grafico corrisponde ad un numero di quadranti presi in considerazione. In totale abbiamo generato 4 grafici per ogni algoritmo, quindi 16 grafici in totale.
+
+Nel quarto tipo di grafico abbiamo esaminato l'andamento degli errori in metri per ogni algoritmo, fissando il numero di quadranti a 2 e variando l'ampiezza della finestra temporale. Abbiamo generato 4 grafici in totale.
 
 \begin{figure}[H]
 \centering 
@@ -691,9 +755,69 @@ Nel terzo tipo di grafico abbiamo generato per ogni algoritmo 4 grafici, in ognu
 \includegraphics[scale=0.4]{thirdChartDeadReckoning-20} 
 \end{figure}
 
+\begin{figure}[H]
+\centering 
+\includegraphics[scale=0.4]{fourChart1} 
+\includegraphics[scale=0.4]{fourChart5} 
+\end{figure}
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.4]{fourChart10} 
+\includegraphics[scale=0.4]{fourChart20} 
+\end{figure}
+
 \newpage
-\section{Considerazioni}
-...
+\section{Analisi dei dati}
+In questa sezione analizzeremo le tipologie di grafico generate per poi valutare il comportamento e l'efficienza di ogni algoritmo. Successivamente confronteremo i risultati ottenuti e delineeremo vantaggi e svantaggi di ogni algoritmo a seconda del tipo di traccia e dei parametri impostati ad ogni visita del grafo.
+
+\subsubsection{Grafico 1}
+Osservando i grafici relativi agli errori in percentuale rapportati alla distanza reale del percorso effettuato si evince che abbiamo prestazioni differenti a seconda dei numeri di quadranti scelti e a seconda dell'ampiezza della finestra temporale.
+Possiamo vedere immediatamente qual è l'algoritmo con le prestazioni peggiori, ossia il RandomDecision che nella quasi totalità delle traccie è l'algoritmo che genera l'errore maggiore, a volte allontanandosi addirittura rispetto al punto di partenza.
+
+\subsubsection{Grafico 2}
+La seconda serie di grafici raggruppa tutti i risultati ottenuti da ogni algoritmo con un determinato numero di quadranti e ampiezza della finestra temporale. L'errore medio è stato calcolando facendo la media aritmetica degli errori percentuali e non degli errori in metri.
+Da questi grafici possiamo valutare l'efficienza media di ogni singolo algoritmo.
+
+Valutando 2 quadranti possiamo vedere che il comportamento degli algoritmi cambia in modo sostanziale in base al valore della finestra temporale. Con finestre temporali ampie, 20 e 10 secondi, l'algoritmo di Backtracking ha un comportamento migliore rispetto al Dead Reckoning. In caso di finestre temporali brevi, 1 e 5 secondi, abbiamo che il Dead Reckoning si comporta in maniera migliore rispetto all'algoritmo di Backtracking.
+Gli algoritmi di BestDecision e RandomDecision hanno in media un comportamento peggiore rispetto agli algoritmi di Backtracking e DeadReckoning. L'algoritmo di BestDecision genera un errore medio del 30\% sia con finestre temporali ampie che con finestre temporali medio-basse. L'algoritmo di RandomDecision ha il suo comportamento migliore con finestre temporali ampie e peggiore con finestre temporali basse.
+
+Aumentando i numeri di quadranti, l'algoritmo di Backtracking continua a comportarsi meglio con finestre temporali ampie rispetto a quelle basse, però l'errore medio aumenta in modo sostanziale favorendo l'utilizzo dell'algoritmo di DeadReckoning. Possiamo vedere anche che aumentando il numero di quadranti le prestazioni del RandomDecision migliorano arrivando a circa lo stesso livello del BestDecision.
+
+\subsubsection{Grafico 3}
+Dalla terza tipologia di grafici possiamo vedere come variano gli errori in metri a seconda dei numeri di quadranti utilizzati.
+
+Nell'algoritmo di Backtrack i risultati migliori li possiamo ottenere usando un numero basso di quadranti. Notiamo anche che nel caso migliore, ossia con finestre temporali ampie, l'errore in metri è pressochè costante e si aggira su un valore di circa 200 metri che è un risultato ottimo in caso di percorsi lunghi, peggiore in caso di percorsi inferori ad 1km.
+
+Negli algoritmi di BestDecision e RandomDecision il numero di quadranti scelti è meno rilevante anche se i comportamenti migliori li abbiamo con 2 quadranti.
+
+I grafici relativi all'algoritmo di DeadReckoning non mette in correlazione gli errori rispetto al numero di quadranti ma è utile per analizzare la variazione degli errori in metri in rapporto alla distanza dei percorsi. Con un'ampiezza della finestra temporale pari a 1 secondo possiamo vedere che l'errore in metri è pressochè costante e si aggira su circa 200 metri.
+
+\subsubsection{Grafico 4}
+Nell'ultima serie di grafici abbiamo analizzato il comportamento dei vari algoritmi confrontati fra loro.
+Con una finestra temporale breve l'algoritmo migliore è nella quasi totalità dei casi il DeadReckoning, aumentando la lunghezza del percorso la prestazione cala notevolmente.
+Con una finestra temporale ampia l'algoritmo migliore è l'algoritmo di Backtracking, anch'esso non peggiora con l'aumentare della distanza del percorso.
+
+\medskip
+Ora andremo a riassumere quanto visto e a descrivere il comportamento di ogni algoritmo.
+
+\subsubsection{Backtracking}
+L'algoritmo di Backtracking ha il suo comportamento migliore con finestre temporali ampie e con un numero di quadranti ridotto. Mantiene un errore in metri  costante rispetto alla distanza del percorso e quindi l'errore percentuale cala notevolmente in caso di percorsi lunghi. Si comporta in egual maniera sia in contesti urbani che in contesti extraurbani.
+
+\subsubsection{BestDecision}
+Questo algoritmo ha anche esso un comportamento migliore con finestre temporali ampie. Non raggiunge mai le prestazioni degli algoritmi di Backtracking e di DeadReckoning. Non è molto affidabile, in quanto basta che sbaglia una svolta in un intersezione o un'uscita in una rotatoria che l'algoritmo continua la visita allontanandosi dal punto di arrivo reale.
+
+\subsubsection{RandomDecision}
+Questo algoritmo è una sorta di BestDecision che ogni volta che deve valutare in che arco continuare a computare effettua una scelta casuale tra i possibili archi da poter attraversare. Questo algoritmo è l'algoritmo che ha un comportamento peggiore rispetto a tutti gli altri. Si comporta in maniera migliore con finestre temporali ampie e con un numero di quadranti elevato, questo perchè la scelta casuale avverrà tra un numero minore di archi in cui poter andare e quindi avremo più scelte finali simili tra loro.
+
+\subsubsection{DeadReckoning}
+Quest'algoritmo sfrutta esclusivamente i valori ottenuti dai sensori dello smartphone, senza interfacciarsi con OpenStreetMap e con il grafo generato da quest'ultimo. Nonostante la generazione di errori cumulativi ad ogni singola computazione, l'algoritmo si comporta notevolmente meglio con finestre temporali brevi rispetto a quelle ampie, nonostante il numero di computazioni siano ampliamente maggiori.
+Con percorsi lunghi oltre 3000m / 5minuti le prestazioni calano a favore del Backtracking che è esente da cali di prestazioni in base alla distanza del percorso. In ambito urbano soffre l'alto numero di cambiamenti di direzione.
+
+\medskip
+In conclusione i dati ottenuti dimostrano che l'algoritmo migliore in caso di tragitti medio-brevi, sopratutto in ambito extra-urbano è l'algoritmo di DeadReckoning con una finestra temporale pari a 1 secondo. 
+
+In caso di tragitto medio-lunghi , sopratutto in ambito urbano, l'algoritmo migliore è l'algoritmo di Backtracking con una finestra temporale pari a 20 secondi.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -706,10 +830,15 @@ CONCLUSIONI}]{\fancyplain{}{\bfseries\thepage}}
 CONCLUSIONI}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Conclusioni
                                         %   nell'indice
-\addcontentsline{toc}{chapter}{Conclusioni} Queste sono le
-conclusioni.\\
-In queste conclusioni voglio fare un riferimento alla
-bibliografia: questo \`e il mio riferimento \cite{K3,K4}.
+\addcontentsline{toc}{chapter}{Conclusioni} 
+
+In conclusione, in questo elaborato si è descritto, inizialmente, lo stato dell'arte relativo ai sistemi di navigazione inerziali e a concetti di sensoristica in ambito smartphone, successivamente si è descritto il progetto e lo sviluppo di un applicazione Android, in grado di rilevare un furto e in grado di raccogliere i dati provenienti dai sensori, e un server in grado di computare questi dati ottenuti dall'applicazione ed implementare un sistema di localizzazione mediante quattro algoritmi. La fase successiva è stata quella di generare dei dati per valutare l'efficienza degli algoritmi di localizzazione. Infine si è effettuata un'analisi relativa agli algoritmi al variare di alcuni parametri. Successivamente si è dimostrato quali sono sono gli algoritmi più efficienti in base al percorso relativamente al contesto, la durata e al numero di intersezioni incontrate nella visita.
+
+La tesi ha dimostrato che è possibile effettuare una localizzazione di un oggetto mediante, esclusivamente, dati generati da sensori inerziali. 
+
+Negli eventuali sviluppi futuri si potrà incrementare le prestazioni di questi algoritmi disponendo di sensori più precisi e più affidabili, calcolando negli spostamenti anche le accelerazioni e decelerazioni per ottenere un valore in metri dello spostamento più preciso e gestire in maniera più accurata l'attraversamento di rotatorie.
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \renewcommand{\chaptermark}[1]{\markright{\thechapter \ #1}{}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
