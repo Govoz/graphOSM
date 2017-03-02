@@ -535,6 +535,8 @@ Il funzionamento è il medesimo.
 
 I valori con cui gli algoritmi lavorano sono esclusivamente i valori relativi all'Azimuth.
 
+\subsection{Generazione del grafo}
+
 Il server, appena riceve i dati, ottiene le informazioni relative al punto geografico di partenza, quindi latitudine, longitudine e timestamp relativo all'inizio della registrazione.
 Una volta ottenute le coordinate geografiche di partenza avviene il reverseGeocoding, esso consiste in una query a OpenStreetMap dalla quale otteniamo l'ID del nodo più vicino alle coordinate geografiche date in input. La query viene eseguita mediante Python Overpass Wrapper (Overpy). Dalla query otteniamo una lista di Nodi all'interno di un certo raggio, da questa lista filtriamo i nodi che appartengono ad una strada, controllando se da ogni nodo è possibile raggiungerne almeno una, successivamente cerchiamo il più vicino alle coordinate di partenza.
 Una volta ottenuto l'ID del nodo, il sistema si calcolo una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. 
@@ -638,122 +640,65 @@ Nel quarto tipo di grafico abbiamo esaminato l'andamento degli errori in metri p
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{firstChart2-1} 
-\includegraphics[scale=0.4]{firstChart2-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{firstChart2-10} 
 \includegraphics[scale=0.4]{firstChart2-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{firstChart4-1} 
-\includegraphics[scale=0.4]{firstChart4-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{firstChart4-10} 
 \includegraphics[scale=0.4]{firstChart4-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{firstChart8-1} 
-\includegraphics[scale=0.4]{firstChart8-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{firstChart8-10} 
 \includegraphics[scale=0.4]{firstChart8-20} 
 \end{figure}
+
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{secondChart2-1} 
-\includegraphics[scale=0.4]{secondChart2-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{secondChart2-10} 
 \includegraphics[scale=0.4]{secondChart2-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{secondChart4-1} 
-\includegraphics[scale=0.4]{secondChart4-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{secondChart4-10} 
 \includegraphics[scale=0.4]{secondChart4-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{secondChart8-1} 
-\includegraphics[scale=0.4]{secondChart8-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{secondChart8-10} 
 \includegraphics[scale=0.4]{secondChart8-20} 
 \end{figure}
+
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{thirdChartBacktrack-1} 
-\includegraphics[scale=0.4]{thirdChartBacktrack-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{thirdChartBacktrack-10} 
 \includegraphics[scale=0.4]{thirdChartBacktrack-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{thirdChartBestDecision-1} 
-\includegraphics[scale=0.4]{thirdChartBestDecision-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{thirdChartBestDecision-10} 
 \includegraphics[scale=0.4]{thirdChartBestDecision-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{thirdChartRandomDecision-1} 
-\includegraphics[scale=0.4]{thirdChartRandomDecision-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{thirdChartRandomDecision-10} 
 \includegraphics[scale=0.4]{thirdChartRandomDecision-20} 
 \end{figure}
 
 \begin{figure}[H]
 \centering 
 \includegraphics[scale=0.4]{thirdChartDeadReckoning-1} 
-\includegraphics[scale=0.4]{thirdChartDeadReckoning-5} 
-\end{figure}
-
-\begin{figure}[H]
-\centering  
-\includegraphics[scale=0.4]{thirdChartDeadReckoning-10} 
 \includegraphics[scale=0.4]{thirdChartDeadReckoning-20} 
 \end{figure}
+
 
 \begin{figure}[H]
 \centering 
@@ -815,9 +760,23 @@ Quest'algoritmo sfrutta esclusivamente i valori ottenuti dai sensori dello smart
 Con percorsi lunghi oltre 3000m le prestazioni calano a favore del Backtracking che è esente da cali di prestazioni in base alla distanza del percorso. In ambito urbano soffre l'alto numero di cambiamenti di direzione.
 
 \medskip
-In conclusione i dati ottenuti dimostrano che l'algoritmo migliore in caso di tragitti medio-brevi, sopratutto in ambito extra-urbano è l'algoritmo di DeadReckoning con una finestra temporale pari a 1 secondo. 
+In conclusione, i dati ottenuti dimostrano che l'algoritmo migliore in caso di tragitti medio-brevi, sopratutto in ambito extra-urbano, è l'algoritmo di DeadReckoning con una finestra temporale pari a 1 secondo anche se le prestazioni raggiunte dall'algoritmo di Backtracking con una finestra temporale di 20 secondi non si discostano molto. 
 
-In caso di tragitto medio-lunghi , sopratutto in ambito urbano, l'algoritmo migliore è l'algoritmo di Backtracking con una finestra temporale pari a 20 secondi.
+In caso di tragitti medio-lunghi , sopratutto in ambito urbano, l'algoritmo migliore è l'algoritmo di Backtracking con una finestra temporale pari a 20 secondi.
+
+Nel seguente grafico abbiamo calcolato la media degli errori in metri generati da ogni algoritmo in ogni file nella sua miglior configurazione, ossia la combinazione tra numero di quadranti ed ampiezza della finestra temporale che genera il minor errore. Tale grafico dimostra che la miglior prestazione è più probabile ottenerla usando l'algoritmo di Backtracking nella sua miglior combinazione che come rilevato prima consiste nell'utilizzo di una finestra temporale ampia 20 secondi e generando le indicazioni da seguire mediante 2 quadranti.
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=0.8]{fiveChart} 
+\end{figure}
+
+Nell'immagine seguente possiamo vedere una traccia lunga 800 metri in ambito urbano ed i punti geografici calcolati dai vari algoritmi nella loro miglior configurazione. Possiamo notare il fatto che l'algoritmo di DeadReckoning sia molto sensibile ai possibili errori nella rilevazione dell'Azimuth, infatti possiamo vedere che i primi spostamenti avvengono verso est anche se l'Azimuth rilevato è molto differente dall'Azimuth reale, gli altri algoritmi correggono questo errore facendo il map-matching sulla reale strada attraversata dall'autovettura. Notiamo che l'algoritmo di Backtracking indovina esattamente la posizione di arrivo, con un errore di soli 9 m. L'algoritmo di BestDecision sbaglia una svolta e finisce la sua computazione a 143 metri dal punto di arrivo, questo errore è provocato dalla scelta sbagliata che l'algoritmo prende in un'intersezione causata dai valori poco precisi generati dal magnetometro dello smartphone.
+
+\begin{figure}[H]
+\centering  
+\includegraphics[scale=1]{compareAlgorithm} 
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
 \clearpage{\pagestyle{empty}\cleardoublepage}
@@ -838,27 +797,10 @@ La tesi ha dimostrato che è possibile effettuare una localizzazione di un ogget
 
 Negli eventuali sviluppi futuri si potranno incrementare le prestazioni di questi algoritmi disponendo di sensori più precisi e più affidabili, calcolando negli spostamenti anche le accelerazioni e decelerazioni per ottenere un valore in metri dello spostamento più preciso e gestire in maniera più accurata l'attraversamento di rotatorie e di intersezioni in generale.
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \renewcommand{\chaptermark}[1]{\markright{\thechapter \ #1}{}}
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-\appendix                               %imposta le appendici
-\chapter{Prima Appendice}               %crea l'appendice
-In questa Appendice non si \`e utilizzato il comando:\\
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\verb"" è equivalente all'
-                                        %   ambiente verbatim,
-                                        %   ma si utilizza all'interno
-                                        %   di un discorso.
-\verb"\clearpage{\pagestyle{empty}\cleardoublepage}", ed infatti
-l'ultima pagina 8 ha l'intestazione con il numero di pagina in
-alto.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
-\rhead[\fancyplain{}{\bfseries \thechapter \:Prima Appendice}]
-{\fancyplain{}{\bfseries\thepage}}
-\chapter{Seconda Appendice}             %crea l'appendice
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
-\rhead[\fancyplain{}{\bfseries \thechapter \:Seconda Appendice}]
-{\fancyplain{}{\bfseries\thepage}}
+
 \begin{thebibliography}{90}             %crea l'ambiente bibliografia
 \rhead[\fancyplain{}{\bfseries \leftmark}]{\fancyplain{}{\bfseries
 \thepage}}

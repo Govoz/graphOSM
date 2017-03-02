@@ -27,14 +27,14 @@
 \contentsline {subsubsection}{DeadReckoning}{31}
 \contentsline {chapter}{\numberline {4}Performance Evaluation}{33}
 \contentsline {section}{\numberline {4.1}Fase Preliminare}{33}
-\contentsline {section}{\numberline {4.2}Analisi dei dati}{43}
-\contentsline {subsubsection}{Grafico 1}{43}
-\contentsline {subsubsection}{Grafico 2}{43}
-\contentsline {subsubsection}{Grafico 3}{44}
-\contentsline {subsubsection}{Grafico 4}{45}
-\contentsline {subsubsection}{Backtracking}{45}
-\contentsline {subsubsection}{BestDecision}{45}
-\contentsline {subsubsection}{RandomDecision}{45}
-\contentsline {subsubsection}{DeadReckoning}{46}
+\contentsline {section}{\numberline {4.2}Analisi dei dati}{40}
+\contentsline {subsubsection}{Grafico 1}{40}
+\contentsline {subsubsection}{Grafico 2}{40}
+\contentsline {subsubsection}{Grafico 3}{41}
+\contentsline {subsubsection}{Grafico 4}{42}
+\contentsline {subsubsection}{Backtracking}{42}
+\contentsline {subsubsection}{BestDecision}{42}
+\contentsline {subsubsection}{RandomDecision}{42}
+\contentsline {subsubsection}{DeadReckoning}{43}
 \contentsline {chapter}{Conclusioni}{47}
 \contentsline {chapter}{Bibliografia}{49}

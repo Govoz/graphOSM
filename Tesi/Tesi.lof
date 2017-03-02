@@ -14,3 +14,9 @@
 \contentsline {figure}{\numberline {3.2}{\ignorespaces Statistiche relative alle versioni di Android installate nei device. Dato aggiornato al 6 Febbraio 2017.}}{20}
 \contentsline {figure}{\numberline {3.3}{\ignorespaces Anti-Theft Mode a sinistra, Test Mode a destra.}}{23}
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Errore in percentuale di ogni algoritmo per ogni traccia.}}{36}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Errore medio in percentuale per ogni algoritmo.}}{37}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Errore in metri in relazione alla distanza della traccia.}}{38}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Errore in metri in relazione alla distanza della traccia per ogni algoritmo.}}{39}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Media degli errori in metri di ogni algoritmo nella sua miglior configurazione.}}{44}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Esempio di traccia e visualizzazione dei punti calcolati dai vari algoritmi.}}{45}
