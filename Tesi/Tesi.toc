@@ -19,7 +19,8 @@
 \contentsline {subsection}{\numberline {3.1.1}Concept}{21}
 \contentsline {subsection}{\numberline {3.1.2}Implementazione}{22}
 \contentsline {section}{\numberline {3.2}Server}{27}
-\contentsline {subsection}{\numberline {3.2.1}Algoritmi di visita}{30}
+\contentsline {subsection}{\numberline {3.2.1}Generazione del grafo}{27}
+\contentsline {subsection}{\numberline {3.2.2}Algoritmi di visita}{30}
 \contentsline {subsubsection}{Backtrack}{30}
 \contentsline {subsubsection}{BestDecision}{31}
 \contentsline {subsubsection}{RandomDecision}{31}
@@ -30,12 +31,10 @@
 \contentsline {subsubsection}{Grafico 1}{43}
 \contentsline {subsubsection}{Grafico 2}{43}
 \contentsline {subsubsection}{Grafico 3}{44}
-\contentsline {subsubsection}{Grafico 4}{44}
+\contentsline {subsubsection}{Grafico 4}{45}
 \contentsline {subsubsection}{Backtracking}{45}
 \contentsline {subsubsection}{BestDecision}{45}
 \contentsline {subsubsection}{RandomDecision}{45}
 \contentsline {subsubsection}{DeadReckoning}{46}
 \contentsline {chapter}{Conclusioni}{47}
-\contentsline {chapter}{\numberline {A}Prima Appendice}{49}
-\contentsline {chapter}{\numberline {B}Seconda Appendice}{51}
-\contentsline {chapter}{Bibliografia}{53}
+\contentsline {chapter}{Bibliografia}{49}

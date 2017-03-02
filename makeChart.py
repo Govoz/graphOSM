@@ -376,27 +376,27 @@ def thirdGraph(listData, algorithm, windowsTime):
     print(tupleDistanceTwoQuadrants)
     print(tupleErrorTwoQuadrants)
     #--------------------
-    # fig, ax = plt.subplots()
-    #
-    # #prima tutte le x e poi tutte le y
-    # ax.plot(tuple(tupleDistanceTwoQuadrants), tuple(tupleErrorTwoQuadrants), label = '2 quadr.')
-    # ax.plot(tuple(tupleDistanceFourQuadrants), tuple(tupleErrorFourQuadrants), label = '4 quadr.')
-    # ax.plot(tuple(tupleDistanceEightQuadrants), tuple(tupleErrorEightQuadrants),'-.', label = '8 quadr.')
-    #
-    # plt.ylabel('error meter')
-    # plt.xlabel('track meter')
-    # plt.title(str(algorithm) + ', WindowsTime: ' + str(windowsTime))
-    # plt.tight_layout()
-    #
-    # if str(algorithm) != 'DeadReckoning':
-    #     plt.legend()
-    #
-    # plt.gca().set_xlim([450, 3500])
-    # plt.gca().set_ylim([0, 3000])
-    #
-    # plt.gca().yaxis.grid(True)
-    # plt.savefig('output/thirdChart' + str(algorithm) + '-' + str(windowsTime) + '.png')
-    #plt.show()
+    fig, ax = plt.subplots()
+
+    #prima tutte le x e poi tutte le y
+    ax.plot(tuple(tupleDistanceTwoQuadrants), tuple(tupleErrorTwoQuadrants), label = '2 quadr.')
+    ax.plot(tuple(tupleDistanceFourQuadrants), tuple(tupleErrorFourQuadrants), label = '4 quadr.')
+    ax.plot(tuple(tupleDistanceEightQuadrants), tuple(tupleErrorEightQuadrants),'-.', label = '8 quadr.')
+
+    plt.ylabel('error meter')
+    plt.xlabel('track meter')
+    plt.title(str(algorithm) + ', WindowsTime: ' + str(windowsTime))
+    plt.tight_layout()
+
+    if str(algorithm) != 'DeadReckoning':
+        plt.legend()
+
+    plt.gca().set_xlim([450, 4500])
+    plt.gca().set_ylim([0, 3000])
+
+    plt.gca().yaxis.grid(True)
+    plt.savefig('output/thirdChart' + str(algorithm) + '-' + str(windowsTime) + '.png')
+    plt.show()
 
 def fourGraph(listData, windowsTime):
     listDataAlgorithm = []
@@ -441,15 +441,15 @@ algorithm = ['Backtrack', 'BestDecision', 'RandomDecision', 'DeadReckoning']
 
 listData = importCsv()
 
-# for x in range(len(windowsTimeRange)):
-#     for i in range(len(nQuadrantsRange)):
-#         #firstGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
-#         #secondGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
-#         for w in range(len(algorithm)):
-#             thirdGraph(listData, algorithm[w], windowsTimeRange[x])
+for x in range(len(windowsTimeRange)):
+    # for i in range(len(nQuadrantsRange)):
+        #firstGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
+        #secondGraph(listData, nQuadrantsRange[i], windowsTimeRange[x])
+    for w in range(len(algorithm)):
+        thirdGraph(listData, algorithm[w], windowsTimeRange[x])
 #
 # thirdGraph(listData, algorithm[0], 20)
 # thirdGraph(listData, algorithm[1], 20)
 # thirdGraph(listData, algorithm[2], 20)
 # thirdGraph(listData, algorithm[3], 20)
-fourGraph(listData, 20)
+# fourGraph(listData, 20)

@@ -779,7 +779,7 @@ Possiamo vedere immediatamente qual è l'algoritmo con le prestazioni peggiori, 
 La seconda serie di grafici raggruppa tutti i risultati ottenuti da ogni algoritmo con un determinato numero di quadranti e ampiezza della finestra temporale. L'errore medio è stato calcolando facendo la media aritmetica degli errori percentuali e non degli errori in metri.
 Da questi grafici possiamo valutare l'efficienza media di ogni singolo algoritmo.
 
-Valutando 2 quadranti possiamo vedere che il comportamento degli algoritmi cambia in modo sostanziale in base al valore della finestra temporale. Con finestre temporali ampie, 20 e 10 secondi, l'algoritmo di Backtracking ha un comportamento migliore rispetto al Dead Reckoning. In caso di finestre temporali brevi, 1 e 5 secondi, abbiamo che il Dead Reckoning si comporta in maniera migliore rispetto all'algoritmo di Backtracking.
+Valutando 2 quadranti possiamo vedere che il comportamento degli algoritmi cambia in modo sostanziale in base al valore della finestra temporale. Con finestre temporali ampie, 20 e 10 secondi, l'algoritmo di Backtracking ha un comportamento medio migliore rispetto al DeadReckoning. In caso di finestre temporali brevi, 1 e 5 secondi, abbiamo che il DeadReckoning si comporta in maniera migliore rispetto all'algoritmo di Backtracking.
 Gli algoritmi di BestDecision e RandomDecision hanno in media un comportamento peggiore rispetto agli algoritmi di Backtracking e DeadReckoning. L'algoritmo di BestDecision genera un errore medio del 30\% sia con finestre temporali ampie che con finestre temporali medio-basse. L'algoritmo di RandomDecision ha il suo comportamento migliore con finestre temporali ampie e peggiore con finestre temporali basse.
 
 Aumentando i numeri di quadranti, l'algoritmo di Backtracking continua a comportarsi meglio con finestre temporali ampie rispetto a quelle basse, però l'errore medio aumenta in modo sostanziale favorendo l'utilizzo dell'algoritmo di DeadReckoning. Possiamo vedere anche che aumentando il numero di quadranti le prestazioni del RandomDecision migliorano arrivando a circa lo stesso livello del BestDecision.
@@ -791,12 +791,12 @@ Nell'algoritmo di Backtrack i risultati migliori li possiamo ottenere usando un 
 
 Negli algoritmi di BestDecision e RandomDecision il numero di quadranti scelti è meno rilevante anche se i comportamenti migliori li abbiamo con 2 quadranti.
 
-I grafici relativi all'algoritmo di DeadReckoning non mette in correlazione gli errori rispetto al numero di quadranti ma è utile per analizzare la variazione degli errori in metri in rapporto alla distanza dei percorsi. Con un'ampiezza della finestra temporale pari a 1 secondo possiamo vedere che l'errore in metri è pressochè costante e si aggira su circa 200 metri.
+I grafici relativi all'algoritmo di DeadReckoning non mette in correlazione gli errori rispetto al numero di quadranti ma è utile per analizzare la variazione degli errori in metri in rapporto alla distanza dei percorsi. Con un'ampiezza della finestra temporale pari a 1 secondo possiamo vedere che l'errore in metri è pressochè costante fino a circa 3000 metri per poi cominciare ad aumentare.
 
 \subsubsection{Grafico 4}
-Nell'ultima serie di grafici abbiamo analizzato il comportamento dei vari algoritmi confrontati fra loro.
+Nell'ultima serie di grafici abbiamo analizzato il comportamento dei vari algoritmi confrontandoli fra loro.
 Con una finestra temporale breve l'algoritmo migliore è nella quasi totalità dei casi il DeadReckoning, aumentando la lunghezza del percorso la prestazione cala notevolmente.
-Con una finestra temporale ampia l'algoritmo migliore è l'algoritmo di Backtracking, anch'esso non peggiora con l'aumentare della distanza del percorso.
+Con una finestra temporale ampia l'algoritmo migliore è l'algoritmo di Backtracking, esso non peggiora con l'aumentare della distanza del percorso.
 
 \medskip
 Ora andremo a riassumere quanto visto e a descrivere il comportamento di ogni algoritmo.
@@ -812,7 +812,7 @@ Questo algoritmo è una sorta di BestDecision che ogni volta che deve valutare i
 
 \subsubsection{DeadReckoning}
 Quest'algoritmo sfrutta esclusivamente i valori ottenuti dai sensori dello smartphone, senza interfacciarsi con OpenStreetMap e con il grafo generato da quest'ultimo. Nonostante la generazione di errori cumulativi ad ogni singola computazione, l'algoritmo si comporta notevolmente meglio con finestre temporali brevi rispetto a quelle ampie, nonostante il numero di computazioni siano ampliamente maggiori.
-Con percorsi lunghi oltre 3000m / 5minuti le prestazioni calano a favore del Backtracking che è esente da cali di prestazioni in base alla distanza del percorso. In ambito urbano soffre l'alto numero di cambiamenti di direzione.
+Con percorsi lunghi oltre 3000m le prestazioni calano a favore del Backtracking che è esente da cali di prestazioni in base alla distanza del percorso. In ambito urbano soffre l'alto numero di cambiamenti di direzione.
 
 \medskip
 In conclusione i dati ottenuti dimostrano che l'algoritmo migliore in caso di tragitti medio-brevi, sopratutto in ambito extra-urbano è l'algoritmo di DeadReckoning con una finestra temporale pari a 1 secondo. 
@@ -832,7 +832,11 @@ CONCLUSIONI}}
                                         %   nell'indice
 \addcontentsline{toc}{chapter}{Conclusioni} 
 
-In conclusione, in questo elaborato si è descritto, inizialmente, lo stato dell'arte relativo ai sistemi di navigazione inerziali e a concetti di sensoristica in ambito smartphone, successivamente si è descritto il progetto e lo sviluppo di un applicazione Android, in grado di rilevare un furto e in grado di raccogliere i dati provenienti dai sensori, e un server in grado di computare questi dati ottenuti dall'applicazione ed implementare un sistema di localizzazione mediante quattro algoritmi. La fase successiva è stata quella di generare dei dati per valutare l'efficienza degli algoritmi di localizzazione. Infine è stat
+In questo elaborato si è descritto, inizialmente, lo stato dell'arte relativo ai sistemi di navigazione inerziale e a concetti di sensoristica in ambito smartphone, successivamente si è descritto il progetto e lo sviluppo di un applicazione Android, in grado di rilevare un furto e in grado di raccogliere i dati provenienti dai sensori, e un server in grado di computare questi dati ottenuti dall'applicazione ed implementare un sistema di localizzazione mediante quattro algoritmi. La fase successiva è stata quella di generare dei dati per valutare l'efficienza degli algoritmi di localizzazione. Infine si è effettuata un'analisi relativa agli algoritmi al variare di alcuni parametri. Successivamente si è dimostrato quali sono sono gli algoritmi più efficienti in base al percorso, relativamente al contesto e la durata della traccia.
+
+La tesi ha dimostrato che è possibile effettuare una localizzazione di un oggetto mediante, esclusivamente, dati generati da sensori inerziali con un basso margine di errore. 
+
+Negli eventuali sviluppi futuri si potranno incrementare le prestazioni di questi algoritmi disponendo di sensori più precisi e più affidabili, calcolando negli spostamenti anche le accelerazioni e decelerazioni per ottenere un valore in metri dello spostamento più preciso e gestire in maniera più accurata l'attraversamento di rotatorie e di intersezioni in generale.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
