@@ -154,7 +154,7 @@ INDICE}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
 
-I primi sistemi di navigazione inerziale risalgono alla 2\textsuperscript{$\circ$} Guerra Mondiale, diversi articoli \cite{K20} fanno risalire al 1942 il primo uso di un sistema di navigazione inerziale da parte dei tedeschi per lo sviluppo del missile V-2. Negli anni seguenti, con lo sviluppo parallelo di calcolatori più efficienti e di sistemi sensoristici migliori, i sistemi di navigazione inerziale hanno cominciato a diffondersi anche in ambito navale, subacqueo ed aereo. Con l'avvento della nanotecnologia si è potuto sviluppare sensori con prestazioni migliori e di dimensioni ridotte (MEMS), di conseguenza, gli ambiti di utilizzo di quest'ultimi si sono notevolmente ampliati. 
+I primi sistemi di navigazione inerziale risalgono alla 2\textsuperscript{$\circ$} Guerra Mondiale, diversi articoli \cite{K1} fanno risalire al 1942 il primo uso di un sistema di navigazione inerziale da parte dei tedeschi per lo sviluppo del missile V-2. Negli anni seguenti, con lo sviluppo parallelo di calcolatori più efficienti e di sistemi sensoristici migliori, i sistemi di navigazione inerziale hanno cominciato a diffondersi anche in ambito navale, subacqueo ed aereo. Con l'avvento della nanotecnologia si è potuto sviluppare sensori con prestazioni migliori e di dimensioni ridotte (MEMS), di conseguenza, gli ambiti di utilizzo di quest'ultimi si sono notevolmente ampliati. 
 Moltissimi oggetti di uso quotidiano hanno al loro interno sensori di qualsiasi tipo. In ambito automotive, dagli anni '80, i sensori si sono sempre più affermati come dispositivi di estrema importanza, per aumentare prestazioni, sicurezza e diminuire i consumi. 
 Da qualche anno a questa parte, nella maggior parte degli smartphone sono presenti diversi sensori come l'accelerometro, giroscopio e il magnetometro. I campi di utilizzo di questi sensori sono innumerevoli, spaziano dai videogiochi fino ad applicazioni multimediali.
 
@@ -164,7 +164,7 @@ L'elaborato sarà articolato come segue:
 
 \begin{itemize}
 \item Nel capitolo 2 ci sarà una panoramica riguardante l'attuale stato dell'arte, un'introduzione ai concetti base e agli strumenti utilizzati per lo sviluppo della parte progettuale.
-\item Nel capitolo 3 ci sarà una descrizione del lavoro progettuale ed implementativo. Ci sarà una sezione riguardante l'applicazione Android ed una riguardante allo sviluppo degli algoritmi lato server.
+\item Nel capitolo 3 ci sarà una descrizione del lavoro progettuale ed implementativo. Ci sarà una sezione riguardante l'applicazione Android ed una riguardante lo sviluppo degli algoritmi lato server.
 \item Il capitolo 4 presenterà i risultati e le considerazioni riguardanti ai test effettuati, descrivendo i comportamenti dei vari algoritmi rispetto ai dati raccolti.
 \item Nel capitolo 5 ci saranno le conclusioni di questo trattato descrivendo anche i possibili sviluppi futuri.
 \end{itemize}
@@ -176,12 +176,13 @@ L'elaborato sarà articolato come segue:
 \chapter{Lavori Correlati}                %crea il capitolo
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \lhead[\fancyplain{}{\bfseries\thepage}]{\fancyplain{}{\bfseries\rightmark}}
-In letteratura esistono diversi studi riguardanti i possibili utilizzi dei dati generati dai sensori degli smartphone, molti dei quali cercano di interpretare i dati generati quando il device si trova a bordo di un veicolo per ottenere informazioni di diverso tipo, come per esempio: determinare il tipo di mezzo di trasporto nel quale si trova lo smartphone \cite{K1, K2, K3, K4} e determinare le condizioni della sede stradale o le condizioni di traffico \cite{K5, K6}. \\
+In letteratura esistono diversi studi riguardanti i possibili utilizzi dei dati generati dai sensori degli smartphone, molti dei quali cercano di interpretare i dati generati quando il device si trova a bordo di un veicolo per ottenere informazioni di diverso tipo, come per esempio: determinare il tipo di mezzo di trasporto nel quale si trova lo smartphone \cite{K2, K3, K4, K5} e determinare le condizioni della sede stradale o le condizioni di traffico \cite{K6, K7}. \\
 
 I risultati di questi studi sono interessanti per cercare di ottenere un sistema di navigazione inerziale sempre più efficace (INS, Inertial Navigation System).
 
 \section{Inertial Navigation System}
-L' Inertial Navigation System (INS) è un sistema in grado di determinare tramite un meccanismo di Dead Reckoning la posizione di un oggetto in movimento sfruttando esclusivamente i dati raccolti da sensori inerziali.\\
+L' Inertial Navigation System (INS) è un sistema in grado di determinare tramite un meccanismo di Dead Reckoning la posizione di un oggetto in movimento sfruttando esclusivamente i dati raccolti da sensori inerziali.
+
 
 Il sistema è formato da una componente elettronica contenente una serie di sensori (Inertial Measurement Unit, IMU) e da un calcolatore. 
 I sensori sono montati su un'unica struttura rigida, in maniera da preservare lo stesso orientamento relativo. I sensori rilevano i valori ad una determinata frequenza, l'Inertial Measurement Unit si occupa di inviarli al calcolatore, mediante un qualche sistema di trasmissione dati, che può essere sia cablato che wireless a seconda dell'implementazione fisica del sistema. Il calcolatore elabora i dati e fornisce in output la posizione stimata dell'oggetto. Il calcolatore può essere anche incluso direttamente nell'IMU rendendo il sistema esente da possibili disturbi dovuti alla trasmissione dei dati.
@@ -208,7 +209,7 @@ Il meccanismo di Dead Reckoning consiste nel determinare la posizione di un corp
 
 Possiamo ricondurre questo concetto ad una semplice somma vettoriale. Poniamo la posizione di partenza in un punto nel piano cartesiano, mentre lo spostamento è indicato come un vettore che parte dalla posizione di partenza, che ha come direzione la direzione dello spostamento mentre come modulo, la distanza percorsa, la quale viene ricavata dalla velocità e dalla durata dello spostamento.
 
-Nel calcolo della nuova posizione tramite Dead Reckoning [Fig 1.1] bisogna tenere conto dei possibili errori cumulativi generati dai sensori ad ogni nuova computazione. 
+Nel calcolo della nuova posizione tramite Dead Reckoning [Fig 2.1] bisogna tenere conto dei possibili errori cumulativi generati dai sensori ad ogni nuova computazione. 
 
 Gli errori possono essere causati sia dalla non esatta rilevazione della velocità del moto e sia da errori nella rilevazione della direzione.
 
@@ -217,9 +218,9 @@ Seppur la differenza tra velocità reale e velocità misurata in un determinato 
 Gli errori dovuti alla non esatta rilevazione della direzione sono causati dalla scarsa precisione dei sensori. Ad esempio, in un tragitto di 1km, la variazione di 1 grado nella direzione porta ad un errore di circa 17,5 metri.
 
 
-La tecnica del map-matching \cite{K7} è in grado di ridurre questi errori, consiste nell'associare ad ogni nuova posizione calcolata, una posizione reale che corrisponde ad un punto specifico di una strada, si necessità però di una mappa dalla quale fare matching e ricavare le nuove coordinate.
+La tecnica del map-matching \cite{K8} è in grado di ridurre questi errori. Essa consiste nell'associare ad ogni nuova posizione calcolata una posizione reale che corrisponde ad un punto specifico di una strada, necessita però di una mappa dalla quale fare matching e ricavare le nuove coordinate.
 
-La posizione del veicolo $(x_k, y_k)$ all'istante $k$ può essere espressa nella seguente maniera \cite{K8}
+La posizione del veicolo $(x_k, y_k)$ all'istante $k$ può essere espressa nella seguente maniera \cite{K9}
 \begin{center}
 $x_k = x_0 + \sum_{i=0}^{k-1} s_i  \cos( \theta_i) $ ,      $y_k = y_0 + \sum_{i=0}^{k-1} s_i  \sin( \theta_i)  $
 \end{center}
@@ -242,12 +243,12 @@ $\theta_k = \sum_{i=0}^k \omega_i$
 
 I sensori disponibili in uno smartphone sono diversi e variano da modello a modello, alcuni sono implementati in maniera hardware (MEMS), altri generano dati mediante algoritmi, quindi in maniera software. 
 
-Nella piattaforma Android possiamo suddividerli in quattro macroaree \cite{K9}:
+Nella piattaforma Android possiamo suddividerli in quattro macroaree \cite{K10}:
 \begin{itemize}
 \item Motion Sensors: include tutti i sensori che misurano le forze di accelerazione e le forze rotazionali come accelerometro, giroscopio, sensore di gravità. Tutte le forze vengono misurate relativamente ai 3 assi.
 \item Environmental Sensors: include tutti i sensori che misurano i parametri ambientali come temperatura, pressione atmosferica, illuminazione, umidità. Quindi: termometro, barometro, igrometro e sensore di luminosità.
 \item Position Sensors: questi sensori determinano la posizione del device nello spazio come il sensore di orientamento, di prossimità e il magnetometro.
-\item Location Sensors: sono indispensabili per la geolocalizzazione del device ed hanno un'accuratezza variabile a seconda della tecnologia, delle condizioni atmosferiche e dalla presenza di ostacoli. Abbiamo: GPS e A-GPS(5m - 10m) \cite{K10}; WIFI e Network Position (10m - 35km).
+\item Location Sensors: sono indispensabili per la geolocalizzazione del device ed hanno un'accuratezza variabile a seconda della tecnologia, delle condizioni atmosferiche e dalla presenza di ostacoli. Abbiamo: GPS e A-GPS(5m - 10m) \cite{K11}; WIFI e Network Position (10m - 35km).
 \end{itemize}
 
 \begin{figure}[h] 
@@ -261,7 +262,7 @@ MEMS (Micro Electro-Mechanical Systems) è la tecnologia grazie alla quale è po
 Un dispositivo MEMS ha un fattore di miniaturizzazione molto elevato e le dimensioni sono contenute, nell'ordine di pochi millimetri cubi di volume.\\
 Questo sistema integra dispositivi meccanici, elettrici ed elettronici.\\
 La parte meccanica comprende i sensori veri e propri, piccoli chip in grado di misurare fenomeni di natura meccanica, magnetica ed ambientale.\\
-Gli elementi meccanici ed elettronici sono integrati in uno substrato di silicio. La parte elettronica del sistema elabora i dati e comunica con lo smartphone. \cite{K14}
+Gli elementi meccanici ed elettronici sono integrati in uno substrato di silicio. La parte elettronica del sistema elabora i dati e comunica con lo smartphone. \cite{K15}
 
 \subsection{Accelerometro}
 In uno smartphone abbiamo tre accelerometri, ognuno dei quali misura l'accelerazione del device lungo uno dei tre assi. L'unità di misura è $m/s^2$.
@@ -276,7 +277,7 @@ In figura 1.3 possiamo vedere lo schema di funzionamento di un accelerometro MEM
 Nei valori misurati dall'accelerometro è inclusa la forza di gravità, infatti ponendo lo smartphone su un tavolo vediamo che l'accelerometro relativo all'asse Z rileva un'accelerazione pari a 9,8 $m/s^2$.
 Per avere valori corretti bisogna capire anche come è orientato nello spazio il device, tramite il giroscopio e applicare un filtro passa-alto per rimuovere la forza di gravità dai tre assi e isolare quindi l'accelerazione lineare.
 
-Mediante l'accelerometro e il calcolo della sua magnitudo possiamo determinare accelerazioni e decelerazioni, quindi capire quando e in che modo un'autovettura frena o accelera e di conseguenza capire anche quando è presente un cambio di velocità del mezzo. \cite{K1, K2, K3, K4, K5, K6}
+Mediante l'accelerometro e il calcolo della sua magnitudo possiamo determinare accelerazioni e decelerazioni, quindi capire quando e in che modo un'autovettura frena o accelera e di conseguenza capire anche quando è presente un cambio di velocità del mezzo. \cite{K2, K3, K4, K5, K6, K7}
 
 \begin{center}
 $ magnitude = \sqrt{ x^2 + y^2 + z^2}$
@@ -302,7 +303,7 @@ Come vediamo nella figura 2.4, l'orientamento del device si può esprimere media
 
 
 Con il giroscopio possiamo determinare l'orientamento del device nello spazio, questa informazione è fondamentale per interpretare correttamente i valori prodotti da altri sensori, come l'accelerometro.
-E' un tipo di sensore che non molti smartphone posseggono, è possibile però, simulare il sensore mediante i valori ottenuti dal magnetometro e dall'accelerometro mediante il calcolo delle matrici rotazionali, questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
+E' un tipo di sensore che non molti smartphone posseggono, è possibile però, simulare il sensore mediante i valori ottenuti dal magnetometro e dall'accelerometro mediante il calcolo delle matrici rotazionali. Questo concetto verrà spiegato nel capitolo riguardante l'implementazione del progetto Android.
 \subsection{Magnetometro}
 Il magnetometro è un dispositivo che misura l'intensità del campo magnetico relativamente ai suoi 3 assi. L'unità di misura è $\mu T$. 
 
@@ -333,20 +334,20 @@ La magnitudo in un ambiente privo di fonti magnetiche non potrà mai raggiungere
 Il GPS (Global Positioning System) è un sistema di posizionamento satellitare civile gestito dal governo degli Stati Uniti d'America (GSU). Esso permette di ottenere le coordinate geografiche, quindi la geolocalizzazione, di un oggetto.
 Ha un livello di accuratezza molto elevato, in ambito militare ha una precisione di circa 1m, in ambito civile di circa 5-10m.
 
-Il sistema è formato da tre segmenti: il segmento spaziale, il segmento di controllo ed il segmento utente. \cite{K15}
+Il sistema è formato da tre segmenti: il segmento spaziale, il segmento di controllo ed il segmento utente. \cite{K16}
 
 
 Nel segmento spaziale ci sono da 24 a 31 satelliti Navstar che si muovono lungo 6 piani orbitali con una inclinazione di circa 55 gradi rispetto l'equatore, quindi ogni piano orbitale ha almeno 4 satelliti. Da ogni punto della terra sono sempre visibili almeno 4 satelliti, questo in condizioni favorevoli, ossia senza disturbi come edifici o montagne. Ogni satellite dispone di almeno un orologio atomico e trasmette i dati su due frequenze L1(1575,42 Mhz) e L2(1227,60Mhz).
 
 
-Il segmento di controllo è formato da stazioni di controllo situate in punti diversi del pianeta che si occupano di controllare il funzionamento dei satelliti e degli orologi atomici, la sincronizzazione degli orologi atomici e si occupano della distorsione artificiale (SA, Selective Availability) del segnale per usi civili.
+Il segmento di controllo è formato da stazioni di controllo situate in punti diversi del pianeta che si occupano di controllare il funzionamento dei satelliti e degli orologi atomici, della sincronizzazione degli orologi atomici e si occupano della distorsione artificiale (SA, Selective Availability) del segnale per usi civili.
 
 
 Nel segmento utente fanno parte tutti i dispositivi che fungono da ricevitori GPS.
 \begin{figure}[h!]
 \centering 
 \includegraphics[scale=0.6]{fig8} 
-\caption{Punto GPS calcolato mediante 4 satelliti. \cite{K16}} 
+\caption{Punto GPS calcolato mediante 4 satelliti.} 
 \end{figure}
 
 
@@ -373,22 +374,22 @@ Abbiamo per esempio WPA (Wireless Protected Access) e WEP (Wired Equivalent Priv
 \begin{figure}[h!]
 \centering 
 \includegraphics[scale=0.6]{fig7} 
-\caption{Hotspot Free a Bologna, dati forniti da fon.com \cite{K16}} 
+\caption{Hotspot Free a Bologna, dati forniti da fon.com \cite{K17}} 
 \end{figure}
 
-Al giorno d'oggi è sempre più facile trovare delle Open-Network \cite{K11}, ossia reti liberi alle quali ci si può collegare gratuitamente. Molti comuni, istituzioni, aree commerciali offrono reti a cui collegarsi liberamente.
+Al giorno d'oggi è sempre più facile trovare delle Open-Network \cite{K12}, ossia reti liberi alle quali ci si può collegare gratuitamente. Molti comuni, istituzioni, aree commerciali offrono reti a cui collegarsi liberamente.
 
 
 
 \section{OpenStreetMap}
-OpenStreetMap (OSM) \cite{K12} è un progetto collaborativo open-data che offre un servizio cartografico.\\
-OpenStreetMap è stato fondato nel 2004 da Steve Coast e ad ora è usato da molti servizi come Flickr, Strava, WolframAlpha e tanti altri \cite{K13}.
+OpenStreetMap (OSM) \cite{K13} è un progetto collaborativo open-data che offre un servizio cartografico.\\
+OpenStreetMap è stato fondato nel 2004 da Steve Coast e ad ora è usato da molti servizi come Flickr, Strava, WolframAlpha e tanti altri \cite{K14}.
 
 Essendo un progetto open-data è possibile scaricare in locale od usufruire delle API per effettuare query e sviluppare i propri progetti. I dati sono in formato OSM XML.
 
 Gli elementi fondamentali che compongono il \textit{conceptual data model of the physical world} di OpenStreetMap sono:
 \begin{itemize}
-\item Node: Un nodo consiste in un punto nello spazio, ed è definito da un nodeId univoco, latitudine e longitudine. I nodi possono essere usati per identificare la forma di un edificio o per comporre strade.\\
+\item \textbf{Node}: Un nodo consiste in un punto nello spazio, ed è definito da un nodeId univoco, latitudine e longitudine. I nodi possono essere usati per identificare la forma di un edificio o per comporre strade.\\
 I nodi possono avere ulteriori tag, come per esempio "highway", "entrance", "natural", etc.\\
 I tag sono formati da un insieme di coppie chiave-valore. \\
 
@@ -397,18 +398,26 @@ I tag sono formati da un insieme di coppie chiave-valore. \\
 \includegraphics[scale=1]{fig3} 
 \caption{Statistiche OpenStreetMap - 2016} 
 \end{figure}
-\item Way: una way è una lista ordinata di nodi. E' composta da 2 a 2000 nodi. Una way può essere di diversi tipi: chiusa quando l'ultimo nodo è collegato al primo; può essere aperta nel caso di strade; può essere un'area quando delimita una porzione di terreno, se è un area è anche chiusa.\\
+\item \textbf{Way}: una way è una lista ordinata di nodi. E' composta da 2 a 2000 nodi. Una way può essere di diversi tipi: chiusa quando l'ultimo nodo è collegato al primo; può essere aperta nel caso di strade; può essere un'area quando delimita una porzione di terreno, se è un area è anche chiusa.\\
 Ogni way ha un wayId univoco, una lista di nodi e diversi tag. I più ricorrenti sono "highway", "name", "area", "oneway" e "maxspeed".
-\item Relation: una relation è formata da uno o più tags e da un insieme di nodi/way o altre relation che vengono usate per definire relazioni logiche o geografiche tra più elementi. Può essere usata, per esempio, per definire le fermate di un autobus o le stazioni ferroviarie di una determinata linea.
+\item \textbf{Relation}: una relation è formata da uno o più tags e da un insieme di nodi/way o altre relation che vengono usate per definire relazioni logiche o geografiche tra più elementi. Può essere usata, per esempio, per definire le fermate di un autobus o le stazioni ferroviarie di una determinata linea.
 \end{itemize}
+
+Esistono moltissimi tool in grado di interagire con i dati forniti da OpenStreetMap, nel progetto di tesi ne ho usati diversi:
+\subsubsection{Overpass-Turbo} Uno strumento web-based per l'estrazione di dati da OpenStreetMap. L'interfaccia è molto semplice ed è divisa in due parti. Sulla sinistra abbiamo una textField in cui inserire le query per Overpass API, sulla sinistra abbiamo una mappa che mostra i risultati della query. E' possibile vedere i risultati anche in XML. Questo tool è molto utile per testare le query e prendere confidenza con gli elementi fondamentali di OpenStreetMap.
+
+\subsubsection{OsmFilter} OsmFilter è un programma a linea di comando che serve per filtrare i dati OSM-XML provenienti da OpenStreetMap. Con questo strumento possiamo eliminare le informazioni che non interessano allo sviluppatore, come le informazioni relative al creatore dell'elemento ma anche eliminare elementi con determinati tag od ottenere statistiche relative al file OSM-XML preso in considerazione. 
+
+\subsubsection{Osmosis} Osmosis è un tool in grado di processare file OSM-XML. Con Osmosis è possibile concatenare operazioni di vario tipo, come ottenere un file OSM-XML data una Bounding Box ma anche filtrare informazioni. Osmosis ed OsmFilter sono molto utili per alleggerire e far diminuire la dimensione dei file OSM-XML.
+
 \newpage
 \section{Grafi}
-Un paese, una provincia o addirittura tutto il pianeta può essere inteso come un enorme grafo pesato.
+Abbiamo visto che OpenStreetMap consente di intendere un'area geografica come un'insieme di nodes, ways e relations. 
+Questo permette di modellare un paese, una provincia o addirittura tutto il pianeta in un enorme grafo non orientato e pesato.
 
-Un nodo del grafo può rappresentare un'intersezione, ossia un punto geografico in cui convergono più strade. Mentre un arco del grafo può rappresentare la strada che collega due intersezioni.
- 
+Un grafo è una coppia G = (V,E) dove con V (Vertex) intendiamo un insieme finito di nodi del grafo, mentre con E (Edge) intendiamo un'insieme finito di coppie di nodi. Un grafo si dice non orientato quando è formato da archi non orientati, ossia da archi formati da coppie non ordinate di nodi. Un grafo si dice pesato quando ad ogni arco è associato un peso, ossia un valore numerico.
+Nella modellazione del grafo un nodo può rappresentare un'intersezione, ossia un punto geografico in cui convergono più strade. Mentre un arco del grafo può rappresentare la strada che collega due intersezioni.
 Il peso che diamo ad ogni arco può essere o la distanza tra le due intersezioni o il tempo che ci si mette mediamente ad attraversarlo interamente, dipende dai contesti di utilizzo.
-
 In questo modo è facile implementare diversi algoritmi di visita partendo da un nodo di partenza.
 
 Implementando un grafo tramite liste di adiacenza, una DFS (depth-first search) ha una complessità computazionale pari a $\Omega(|V| + |E|) $ dove per $\left|V \right|$ si intende il numero di nodi del grafo e con $\left| E \right|$ il numero di archi.
@@ -433,7 +442,7 @@ Il progetto di tesi è composto da due parti distinte:
 \newpage
 \section{Applicazione Android}
 L'applicazione è stata scritta in Java, mediante Android Studio. \\
-La versione minima di SDK supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,7 \% dei device in uso \cite{K17}.
+La versione minima di SDK supportata è la 19 (KitKat) garantendo il corretto funzionamento dell'applicazione su circa l'86,7 \% dei device in uso \cite{K18}.
 
 \begin{figure}[h!]
 \centering 
@@ -447,7 +456,7 @@ L'idea di base del progetto è quella di implementare un localizzatore inerziale
 Si presuppone che il device sia posizionato in maniera tale che l'Azimuth del device sia uguale all'Azimuth del mezzo di trasporto. In un possibile sviluppo futuro si potrebbe calcolare l'orientamento al momento dell'inizializzazione e considerare questo offset nel momento in cui si analizzano i dati.
 
 
-L'applicazione una volta avviata si mette in attesa che il mezzo venga rubato, per riconoscere il furto e quindi lo spostamento del mezzo, comincia a rilevare ed analizzare i dati provenienti dall'accelerometro.
+L'applicazione una volta avviata si mette in attesa che il mezzo venga rubato. Per riconoscere il furto e quindi lo spostamento del mezzo, comincia a rilevare ed analizzare i dati provenienti dall'accelerometro.
 
 La fase di inizializzazione consiste nell'ottenere un unico dato, ossia le coordinate geografiche del mezzo parcheggiato. Siccome il mezzo sul quale è posizionato il dispositivo è fermo, la velocità è pari a 0 km/h e siccome presupponiamo che l'Azimuth del device sia pari all'Azimuth del mezzo non è nemmeno importante capire come è orientato il device all'interno del veicolo.
 
@@ -496,11 +505,11 @@ Ogni volta che viene invocata registra la posizione corrente del device nel json
 Questa classe gestisce il jsonObject contenente tutti i valori ottenuti dai sensori. Nel caso in cui l'applicazione sia in esecuzione in modalità Test Mode, il jsonObject viene salvato in un file .json nella memoria locale del device. Nel caso in cui l'applicazione sia in esecuzione in modalità Anti-Theft Mode, invece, il jsonObject viene passato al Service adibito all'invio dei dati al server.
 
 \subsubsection*{parallelIntentService}
-ParallelIntentService \cite{K18} estende la classe Service ed implementa un comportamento simile agli IntentService.
+ParallelIntentService \cite{K19} estende la classe Service ed implementa un comportamento simile agli IntentService.
 E' stata utile per gestire due Service parallelamente in due thread differenti e non entrambi nell'UI thread.
 
 \subsubsection*{httpRequest}
-Per gestire le richieste HTTP ho usato Android Asynchronous Http Client \cite{K19}, una comoda libreria per gestire richieste HTTP sia in maniera asincrona che sincrona.
+Per gestire le richieste HTTP ho usato Android Asynchronous Http Client \cite{K20}, una comoda libreria per gestire richieste HTTP sia in maniera asincrona che sincrona.
 La richiesta HTTP avviene nello stesso thread in cui avviene la chiamata ad essa e fino a che la richiesta non è conclusa, il thread relativo si mette in wait, facendo quindi una comunicazione di tipo sincrono.
 
 \subsubsection*{logData}
@@ -539,7 +548,7 @@ I valori con cui gli algoritmi lavorano sono esclusivamente i valori relativi al
 
 Il server, appena riceve i dati, ottiene le informazioni relative al punto geografico di partenza, quindi latitudine, longitudine e timestamp relativo all'inizio della registrazione.
 Una volta ottenute le coordinate geografiche di partenza avviene il reverseGeocoding, esso consiste in una query a OpenStreetMap dalla quale otteniamo l'ID del nodo più vicino alle coordinate geografiche date in input. La query viene eseguita mediante Python Overpass Wrapper (Overpy). Dalla query otteniamo una lista di Nodi all'interno di un certo raggio, da questa lista filtriamo i nodi che appartengono ad una strada, controllando se da ogni nodo è possibile raggiungerne almeno una, successivamente cerchiamo il più vicino alle coordinate di partenza.
-Una volta ottenuto l'ID del nodo, il sistema si calcolo una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. 
+Una volta ottenuto l'ID del nodo, il sistema genera una BoundingBox, ossia un'area rettangolare dove l'ID del nodo trovato in precedenza si trova esattamente all'intersezione delle due diagonali. 
 
 In seguito, il sistema si interfaccia direttamente con le API di OpenStreetMap e scarica il file OSM-XML relativo alla BoundingBox. La richiesta avviene mediante urllib. Una volta ottenuto l'XML, esso viene salvato per poterlo usare in futuro in maniera più rapida per eventuali nuove localizzazioni. L'XML viene parsato mediante BeautifulSoup.
 
@@ -612,7 +621,7 @@ Per ognuna di queste tracce ho eseguito gli algoritmi di visita variando di volt
 \end{itemize}
 Per un totale di 192 risultati per ogni traccia.
 
-Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h. Questo perchè nel calcolare i metri percorsi ignoro le accelerazioni e le decelerazioni e in ambito urbano sono molto più influenti rispetto all'ambito extra-urbano.
+Ho usato il limite di velocità in maniera parametrica e non sfruttando le API di OpenStreetMap in quanto in ambito urbano la media della velocità è più prossima ai 30km/h che ai 50km/h. Questo perchè nel calcolare i metri percorsi ignoro le accelerazioni e le decelerazioni che in ambito urbano sono molto più influenti rispetto all'ambito extra-urbano.
 
 Per cercare di capire le differenze di prestazione degli algoritmi in caso di ambito urbano ed extraurbano, le tracce non comprendono più di un tipo di ambito diverso. 
 
@@ -636,26 +645,6 @@ Nel secondo tipo di grafico ho calcolato l'errore medio di tutte le tracce in pe
 Nel terzo tipo di grafico abbiamo generato per ogni algoritmo 4 grafici, in ognuno dei quali abbiamo fissato l'ampiezza della finestra temporale, ed analizzato l'andamento dell'errore in metri in relazione alla lunghezza del tracciato effettivamente percorso da ogni traccia, ogni linea del grafico corrisponde ad un numero di quadranti presi in considerazione. In totale abbiamo generato 4 grafici per ogni algoritmo, quindi 16 grafici in totale.
 
 Nel quarto tipo di grafico abbiamo esaminato l'andamento degli errori in metri per ogni algoritmo, fissando il numero di quadranti a 2 e variando l'ampiezza della finestra temporale. Abbiamo generato 4 grafici in totale.
-
-\begin{figure}[H]
-\centering 
-\includegraphics[scale=0.4]{firstChart2-1} 
-\includegraphics[scale=0.4]{firstChart2-20} 
-\end{figure}
-
-\begin{figure}[H]
-\centering 
-\includegraphics[scale=0.4]{firstChart4-1} 
-\includegraphics[scale=0.4]{firstChart4-20} 
-\end{figure}
-
-\begin{figure}[H]
-\centering 
-\includegraphics[scale=0.4]{firstChart8-1} 
-\includegraphics[scale=0.4]{firstChart8-20} 
-\caption{Errore in percentuale di ogni algoritmo per ogni traccia.} 
-
-\end{figure}
 
 
 \begin{figure}[H]
@@ -769,25 +758,26 @@ Con percorsi lunghi oltre 3000m le prestazioni calano a favore del Backtracking 
 
 \medskip
 In conclusione, i dati ottenuti dimostrano che l'algoritmo migliore in caso di tragitti medio-brevi, sopratutto in ambito extra-urbano, è l'algoritmo di DeadReckoning con una finestra temporale pari a 1 secondo anche se le prestazioni raggiunte dall'algoritmo di Backtracking con una finestra temporale di 20 secondi non si discostano molto. 
-
 In caso di tragitti medio-lunghi , sopratutto in ambito urbano, l'algoritmo migliore è l'algoritmo di Backtracking con una finestra temporale pari a 20 secondi.
 
-Nel seguente grafico abbiamo calcolato la media degli errori in metri generati da ogni algoritmo in ogni file nella sua miglior configurazione, ossia la combinazione tra numero di quadranti ed ampiezza della finestra temporale che genera il minor errore. Tale grafico dimostra che la miglior prestazione è più probabile ottenerla usando l'algoritmo di Backtracking nella sua miglior combinazione che come rilevato prima consiste nell'utilizzo di una finestra temporale ampia 20 secondi e generando le indicazioni da seguire mediante 2 quadranti.
+La differenza di prestazioni degli algoritmi al variare dell'ampiezza della finestra temporale è dovuta al fatto che con una finestra temporale ampia, la generazione delle indicazioni che l'algoritmo di visita deve seguire è meno soggetta ad errori dovuti alle interferenze rilevate dal magnetometro. Questo perchè con una finestra temporale ampia raccogliamo più valori per poi generare un'unica indicazione nella direzione pari alla media delle direzioni rilevate. In ambito urbano, ad una velocità media di 30km/h, una finestra temporale di 20 secondi corrisponde a circa 170 metri, una distanza ragionevole tra un'intersezione ed un altra. Con una finestra temporale di dimensioni ridotte, l'algoritmo ha molte più occasioni in cui bloccare la sua computazione, in quanto basta una piccola interferenza rilevata dal magnetometro per generare un'indicazione non veritiera.
+Bisogna considerare come caso particolare nella navigazione del grafo anche l'attraversamento di rotatorie o svincoli. Una rotatoria è composta da una way chiusa composta da più nodi dove ogni nodo corrisponde ad una uscita o entrata da essa. Con una finestra temporale ampia tendiamo ad oltrepassare le varie uscite per scegliere l'uscita corrispondente alla direzione dell'indicazione da seguire. Con una finestra temporale bassa, invece, analizziamo ogni nodo, andando ad aumentare le probabilità di bloccare la computazione o scegliere l'uscita sbagliata.
 
-\begin{figure}[H]
+Nel grafico 4.4 abbiamo calcolato la media degli errori in metri generati da ogni algoritmo in ogni file nella sua miglior configurazione, ossia la combinazione tra numero di quadranti ed ampiezza della finestra temporale che genera il minor errore. Tale grafico dimostra che la miglior prestazione è più probabile ottenerla usando l'algoritmo di Backtracking nella sua miglior combinazione che come rilevato prima consiste nell'utilizzo di una finestra temporale ampia 20 secondi e generando le indicazioni da seguire mediante 2 quadranti.
+
+\begin{figure}[h]
 \centering  
 \includegraphics[scale=0.8]{fiveChart} 
 \caption{Media degli errori in metri di ogni algoritmo nella sua miglior configurazione.} 
 
 \end{figure}
 
-Nell'immagine seguente possiamo vedere una traccia lunga 800 metri in ambito urbano ed i punti geografici calcolati dai vari algoritmi nella loro miglior configurazione. Possiamo notare il fatto che l'algoritmo di DeadReckoning sia molto sensibile ai possibili errori nella rilevazione dell'Azimuth, infatti possiamo vedere che i primi spostamenti avvengono verso est anche se l'Azimuth rilevato è molto differente dall'Azimuth reale, gli altri algoritmi correggono questo errore facendo il map-matching sulla reale strada attraversata dall'autovettura. Notiamo che l'algoritmo di Backtracking indovina esattamente la posizione di arrivo, con un errore di soli 9 m. L'algoritmo di BestDecision sbaglia una svolta e finisce la sua computazione a 143 metri dal punto di arrivo, questo errore è provocato dalla scelta sbagliata che l'algoritmo prende in un'intersezione causata dai valori poco precisi generati dal magnetometro dello smartphone.
+Nell'immagine 4.5 possiamo vedere una traccia lunga 800 metri in ambito urbano ed i punti geografici calcolati dai vari algoritmi nella loro miglior configurazione. Possiamo notare il fatto che l'algoritmo di DeadReckoning sia molto sensibile ai possibili errori nella rilevazione dell'Azimuth, infatti possiamo vedere che i primi spostamenti avvengono verso est anche se l'Azimuth rilevato è molto differente dall'Azimuth reale, gli altri algoritmi correggono questo errore facendo il map-matching sulla reale strada percorsa dall'autovettura. Notiamo che l'algoritmo di Backtracking calcola esattamente la posizione di arrivo, con un errore di soli 9 metri. L'algoritmo di BestDecision sbaglia una svolta e finisce la sua computazione a 143 metri dal punto di arrivo, questo errore è provocato dalla scelta sbagliata che l'algoritmo prende in un'intersezione causata dai valori poco precisi generati dal magnetometro dello smartphone.
 
 \begin{figure}[H]
 \centering  
-\includegraphics[scale=1]{compareAlgorithm} 
+\includegraphics[scale=0.5]{compareAlgorithm} 
 \caption{Esempio di traccia e visualizzazione dei punti calcolati dai vari algoritmi.} 
-
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
@@ -802,12 +792,12 @@ CONCLUSIONI}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%aggiunge la voce Conclusioni
                                         %   nell'indice
 \addcontentsline{toc}{chapter}{Conclusioni} 
+In questo elaborato si è descritto, inizialmente, lo stato dell'arte relativo ai sistemi di navigazione inerziale e a concetti di sensoristica in ambito smartphone. Successivamente si è descritto il progetto e lo sviluppo di un applicazione Android, in grado di rilevare un furto e in grado di raccogliere i dati provenienti dai sensori, e un server in grado di computare questi dati ottenuti dall'applicazione ed implementare un sistema di localizzazione mediante quattro algoritmi. La fase successiva è stata quella di generare dei dati per valutare l'efficienza degli algoritmi di localizzazione. Infine si è effettuata un'analisi relativa agli algoritmi al variare di alcuni parametri. Successivamente si è dimostrato quali sono sono gli algoritmi più efficienti in base al percorso, relativamente al contesto e la durata della traccia.
 
-In questo elaborato si è descritto, inizialmente, lo stato dell'arte relativo ai sistemi di navigazione inerziale e a concetti di sensoristica in ambito smartphone, successivamente si è descritto il progetto e lo sviluppo di un applicazione Android, in grado di rilevare un furto e in grado di raccogliere i dati provenienti dai sensori, e un server in grado di computare questi dati ottenuti dall'applicazione ed implementare un sistema di localizzazione mediante quattro algoritmi. La fase successiva è stata quella di generare dei dati per valutare l'efficienza degli algoritmi di localizzazione. Infine si è effettuata un'analisi relativa agli algoritmi al variare di alcuni parametri. Successivamente si è dimostrato quali sono sono gli algoritmi più efficienti in base al percorso, relativamente al contesto e la durata della traccia.
-
-La tesi ha dimostrato che è possibile effettuare una localizzazione di un oggetto mediante, esclusivamente, dati generati da sensori inerziali con un basso margine di errore. 
-
+La tesi ha dimostrato che è possibile effettuare una localizzazione di un oggetto mediante dati generati da sensori inerziali con un basso margine di errore. 
 Negli eventuali sviluppi futuri si potranno incrementare le prestazioni di questi algoritmi disponendo di sensori più precisi e più affidabili, calcolando negli spostamenti anche le accelerazioni e decelerazioni per ottenere un valore in metri dello spostamento più preciso e gestire in maniera più accurata l'attraversamento di rotatorie e di intersezioni in generale.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%imposta l'intestazione di pagina
 \renewcommand{\chaptermark}[1]{\markright{\thechapter \ #1}{}}
@@ -821,33 +811,30 @@ Negli eventuali sviluppi futuri si potranno incrementare le prestazioni di quest
 \addcontentsline{toc}{chapter}{Bibliografia}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%provare anche questo comando:
 %%%%%%%%%%%\addcontentsline{toc}{chapter}{\numberline{}{Bibliografia}}
-\bibitem{K1} Widhalm P, Nitsche P, Brandle N. "Transport Mode Detection with Realistic Smartphone Sensor Data". In Proceedings of IEEE CCNC, Las Vegas, USA, 2012; 573-576.
-\bibitem{K2} Bedogni L, Di Felice M, Bononi L. "Context-aware Android applications through transportation mode detection techniques". Wirel. Commun. Mob. Comput. 16, 16 (November 2016), 2523-2541.
-\bibitem{K3} L. Bedogni, M. Di Felice, L. Bononi, “By Train or By Car? Detecting the User’s Motion Type through Smartphone Sensors Data” on proceedings of the 5th IFIP International Conference Wireless Days 2012 (WD 2012), November 21-23, 2012, Dublin, Ireland
-\bibitem{K4} Yu Xiao et al., "Transportation activity analysis using smartphones," 2012 IEEE Consumer Communications and Networking Conference (CCNC), Las Vegas, NV, 2012, pp. 60-61.
-\bibitem{K5} R. Bhoraskar, N. Vankadhara, B. Raman and P. Kulkarni, "Wolverine: Traffic and road condition estimation using smartphone sensors," 2012 Fourth International Conference on Communication Systems and Networks (COMSNETS 2012), Bangalore, 2012, pp. 1-6.
-\bibitem{K6} Prashanth Mohan, Venkata N. Padmanabhan, and Ramachandran Ramjee. 2008. "Nericell: rich monitoring of road and traffic conditions using mobile smartphones". In Proceedings of the 6th ACM conference on Embedded network sensor systems (SenSys '08). ACM, New York, NY, USA, 323-336.
-\bibitem{K7} R. L. French. Map matching origins, approaches and applications. In Second International Symposium on Land Vehicle Navigation, pages 91-116,
+\bibitem{K1} W. Wrigley, "History of Inertial Navigation", Navigation, vol.24, no.1. Blackwell Publishing Ltd, 1977.
+\bibitem{K2} Widhalm P, Nitsche P, Brandle N. "Transport Mode Detection with Realistic Smartphone Sensor Data". In Proceedings of IEEE CCNC, Las Vegas, USA, 2012; 573-576.
+\bibitem{K3} Bedogni L, Di Felice M, Bononi L. "Context-aware Android applications through transportation mode detection techniques". Wirel. Commun. Mob. Comput. 16, 16 (November 2016), 2523-2541.
+\bibitem{K4} L. Bedogni, M. Di Felice, L. Bononi, “By Train or By Car? Detecting the User’s Motion Type through Smartphone Sensors Data” on proceedings of the 5th IFIP International Conference Wireless Days 2012 (WD 2012), November 21-23, 2012, Dublin, Ireland
+\bibitem{K5} Yu Xiao et al., "Transportation activity analysis using smartphones," 2012 IEEE Consumer Communications and Networking Conference (CCNC), Las Vegas, NV, 2012, pp. 60-61.
+\bibitem{K6} R. Bhoraskar, N. Vankadhara, B. Raman and P. Kulkarni, "Wolverine: Traffic and road condition estimation using smartphone sensors," 2012 Fourth International Conference on Communication Systems and Networks (COMSNETS 2012), Bangalore, 2012, pp. 1-6.
+\bibitem{K7} Prashanth Mohan, Venkata N. Padmanabhan, and Ramachandran Ramjee. 2008. "Nericell: rich monitoring of road and traffic conditions using mobile smartphones". In Proceedings of the 6th ACM conference on Embedded network sensor systems (SenSys '08). ACM, New York, NY, USA, 323-336.
+\bibitem{K8} R. L. French. Map matching origins, approaches and applications. In Second International Symposium on Land Vehicle Navigation, pages 91-116,
 Munster, Germany, July 4-7 1989.
-\bibitem{K8} Wei-Wen Kao, "Integration of GPS and dead-reckoning navigation systems," Vehicle Navigation and Information Systems Conference, 1991, 1991, pp. 635-643.
-\bibitem{K9} \url{https://developer.android.com/guide/topics/sensors/sensors_overview.html}
-\bibitem{K10} R. Bajaj, S. L. Ranaweera and D. P. Agrawal, "GPS: location-tracking technology," in Computer, vol. 35, no. 4, pp. 92-94, Apr 2002.
-\bibitem{K11} \url{https://openwireless.org}
-\bibitem{K12} \url{http://www.openstreetmap.org}
-\bibitem{K13} \url{http://wiki.openstreetmap.org/wiki/List_of_OSM-based_services}
-\bibitem{K14} Robert Bogue , 2013, "Recent developments in MEMS sensors: a review of applications, markets and technologies", Sensor Review, Vol. 33 Iss: 4, pp.300 - 304
-\bibitem{K15} E.D.Kaplan, C.J.Hegarty, Understanding GPS, principles and applications. Second Edition. Artech House.
-\bibitem{K16} \url{https://fon.com/maps/}
-\bibitem{K17} \url{https://developer.android.com/about/dashboards/index.html}
-\bibitem{K18} \url{https://github.com/schoentoon/ParallelIntentService}
-\bibitem{K19} \url{http://loopj.com/android-async-http/}
-\bibitem{K20} W. Wrigley, "History of Inertial Navigation", Navigation, vol.24, no.1. Blackwell Publishing Ltd, 1977.
+\bibitem{K9} Wei-Wen Kao, "Integration of GPS and dead-reckoning navigation systems," Vehicle Navigation and Information Systems Conference, 1991, 1991, pp. 635-643.
+\bibitem{K10} \url{https://developer.android.com/guide/topics/sensors/sensors_overview.html}
+\bibitem{K11} R. Bajaj, S. L. Ranaweera and D. P. Agrawal, "GPS: location-tracking technology," in Computer, vol. 35, no. 4, pp. 92-94, Apr 2002.
+\bibitem{K12} \url{https://openwireless.org}
+\bibitem{K13} \url{http://www.openstreetmap.org}
+\bibitem{K14} \url{http://wiki.openstreetmap.org/wiki/List_of_OSM-based_services}
+\bibitem{K15} Robert Bogue , 2013, "Recent developments in MEMS sensors: a review of applications, markets and technologies", Sensor Review, Vol. 33 Iss: 4, pp.300 - 304
+\bibitem{K16} E.D.Kaplan, C.J.Hegarty, Understanding GPS, principles and applications. Second Edition. Artech House.
+\bibitem{K17} \url{https://fon.com/maps/}
+\bibitem{K18} \url{https://developer.android.com/about/dashboards/index.html}
+\bibitem{K19} \url{https://github.com/schoentoon/ParallelIntentService}
+\bibitem{K20} \url{http://loopj.com/android-async-http/}
+
 
 \end{thebibliography}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%non numera l'ultima pagina sinistra
-\clearpage{\pagestyle{empty}\cleardoublepage}
-\chapter*{Ringraziamenti}
-\thispagestyle{empty}
-Qui possiamo ringraziare il mondo intero!!!!!!!!!!\\
-Ovviamente solo se uno vuole, non \`e obbligatorio.
+
 \end{document}
